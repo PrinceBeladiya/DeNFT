@@ -5,6 +5,8 @@ import Landing from './scenes/landing/Landing';
 import Dialogs from './dialogs';
 
 import history from './history';
+import MintContainer from './modules/mint/MintContainer';
+import MynftsContainer from './modules/myntfs/MynftsContainer';
 
 const Routes = () => (
   <Router
@@ -13,6 +15,12 @@ const Routes = () => (
     <Fragment>
       <Switch>
         <Route exact path="/" component={Landing} />
+      </Switch>
+      <Switch>
+        <Route exact path="/mint" component={MintContainer} />
+      </Switch>
+      <Switch>
+        <Route exact path="/my-nfts" component={MynftsContainer} />
       </Switch>
       <Dialogs />
     </Fragment>

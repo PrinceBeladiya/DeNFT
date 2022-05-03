@@ -12,7 +12,7 @@ interface ISimpleInterface {
 contract DeNFT {
     string public name = "DeNFT";
     string public symbol = "DNFT";
-    uint256 private tokenId = 1;
+    uint256 public tokenId = 1;
     uint256 private holders;
     address public tokenContract = address(this);
     uint256 private startDate = 0;
@@ -23,6 +23,7 @@ contract DeNFT {
     mapping(address => uint256) chargeEthereum;
     mapping(uint256 => address) approvals;
     mapping(address => mapping(address => bool)) AllTokensApprovals;
+    mapping(address => uint256[]) public ownerToTokens;
 
     event Transfer(
         address indexed from,
@@ -68,6 +69,22 @@ contract DeNFT {
         );
 
         balances[msg.sender] -= 1;
+        uint256 length = ownerToTokens[msg.sender].length - 1;
+
+        for (uint256 i = 0; i < length; i++) {
+            if (ownerToTokens[msg.sender][i] == tokenID) {
+                if (length == 1) {
+                    ownerToTokens[to].push(tokenID);
+                    ownerToTokens[msg.sender].pop();
+                    break;
+                } else {
+                    ownerToTokens[to].push(tokenID);
+                    ownerToTokens[msg.sender][i] = ownerToTokens[msg.sender][length - 1];
+                    ownerToTokens[msg.sender].pop();
+                    break;
+                }
+            }
+        }
 
         owners[tokenID] = to;
         balances[to] += 1;
@@ -99,6 +116,21 @@ contract DeNFT {
         );
 
         balances[from] -= 1;
+        uint256 length = ownerToTokens[from].length;
+        for (uint256 i = 0; i < length; i++) {
+            if (ownerToTokens[from][i] == tokenID) {
+                if (length == 1) {
+                    ownerToTokens[to].push(tokenID);
+                    ownerToTokens[from].pop();
+                    break;
+                } else {
+                    ownerToTokens[to].push(tokenID);
+                    ownerToTokens[from][i] = ownerToTokens[from][length - 1];
+                    ownerToTokens[from].pop();
+                    break;
+                }
+            }
+        }
         balances[to] += 1;
         owners[tokenID] = to;
 
@@ -162,15 +194,21 @@ contract DeNFT {
     }
 
     function mint() external payable {
-        require(msg.value == 1 ether, "Require 1 ether for buy 1 NFT");
-        chargeEthereum[address(this)] += 1 ether;
+        require(msg.value == 0.1 ether, "Require 0.1 ether for buy 1 NFT");
+        chargeEthereum[address(this)] += 0.1 ether;
 
         balances[msg.sender] += 1;
         owners[tokenId] = msg.sender;
 
         emit Transfer(address(this), msg.sender, tokenId);
         holders = tokenId;
+        ownerToTokens[msg.sender].push(tokenId);
         tokenId++;
+    }
+
+    function allTokens(address account)public view returns( uint [] memory){
+        uint[] memory tokenIDs = ownerToTokens[account];
+        return tokenIDs;
     }
 
     function reward(address simpleContractAddress) external {

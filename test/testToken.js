@@ -37,7 +37,7 @@ describe("DeNFT Token", function () {
   describe("NFT creation testing", () => {
 
     it('can create NFT through mint function', async () => {
-      await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       expect(await DeNFTInstance.balanceOf(owner.address)).to.equals(1);
 
@@ -45,9 +45,9 @@ describe("DeNFT Token", function () {
 
     it('if create mutiple NFT then tokenID is increment', async () => {
       let tokens;
-      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
-      let tx2 = await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      let tx2 = await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       let receipt2 = await tx2.wait();
       receipt2.events?.filter((x) => {
@@ -58,7 +58,20 @@ describe("DeNFT Token", function () {
         }
       });
 
-      let tx3 = await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      it('if NFT create we can change owner', async () => {
+        await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
+        const beforeMintTokens = await DeNFTInstance.ownerToTokens(owner.address);
+
+        await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
+        const afterMintTokens = await DeNFTInstance.ownerToTokens(owner.address);
+
+        expect(await DeNFTInstance.balanceOf(owner.address)).to.equals(1);
+        expect(beforeMintTokens.length).to.equals(1);
+        expect(afterMintTokens.length).to.equals(2);
+  
+      });
+
+      let tx3 = await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       let receipt3 = await tx3.wait();
       receipt3.events?.filter((x) => {
@@ -76,7 +89,7 @@ describe("DeNFT Token", function () {
 
     it('if NFT create balance of owner is increment', async () => {
       let tokens;
-      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       let receipt = await tx.wait();
       receipt.events?.filter((x) => {
@@ -96,7 +109,7 @@ describe("DeNFT Token", function () {
   describe('check ownerOf NFT', () => {
     it('can check owner through tokenID', async () => {
       let tokens;
-      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       let receipt = await tx.wait();
       receipt.events?.filter((x) => {
@@ -119,7 +132,7 @@ describe("DeNFT Token", function () {
 
     it('can transfer if dot have that NFT token', async () => {
       let tokens;
-      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       let receipt = await tx.wait();
       receipt.events?.filter((x) => {
@@ -138,7 +151,7 @@ describe("DeNFT Token", function () {
 
     it('can transfer NFT token', async () => {
       let tokens;
-      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       let receipt = await tx.wait();
       receipt.events?.filter((x) => {
@@ -162,7 +175,7 @@ describe("DeNFT Token", function () {
   describe("approve test", () => {
     it('cant approve assigned if dont have ownership', async () => {
       let tokens;
-      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       let receipt = await tx.wait();
       receipt.events?.filter((x) => {
@@ -180,7 +193,7 @@ describe("DeNFT Token", function () {
 
     it('can approve assign if have ownership of that token', async () => {
       let tokens;
-      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       let receipt = await tx.wait();
       receipt.events?.filter((x) => {
@@ -216,7 +229,7 @@ describe("DeNFT Token", function () {
   describe("set approver for all NFT testing", () => {
     it('can set approver for all NFT which have owner', async () => {
       let tokens;
-      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       let receipt = await tx.wait();
       receipt.events?.filter((x) => {
@@ -227,7 +240,7 @@ describe("DeNFT Token", function () {
         }
       });
 
-      let tx2 = await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      let tx2 = await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       let receipt2 = await tx2.wait();
       receipt2.events?.filter((x) => {
@@ -263,7 +276,7 @@ describe("DeNFT Token", function () {
   describe("Transfer through approval testing", () => {
     it('can transfer without ownership', async () => {
       let tokens;
-      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       let receipt = await tx.wait();
       receipt.events?.filter((x) => {
@@ -281,7 +294,7 @@ describe("DeNFT Token", function () {
 
     it('can transfer without approval', async () => {
       let tokens;
-      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       let receipt = await tx.wait();
       receipt.events?.filter((x) => {
@@ -299,7 +312,7 @@ describe("DeNFT Token", function () {
 
     it('can transfer without approval for all NFTs', async () => {
       let tokens;
-      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       let receipt = await tx.wait();
       receipt.events?.filter((x) => {
@@ -310,7 +323,7 @@ describe("DeNFT Token", function () {
         }
       });
 
-      let tx2 = await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      let tx2 = await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       let receipt2 = await tx2.wait();
       receipt2.events?.filter((x) => {
@@ -328,7 +341,7 @@ describe("DeNFT Token", function () {
 
     it('can transfer with approval', async () => {
       let tokens;
-      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       let receipt = await tx.wait();
       receipt.events?.filter((x) => {
@@ -363,7 +376,7 @@ describe("DeNFT Token", function () {
     });
 
     it('can transfer with approval for all', async () => {
-      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      let tx = await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       let receipt = await tx.wait();
       receipt.events?.filter((x) => {
@@ -374,7 +387,7 @@ describe("DeNFT Token", function () {
         }
       });
 
-      let tx2 = await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      let tx2 = await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       let receipt2 = await tx2.wait();
       receipt2.events?.filter((x) => {
@@ -414,7 +427,7 @@ describe("DeNFT Token", function () {
       let RewardDNFT = await ethers.getContractFactory('RewardDNFT');
       let RewardDNFTInstance = await RewardDNFT.deploy(DeNFTInstance.address);
 
-      await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       await hre.ethers.provider.send('evm_increaseTime', [8 * 24 * 60 * 60]);
       let tx = await DeNFTInstance.reward(RewardDNFTInstance.address);
@@ -437,9 +450,9 @@ describe("DeNFT Token", function () {
       let RewardDNFT = await ethers.getContractFactory('RewardDNFT');
       let RewardDNFTInstance = await RewardDNFT.deploy(DeNFTInstance.address);
 
-      await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
-      await DeNFTInstance.connect(account1).mint({ value: ethers.utils.parseEther("1") });
-      await DeNFTInstance.connect(account2).mint({ value: ethers.utils.parseEther("1") });
+      await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
+      await DeNFTInstance.connect(account1).mint({ value: ethers.utils.parseEther("0.1") });
+      await DeNFTInstance.connect(account2).mint({ value: ethers.utils.parseEther("0.1") });
 
       await hre.ethers.provider.send('evm_increaseTime', [8 * 24 * 60 * 60]);
       let tx = await DeNFTInstance.reward(RewardDNFTInstance.address);
@@ -470,8 +483,8 @@ describe("DeNFT Token", function () {
       let RewardDNFT = await ethers.getContractFactory('RewardDNFT');
       let RewardDNFTInstance = await RewardDNFT.deploy(DeNFTInstance.address);
 
-      await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
-      await DeNFTInstance.mint({ value: ethers.utils.parseEther("1") });
+      await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
+      await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       await expect(DeNFTInstance.reward(RewardDNFTInstance.address)).to.be.revertedWith('You cant do this operation now');
     });

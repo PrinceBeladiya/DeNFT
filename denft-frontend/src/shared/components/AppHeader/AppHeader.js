@@ -2,10 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import Button from '@material-ui/core/Button';
-
 import { noop } from "../../../utils";
 
-const AppHeader = ({ account, handleLogin }) => {
+const menuItems = [
+  {
+    menuTitle: "Mint",
+    path: "/mint"
+  },
+  {
+    menuTitle: "My NFTs",
+    path: "/my-nfts"
+  }
+];
+
+const AppHeader = ({ account, handleLogin, history }) => {
   return (
     <div className="app-header-container" id="app-header">
       <div className="app-name-wrapper">
@@ -13,6 +23,11 @@ const AppHeader = ({ account, handleLogin }) => {
         <div className="app-name">DeNFT</div>
       </div>
       <div className="menu-items">
+        {
+          menuItems.map(menuItem => (
+            <div className='menu-item' role='presentation' onClick={ () => history.push(menuItem.path) } >{menuItem.menuTitle}</div>
+          ))
+        }
       </div>
       <div className="wallet-connection">
         <div className="wallet-address">{account && account.sub}</div>
@@ -34,9 +49,10 @@ AppHeader.propTypes = {
   admin: PropTypes.string,
   onConnectClick: PropTypes.func,
   handleLogin: PropTypes.func,
+  history: PropTypes.instanceOf(Object).isRequired,
 }
 
-AppHeader.defaultProps =  {
+AppHeader.defaultProps = {
   account: '',
   admin: '',
   onConnectClick: noop,
