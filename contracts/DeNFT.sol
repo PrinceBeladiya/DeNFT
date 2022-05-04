@@ -70,24 +70,20 @@ contract DeNFT {
 
         balances[msg.sender] -= 1;
         uint256 length = ownerToTokens[msg.sender].length - 1;
+        console.log("length - ", length);
 
-        for (uint256 i = 0; i < length; i++) {
+        for (uint256 i = 0; i <= length; i++) {
             if (ownerToTokens[msg.sender][i] == tokenID) {
-                if (length == 1) {
-                    ownerToTokens[to].push(tokenID);
-                    ownerToTokens[msg.sender].pop();
-                    break;
-                } else {
-                    ownerToTokens[to].push(tokenID);
-                    ownerToTokens[msg.sender][i] = ownerToTokens[msg.sender][length - 1];
-                    ownerToTokens[msg.sender].pop();
-                    break;
-                }
+                ownerToTokens[to].push(tokenID);
+                ownerToTokens[msg.sender][i] = ownerToTokens[msg.sender][
+                    length
+                ];
+                ownerToTokens[msg.sender].pop();
+                owners[tokenID] = to;
+                balances[to] += 1;
+                break;
             }
         }
-
-        owners[tokenID] = to;
-        balances[to] += 1;
 
         emit Transfer(msg.sender, to, tokenID);
     }
@@ -206,8 +202,8 @@ contract DeNFT {
         tokenId++;
     }
 
-    function allTokens(address account)public view returns( uint [] memory){
-        uint[] memory tokenIDs = ownerToTokens[account];
+    function allTokens(address account) public view returns (uint256[] memory) {
+        uint256[] memory tokenIDs = ownerToTokens[account];
         return tokenIDs;
     }
 

@@ -63,8 +63,15 @@
 
   .menu-items {
     display : flex;
+    cursor: pointer;
   }
 
   .menu-item {
     margin-left: 20px;
+  }
+
+  .image {
+    height : 40px;
+    width : 40px;
+    margin-right: 10px;
   }

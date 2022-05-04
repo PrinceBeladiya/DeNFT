@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import Button from '@material-ui/core/Button';
 import { noop } from "../../../utils";
+import image from '../../../assets/images/Fotoram.io.png';
 
 const menuItems = [
   {
@@ -20,7 +21,8 @@ const AppHeader = ({ account, handleLogin, history }) => {
     <div className="app-header-container" id="app-header">
       <div className="app-name-wrapper">
         {/* <img src={LotteryIcon} className="app-icon" alt="app-icon" /> */}
-        <div className="app-name">DeNFT</div>
+        <div className="app-name">
+          <img alt="icon" className='image' src={image} />DeNFT</div>
       </div>
       <div className="menu-items">
         {

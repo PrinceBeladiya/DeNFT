@@ -1,11 +1,14 @@
 .main-container-mynft {
   display: flex;
   flex-wrap: wrap;
-  overflow: scroll;
   width: 100%;
   height: 100%;
 }
-
+.header-container {
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+}
 .wrapper-mynft {
   width: 300px;
   height: 500px;
@@ -48,4 +51,19 @@
       }
     }
   }
+}
+
+.css-1t1j96h-MuiPaper-root-MuiDialog-paper {
+  min-width: 30%;
+}
+
+.header-mynft {
+  text-align: center;
+}
+
+.alert {
+  width: 100%;
+  height: 5vh;
+  margin-left: 10px;
+  margin-right: 10px;
 }

@@ -30,6 +30,7 @@ const Mint = () => {
         return;
       }
 
+      await window.ethereum.enable();
       const provider = await new ethers.providers.Web3Provider(window.ethereum)
       let signer1 = await provider.getSigner();
       
