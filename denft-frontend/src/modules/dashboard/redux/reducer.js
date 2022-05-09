@@ -1,8 +1,8 @@
 import * as actionTypes from './actionTypes';
-import RequestStates from '../../../utils/request-states';
 
 const INITIAL_STATE = {
   currentDialogNames: [],
+  selectedMenuItem: {},
 };
 
 
@@ -23,6 +23,11 @@ export default (state = INITIAL_STATE, action) => {
         currentDialogNames: state.currentDialogNames
           .filter(dialogName => dialogName !== action.payload),
         selectedTab: {},
+      };
+    case actionTypes.SET_SELECTED_MENU_ITEM:
+      return {
+        ...state,
+        selectedMenuItem: action.payload,
       };
     default:
       return state;

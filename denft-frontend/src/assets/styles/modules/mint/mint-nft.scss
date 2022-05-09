@@ -44,6 +44,7 @@
         .details {
           text-align: center;
           padding: 20px;
+          background-color: #f5f6fa;
         }
       }
     }
@@ -73,4 +74,76 @@
 .block-ui {
   height: 100%;
   min-height: unset;
+}
+
+.mint-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .nft-mint-wrapper {
+    width: 70%;
+    height: 60%;
+    background-color: grey;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    background: #27262c;
+    color: #ffffff;
+    .nft-details-wrapper {
+      flex: 3;
+      height: calc(100% - 120px);
+      padding: 60px;
+      .nft-details {
+        padding: 40px;
+        .nft-title {
+          font-size: 2rem;
+        }
+        .nft-description {
+          margin: 50px 0 40px;
+        }
+        .price-wrapper {
+          .price-label {
+            line-height: 1.5rem;
+          }
+        }
+        .mint-btn-wrapper {
+          margin-top: 30px;
+          .mint-btn {
+            width: 120px;
+          }
+        }
+        .buy-crypto-wrapper {
+          margin-top: 30px;
+          .buy-crypto-link {
+            margin-top: 15px;
+            display: flex;
+            // justify-content: center;
+            align-items: center;
+            color: #0e6ce9;
+            text-decoration: underline;
+             cursor: pointer;
+          }
+        }
+      }
+    }
+    .nft-image {
+      height: calc(100% - 60px);
+      width: 350px;
+      padding: 30px;
+      flex: 2;
+      border-radius: 20px;
+      img {
+        height: 100%;
+        width: 100%;
+        border-radius: 20px;
+      }
+    }
+
+
+
+  }
+  
 }

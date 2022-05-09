@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { DeNFTContract } from '../../utils/etherIndex';
 import Button from '@mui/material/Button';
-import BlockUI from 'react-block-ui';
-import GoogleLoader from '../../shared/components/GoogleLoader';
 import { toast } from 'react-toastify';
 import { ethers } from 'ethereum-waffle/node_modules/ethers';
+import { withRouter } from 'react-router';
 
-const Mint = () => {
+import NFTImage from '../../assets/images/thumb-1920-961795.jpg';
+
+const Mint = ({ history }) => {
 
   const [CurrentTokenID, setCurrentTokenID] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -57,40 +58,42 @@ const Mint = () => {
   }
 
   return (
-    <div className="main-container">
-
-      <div className="wrapper">
-        <div className="container">
-          <div className="top"></div>
-          <div className="bottom">
-            <div className="left">
-              <div className="details">
-                <h3>NFT #{CurrentTokenID}</h3>
+    <div className="mint-container">
+      <div className="nft-mint-wrapper">
+        <div className="nft-details-wrapper">
+          <div className="nft-details">
+            <div className="nft-title">DeNFT #{CurrentTokenID}</div>
+            <div className="nft-description">1000 unique NFTs from the DeNFT</div>
+            <div className="price-wrapper">
+              <div className="price-label">Price</div>
+              <div className="price-value">0.1 ETH</div>
+            </div>
+            <div className="mint-btn-wrapper">
+              <Button
+                onClick={mintNFT}
+                className="mint-btn"
+                variant='contained'
+              >
+                <div>Mint</div>
+              </Button>
+            </div>
+            <div className="buy-crypto-wrapper">
+              <div
+                className="buy-crypto-link"
+                role="presentation"
+                onClick={ () => history.push("/buy-crypto") }
+              >
+                Don't have enough crypto? click here!
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className='notes'>
-        <div className='price-description'>
-          <p>Price</p>
-          <p>0.1 ether</p>
+        <div className="nft-image">
+          <img src={NFTImage} alt="nft-img" />
         </div>
       </div>
-      <div className='wrapper2'>
-        <BlockUI
-          blocking={loading}
-          className="full-height"
-          loader={<GoogleLoader height={20} width={20} />}
-        >
-          <Button variant="contained" className="mint-button" onClick={mintNFT} >
-              MINT
-          </Button>
-        </BlockUI>
-      </div>
-
-    </div >
+    </div>
   )
 };
 
-export default Mint;
+export default withRouter(Mint);
