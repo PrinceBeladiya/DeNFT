@@ -1,47 +1,51 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Mynfts from './Mynfts';
 import MainTemplateContainer from '../../shared/templates/MainTemplate/MainTemplateContainer';
 import { connect } from 'react-redux';
-import { getData, updateData } from './redux/actions';
+import { updateNFT } from './redux/actions';
+import { updateAccount } from '../landing/redux/actions';
+import PropTypes from 'prop-types';
 
 const MynftsContainer = (props) => {
-
-    const [loading, setLoading] = useState(false);
-    const [open, setOpen] = useState(false);
-    const [transferableToken, setTransferableToken] = useState('');
-    const [receipientAddress, setReceipientAddress] = useState('');
-    const [tokens, setTokens] = useState([]);
-    const [accounts, setAccounts] = useState([]);
 
     return (
         <MainTemplateContainer>
             <Mynfts
-                getdata={props.getList}
-                updatedata={props.updateList}
-                loading={loading}
-                setLoading={setLoading}
-                open={open}
-                setOpen={setOpen}
-                transferableToken={transferableToken}
-                setTransferableToken={setTransferableToken}
-                receipientAddress={receipientAddress}
-                setReceipientAddress={setReceipientAddress}
-                tokens={tokens}
-                setTokens={setTokens}
-                accounts={accounts}
-                setAccounts={setAccounts}
+                getdata={props.data}
+                data={props.getdata}
+                updateNFTs={props.updateList}
+                updateAccount={props.updateAccountAddress}
             />
         </MainTemplateContainer>
     )
 }
 
+MynftsContainer.propTypes = {
+    getdata: PropTypes.object,
+    updateNFTs: PropTypes.func,
+    updateAccount: PropTypes.func
+};
+
+MynftsContainer.defaultProps = {
+    getdata : {
+        NFTList : [],
+        account : '',
+        loading : false,
+        receipientAddress : '',
+        textlabel : '',
+        title : '',
+        transferableToken : ''
+    }
+};
+
 const mapStateToProps = state => ({
-    data: state.mynft.data,
+    data: state.mynft,
+    getdata: state.landing,
 });
 
 const mapDispatchToProps = dispatch => ({
-    getList: getdata => dispatch(getData(getdata)),
-    updateList: updatedata => dispatch(updateData(updatedata)),
+    updateList: NFTList => dispatch(updateNFT(NFTList)),
+    updateAccountAddress: account => dispatch(updateAccount(account)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MynftsContainer);

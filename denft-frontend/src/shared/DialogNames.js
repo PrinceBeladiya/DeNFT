@@ -1,1 +1,2 @@
-export const INFO_DIALOG = 'INFO_DIALOG';
+export const TRANSFER_DIALOGUE = 'TRANSFER_DIALOGUE';
+export const SELL_DIALOGUE = 'SELL_DIALOGUE';

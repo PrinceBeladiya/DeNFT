@@ -21,7 +21,7 @@ const AppHeader = ({ account, handleLogin, history }) => {
     <div className="app-header-container" id="app-header">
       <div className="app-name-wrapper">
         {/* <img src={LotteryIcon} className="app-icon" alt="app-icon" /> */}
-        <div className="app-name">
+        <div className="app-name" onClick={ () => history.push('/') }>
           <img alt="icon" className='image' src={image} />DeNFT</div>
       </div>
       <div className="menu-items">

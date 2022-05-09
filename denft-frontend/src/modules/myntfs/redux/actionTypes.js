@@ -1,2 +1,4 @@
-export const GET_LIST = "GET_LIST";
-export const UPDATE_LIST = "UPDATE_LIST";
+export const UPDATE_NFT_LISt = "UPDATE_NFT_LISt";
+export const LOADING = "LOADING";
+export const TRANSFERABLETOKEN = "TRANSFERABLETOKEN";
+export const UPDATE_SELL_OPEN = "UPDATE_SELL_OPEN";
