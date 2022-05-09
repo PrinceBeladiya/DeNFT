@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import Button from '@material-ui/core/Button';
 import { noop } from "../../../utils";
-import image from '../../../assets/images/Fotoram.io.png';
+import appIcon from '../../../assets/images/denft.png';
+import UDIcon from '../../../assets/icons/UDIcon.png';
 
 const menuItems = [
   {
@@ -20,9 +21,8 @@ const AppHeader = ({ account, handleLogin, history }) => {
   return (
     <div className="app-header-container" id="app-header">
       <div className="app-name-wrapper">
-        {/* <img src={LotteryIcon} className="app-icon" alt="app-icon" /> */}
         <div className="app-name" onClick={ () => history.push('/') }>
-          <img alt="icon" className='image' src={image} />DeNFT</div>
+          <img alt="icon" className='image' src={appIcon} />DeNFT</div>
       </div>
       <div className="menu-items">
         {
@@ -38,8 +38,8 @@ const AppHeader = ({ account, handleLogin, history }) => {
           onClick={(event) => handleLogin(event)}
           className="autorize-btn"
         >
-          {/* <img src={UDIcon} className="ud-icon" alt="udicon" /> */}
-          <div>{account && Object.keys(account).length > 0 ? 'Disconnect' : 'Connect'}</div>
+          <img src={UDIcon} className="ud-icon" alt="udicon" />
+          <div>{account && Object.keys(account).length > 0 ? 'Disconnect' : 'Connect with Unstoppable'}</div>
         </Button>
       </div>
     </div>

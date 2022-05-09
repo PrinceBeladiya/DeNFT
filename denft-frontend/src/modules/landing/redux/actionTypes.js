@@ -5,3 +5,4 @@ export const RECEIPIENT_ADDRESS = "RECEIPIENT_ADDRESS";
 export const TITLE = "TITLE";
 export const TEXTFIELDLABEL = "TEXTFIELDLABEL";
 export const ACCOUNT = "ACCOUNT";
+export const SET_ACCOUNT = "SET_ACCOUNT";

@@ -9,6 +9,7 @@ const INITIAL_STATE = {
   title: '',
   textLabel: '',
   account: '',
+  uAuth: {},
 };
 
 
@@ -48,6 +49,11 @@ export default (state = INITIAL_STATE, action) => { // eslint-disable-line
       return {
         ...state,
         account: action.payload,
+      };
+    case actionTypes.SET_ACCOUNT:
+      return {
+        ...state,
+        uAuth: action.payload,
       };
     default:
       return state;

@@ -34,3 +34,8 @@ export const updateAccount = (data) => ({
   type : actionTypes.ACCOUNT,
   payload : data,
 });
+
+export const setAccount = (account) => ({
+  type: actionTypes.SET_ACCOUNT,
+  payload: account,
+});

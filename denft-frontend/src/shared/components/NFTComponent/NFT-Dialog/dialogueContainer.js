@@ -38,7 +38,6 @@ const DialogueContainer = ({
         updateLoader(true);
         
         try {
-            await window.ethereum.enable();
             const provider = new ethers.providers.Web3Provider(window.ethereum)
             let signer1 = provider.getSigner();
             
