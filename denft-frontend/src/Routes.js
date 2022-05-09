@@ -7,6 +7,7 @@ import Dialogs from './dialogs';
 import history from './history';
 import MintContainer from './modules/mint/MintContainer';
 import MynftsContainer from './modules/myntfs/MynftsContainer';
+import BuyCrypto from './scenes/buy-crypto/BuyCrypto';
 
 const Routes = () => (
   <Router
@@ -21,6 +22,9 @@ const Routes = () => (
       </Switch>
       <Switch>
         <Route exact path="/my-nfts" component={MynftsContainer} />
+      </Switch>
+      <Switch>
+        <Route exact path="/buy-crypto" component={BuyCrypto} />
       </Switch>
       <Dialogs />
     </Fragment>

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
 import AppHeader from './AppHeader';
 import * as landingActions from '../../../modules/landing/redux/actions';
+import * as dashboardActions from '../../../modules/dashboard/redux/actions';
 import { uauth } from '../../../config';
 import { showNotification } from '../../../utils/Notifications';
 import { noop } from '../../../utils';
@@ -25,25 +27,35 @@ class AppHeaderContainer extends Component {
     }
   }
 
+  onMenuItemClick = (selectedMenuItem) => {
+    const { history, setSelectedMenuItem } = this.props;
+    history.push(selectedMenuItem && selectedMenuItem.path);
+    setSelectedMenuItem(selectedMenuItem);
+  }
+
   render() {
     const { account } = this.props;
     return (
       <AppHeader
         handleLogin={this.handleLogin}
         account={account}
+        onMenuItemClick={this.onMenuItemClick}
       />
     )
   }
 }
 
 AppHeaderContainer.propTypes = {
+  history: PropTypes.instanceOf(Object).isRequired,
   account: PropTypes.instanceOf(Object),
   setAccount: PropTypes.func,
+  setSelectedMenuItem: PropTypes.func,
 };
 
 AppHeaderContainer.defaultProps = {
   account: {},
   setAccount: noop,
+  setSelectedMenuItem: noop,
 };
 
 const mapStateToProps = state => ({
@@ -52,6 +64,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   setAccount: account => dispatch(landingActions.setAccount(account)),
+  setSelectedMenuItem: menuItem => dispatch(dashboardActions.setSelectedMenuItem(menuItem)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppHeaderContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AppHeaderContainer));

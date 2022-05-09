@@ -14,10 +14,14 @@ const menuItems = [
   {
     menuTitle: "My NFTs",
     path: "/my-nfts"
+  },
+  {
+    menuTitle: "Buy Crypto",
+    path: "/buy-crypto"
   }
 ];
 
-const AppHeader = ({ account, handleLogin, history }) => {
+const AppHeader = ({ account, handleLogin, history, onMenuItemClick }) => {
   return (
     <div className="app-header-container" id="app-header">
       <div className="app-name-wrapper">
@@ -27,7 +31,13 @@ const AppHeader = ({ account, handleLogin, history }) => {
       <div className="menu-items">
         {
           menuItems.map(menuItem => (
-            <div className='menu-item' role='presentation' onClick={ () => history.push(menuItem.path) } >{menuItem.menuTitle}</div>
+            <div
+              className={`menu-item ${menuItem.path === window.location.pathname ? 'active' : ''}`}
+              role='presentation'
+              onClick={ () => onMenuItemClick(menuItem) }
+            >
+              {menuItem.menuTitle}
+            </div>
           ))
         }
       </div>
@@ -47,11 +57,11 @@ const AppHeader = ({ account, handleLogin, history }) => {
 };
 
 AppHeader.propTypes = {
+  history: PropTypes.instanceOf(Object).isRequired,
   account: PropTypes.string,
   admin: PropTypes.string,
   onConnectClick: PropTypes.func,
   handleLogin: PropTypes.func,
-  history: PropTypes.instanceOf(Object).isRequired,
 }
 
 AppHeader.defaultProps = {

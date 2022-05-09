@@ -2,12 +2,14 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 
+import dashboardReducer from '../modules/dashboard/redux/reducer';
 import landingReducer from '../modules/landing/redux/reducer';
 import mynftReducer from '../modules/myntfs/redux/reducer';
 
 const appReducer = combineReducers({
   form: formReducer,
   routing: routerReducer,
+  dashboard: dashboardReducer,
   landing: landingReducer,
   mynft: mynftReducer,
 });

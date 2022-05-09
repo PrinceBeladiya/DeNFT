@@ -1,6 +1,6 @@
 .app-header-container {
     font-family: "Times New Roman", Times, serif;
-    background-color: #202442;
+    background-color: #27262c;
     color: white;
     height: $app-header-height;
     display: flex;
@@ -65,10 +65,23 @@
   .menu-items {
     display : flex;
     cursor: pointer;
+    justify-content: center;
+    align-items: center;
   }
 
   .menu-item {
     margin-left: 20px;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 10px 20px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &.active {
+      border-radius: 20px;
+      background-color: lightslategrey;
+    }
   }
 
   .image {
