@@ -40,7 +40,7 @@ contract DeNFT {
         address indexed operator,
         bool approved
     );
-    event GetRewards(address indexed account, uint256 balance);
+    // event GetRewards(address indexed account, uint256 balance);
 
     constructor() {
         startDate = block.timestamp;
@@ -207,29 +207,33 @@ contract DeNFT {
         return tokenIDs;
     }
 
-    function reward(address simpleContractAddress) external {
-        require(holders >= 1, "No one has an NFT");
-        require(
-            startDate + 1 weeks <= block.timestamp,
-            "You cant do this operation now"
-        );
-        uint256 i;
-        uint256 value;
+    // receive() external payable {
+        // assert(msg.sender == WBNB); // only accept BNB via fallback from the WBNB contract
+    // }
 
-        startDate = block.timestamp;
-        for (i = 1; i <= holders; i++) {
-            address to = owners[i];
+    // function reward(address simpleContractAddress) external {
+    //     require(holders >= 1, "No one has an NFT");
+    //     require(
+    //         startDate + 1 weeks <= block.timestamp,
+    //         "You cant do this operation now"
+    //     );
+    //     uint256 i;
+    //     uint256 value;
 
-            ISimpleInterface(simpleContractAddress).transfer(
-                to,
-                (10 * (10**18))
-            );
+    //     startDate = block.timestamp;
+    //     for (i = 1; i <= holders; i++) {
+    //         address to = owners[i];
 
-            value = ISimpleInterface(simpleContractAddress).balanceOf(
-                owners[i]
-            );
+    //         ISimpleInterface(simpleContractAddress).transfer(
+    //             to,
+    //             (10 * (10**18))
+    //         );
 
-            emit GetRewards(owners[i], value);
-        }
-    }
+    //         value = ISimpleInterface(simpleContractAddress).balanceOf(
+    //             owners[i]
+    //         );
+
+    //         emit GetRewards(owners[i], value);
+    //     }
+    // }
 }
