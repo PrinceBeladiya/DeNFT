@@ -12,18 +12,22 @@ import { noop } from '../../../utils';
 
 class AppHeaderContainer extends Component {
 
-  handleLogin = async () => {
+  handleLogin = async (wallet) => {
     const { account, setAccount } = this.props;
-    if (account && Object.keys(account) && Object.keys(account).length > 0) {
-      uauth
-        .logout()
-        .then(() => setAccount(undefined))
-        .catch(error => showNotification(error.message, 'error', 3000))
-    } else {
-      await uauth
-        .loginWithPopup()
-        .then(() => uauth.user().then(setUser => setAccount(setUser)))
-        .catch(error => showNotification(error.message, 'error', 3000))
+    if (wallet === 'unstoppable') {
+      if (account && Object.keys(account) && Object.keys(account).length > 0) {
+        uauth
+          .logout()
+          .then(() => setAccount(undefined))
+          .catch(error => showNotification(error.message, 'error', 3000))
+      } else {
+        await uauth
+          .loginWithPopup()
+          .then(() => uauth.user().then(setUser => setAccount(setUser)))
+          .catch(error => showNotification(error.message, 'error', 3000))
+      }
+    } else if (wallet === 'metamask') {
+      await window.ethereum.send('eth_requestAccounts');
     }
   }
 

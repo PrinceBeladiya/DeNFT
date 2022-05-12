@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import { noop } from "../../../utils";
 import appIcon from '../../../assets/images/denft.png';
 import UDIcon from '../../../assets/icons/UDIcon.png';
+import MetamaskIcon from '../../../assets/icons/metamask.svg';
 
 const menuItems = [
   {
@@ -45,11 +46,19 @@ const AppHeader = ({ account, handleLogin, history, onMenuItemClick }) => {
         <div className="wallet-address">{account && account.sub}</div>
         <Button
           basic
-          onClick={(event) => handleLogin(event)}
-          className="autorize-btn"
+          onClick={(event) => handleLogin('unstoppable')}
+          className="authorize-btn"
         >
           <img src={UDIcon} className="ud-icon" alt="udicon" />
           <div>{account && Object.keys(account).length > 0 ? 'Disconnect' : 'Connect with Unstoppable'}</div>
+        </Button>
+        <Button
+          basic
+          onClick={(event) => handleLogin('metamask')}
+          className="authorize-btn"
+        >
+          <img src={MetamaskIcon} className="ud-icon" alt="udicon" />
+          <div>{account && Object.keys(account).length > 0 ? 'Disconnect' : 'Connect'}</div>
         </Button>
       </div>
     </div>

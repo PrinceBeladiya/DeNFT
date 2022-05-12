@@ -93,7 +93,6 @@
     background: #27262c;
     color: #ffffff;
     .nft-details-wrapper {
-      flex: 3;
       height: calc(100% - 120px);
       padding: 60px;
       .nft-details {
@@ -130,10 +129,9 @@
       }
     }
     .nft-image {
-      height: calc(100% - 60px);
-      width: 350px;
+      height: 360px;
+      width: 360px;
       padding: 30px;
-      flex: 2;
       border-radius: 20px;
       img {
         height: 100%;
