@@ -251,6 +251,4 @@ contract MarketPlace is ReentrancyGuard {
 
         return (collectionAddresses, collectionDetails, cursor + length);
     }
-
-
 }

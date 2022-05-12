@@ -68,7 +68,7 @@ describe("DeNFT Token", function () {
         expect(await DeNFTInstance.balanceOf(owner.address)).to.equals(1);
         expect(beforeMintTokens.length).to.equals(1);
         expect(afterMintTokens.length).to.equals(2);
-  
+
       });
 
       let tx3 = await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
@@ -434,11 +434,11 @@ describe("DeNFT Token", function () {
       let get = await tx.wait();
       let from, balance;
 
-      get.events ?.filter( (x) => {
-        if(x.event == "GetRewards") {
+      get.events?.filter((x) => {
+        if (x.event == "GetRewards") {
           let log = x;
           from = log.args.account,
-          balance = log.args.balance
+            balance = log.args.balance
         }
       });
 
@@ -459,11 +459,11 @@ describe("DeNFT Token", function () {
       let get = await tx.wait();
       let from, balance;
 
-      get.events ?.filter( (x) => {
-        if(x.event == "GetRewards") {
+      get.events?.filter((x) => {
+        if (x.event == "GetRewards") {
           let log = x;
           from = log.args.account,
-          balance = log.args.balance
+            balance = log.args.balance
         }
       });
 
@@ -474,7 +474,7 @@ describe("DeNFT Token", function () {
     it('can NFT holders get rewards without any NFT buy by anyone', async () => {
       let RewardDNFT = await ethers.getContractFactory('RewardDNFT');
       let RewardDNFTInstance = await RewardDNFT.deploy(DeNFTInstance.address);
-      
+
       await hre.ethers.provider.send('evm_increaseTime', [8 * 24 * 60 * 60]);
       await expect(DeNFTInstance.reward(RewardDNFTInstance.address)).to.be.revertedWith('No one has an NFT');
     });
@@ -487,6 +487,26 @@ describe("DeNFT Token", function () {
       await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
 
       await expect(DeNFTInstance.reward(RewardDNFTInstance.address)).to.be.revertedWith('You cant do this operation now');
+    });
+  });
+
+  describe('market place testing', () => {
+    it('if sell function call token id added into the sellable token id', async () => {
+      const MarketPlaceTokens = await ethers.getContractFactory('MarketPlaceTokens');
+      const marketPlaceInstance = await MarketPlaceTokens.deploy();
+
+      await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
+      await DeNFTInstance.sellNFT(1, 1, marketPlaceInstance.address);
+      const sellTokens = await DeNFTInstance.sellableTokens(marketPlaceInstance.address);
+
+      expect(Number(sellTokens)).to.equals(1);
+    });
+    it('if dont have access of that token', async () => {
+      const MarketPlaceTokens = await ethers.getContractFactory('MarketPlaceTokens');
+      const marketPlaceInstance = await MarketPlaceTokens.deploy();
+
+      await DeNFTInstance.mint({ value: ethers.utils.parseEther("0.1") });
+      await expect(DeNFTInstance.connect(account1).sellNFT(1, 1, marketPlaceInstance.address)).to.be.revertedWith('You dont have an accesss for this token');
     });
   });
 });

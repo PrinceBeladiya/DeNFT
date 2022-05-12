@@ -9,6 +9,12 @@ interface ISimpleInterface {
     function balanceOf(address account) external returns (uint256);
 }
 
+interface MarketPlace {
+    function sell(uint tokenid, uint amount) external;
+
+    function sellTokens() external view returns(uint[] memory);
+}
+
 contract DeNFT {
     string public name = "DeNFT";
     string public symbol = "DNFT";
@@ -207,33 +213,40 @@ contract DeNFT {
         return tokenIDs;
     }
 
-    // receive() external payable {
-        // assert(msg.sender == WBNB); // only accept BNB via fallback from the WBNB contract
-    // }
+    function reward(address simpleContractAddress) external {
+        require(holders >= 1, "No one has an NFT");
+        require(
+            startDate + 1 weeks <= block.timestamp,
+            "You cant do this operation now"
+        );
+        uint256 i;
+        uint256 value;
 
-    // function reward(address simpleContractAddress) external {
-    //     require(holders >= 1, "No one has an NFT");
-    //     require(
-    //         startDate + 1 weeks <= block.timestamp,
-    //         "You cant do this operation now"
-    //     );
-    //     uint256 i;
-    //     uint256 value;
+        startDate = block.timestamp;
+        for (i = 1; i <= holders; i++) {
+            address to = owners[i];
 
-    //     startDate = block.timestamp;
-    //     for (i = 1; i <= holders; i++) {
-    //         address to = owners[i];
+            ISimpleInterface(simpleContractAddress).transfer(
+                to,
+                (10 * (10**18))
+            );
 
-    //         ISimpleInterface(simpleContractAddress).transfer(
-    //             to,
-    //             (10 * (10**18))
-    //         );
+            value = ISimpleInterface(simpleContractAddress).balanceOf(
+                owners[i]
+            );
 
-    //         value = ISimpleInterface(simpleContractAddress).balanceOf(
-    //             owners[i]
-    //         );
+            emit GetRewards(owners[i], value);
+        }
+    }
 
-    //         emit GetRewards(owners[i], value);
-    //     }
-    // }
+    function sellNFT(uint tokenid, uint amount, address marketPlaceContract) external {
+        require(owners[tokenid] == msg.sender, "You dont have an accesss for this token");
+        MarketPlace(marketPlaceContract).sell(tokenid, amount);
+    }
+
+    function sellableTokens(address marketPlaceContract) external view returns (uint[] memory) {
+        uint[] memory sellableToken = MarketPlace(marketPlaceContract).sellTokens();
+
+        return sellableToken;
+    }
 }
