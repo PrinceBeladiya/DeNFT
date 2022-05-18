@@ -1,65 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { DeNFTContract } from '../../utils/etherIndex';
 import Button from '@mui/material/Button';
-import { toast } from 'react-toastify';
-import { ethers } from 'ethereum-waffle/node_modules/ethers';
 import { withRouter } from 'react-router';
+import { toast } from 'react-toastify';
+import Dropzone from 'react-dropzone'
+import BlockUI from 'react-block-ui';
+import GoogleLoader from '../../shared/components/GoogleLoader';
 
-import NFTImage from '../../assets/images/thumb-1920-961795.jpg';
-
-const Mint = ({ history }) => {
-
-  const [CurrentTokenID, setCurrentTokenID] = useState(0);
-  const [loading, setLoading] = useState(false);
+const Mint = ({ history, CurrentTokenID, setCurrentTokenID, loading, mintNFT, setImage, files, setFiles }) => {
 
   useEffect(() => {
     const getToken = async () => {
-      const tokens = await DeNFTContract.functions.tokenId();
+
+      const tokens = await DeNFTContract.functions.totalTokens();
       setCurrentTokenID(Number(tokens));
     }
     getToken();
-    
+
   }, [loading]);
 
-  const mintNFT = async () => {
-    setLoading(true);
-    try {
-      const { ethereum } = window;
+  const onImageChange = (file) => {
 
-      if(!ethereum) {
-        toast.warning("Please first install metamask");
-        return;
-      }
+    console.log("file - ", file);
+    console.log("length - ", file.length);
+    if (file.length > 0) {
+      setImage(file[0]);
 
-      // await window.ethereum.enable();
-      const provider = await new ethers.providers.Web3Provider(window.ethereum)
-      let signer1 = await provider.getSigner();
-      
-      await DeNFTContract.connect(signer1).functions.mint({ value: ethers.utils.parseEther("0.1") } );
+      setFiles(file.map(file => Object.assign(file, {
+        preview: URL.createObjectURL(file)
+      })));
 
-      const accounts = await ethereum.request({
-        method: "eth_requestAccounts",
-      });
-
-      let mintTokenOwner = await DeNFTContract.functions.ownerOf(CurrentTokenID);
-    
-      if (toString(mintTokenOwner[0]) === toString(accounts[0])) {
-        setLoading(false);
-        toast.success("NFT with token id " + CurrentTokenID + " is minted for you", { autoClose: 2000 });
-      } else {
-        setLoading(false);
-        toast.warning("NFT with token id " + CurrentTokenID + " is can not minted for you", { autoClose: 2000 });
-      }
-    } catch (error) {
-      setLoading(false);
-      console.log("error => ", error);
+    } else {
+      toast.warning("Please select file", { autoClose: 2000 });
+      return;
     }
 
-  }
+  };
 
   return (
     <div className="mint-container">
       <div className="nft-mint-wrapper">
+        {/* <BlockUI
+          tag="div"
+          blocking={true}
+          className="full-height"
+          loader={<GoogleLoader height={25} width={30} />}
+        > */}
         <div className="nft-details-wrapper">
           <div className="nft-details">
             <div className="nft-title">DeNFT #{CurrentTokenID}</div>
@@ -81,16 +67,43 @@ const Mint = ({ history }) => {
               <div
                 className="buy-crypto-link"
                 role="presentation"
-                onClick={ () => history.push("/buy-crypto") }
+                onClick={() => history.push("/buy-crypto")}
               >
                 Don't have enough crypto? click here!
               </div>
             </div>
           </div>
         </div>
-        <div className="nft-image">
-          <img src={NFTImage} alt="nft-img" />
+        <div className="imageUpload">
+          <div className='image-View'>
+            {
+              files.length > 0 && files[0].preview ?
+                <img src={files[0].preview} alt="NFT" className='image-uploaded' />
+                :
+                ''
+            }
+          </div>
+          <Dropzone
+            onDrop={acceptedFiles => onImageChange(acceptedFiles)}
+            accept={'image/*'}
+            multiple={false}
+          >
+
+            {({ getRootProps, getInputProps }) => (
+              <div className='button-view' {...getRootProps()}>
+                <input {...getInputProps()} />
+                {
+                  files.length > 0 && files[0].preview ?
+                    ''
+                    :
+                    <label className="upload-button" for="upload"><p className='instruction'>Drag 'n' drop some files here, or click to select files</p></label>
+                }
+              </div>
+            )}
+
+          </Dropzone>
         </div>
+        {/* </BlockUI> */}
       </div>
     </div>
   )

@@ -3,6 +3,8 @@ import Button from '@mui/material/Button';
 import BlockUI from 'react-block-ui';
 import GoogleLoader from '../GoogleLoader';
 import DialogueContainer from './NFT-Dialog/dialogueContainer';
+import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@material-ui/core';
+import image from '../../../assets/images/thumb-1920-961795.jpg';
 
 const NFTs = ({
     getdata,
@@ -18,7 +20,7 @@ const NFTs = ({
             className="NFT-buttons"
             loader={<GoogleLoader height={20} width={20} />}
         >
-            <div className='contents-wrappers'>
+            {/* <div className='contents-wrappers'>
                 <div className="wrapper-mynft">
                     <div className="container-mynft">
                         <div className="top-mynft"></div>
@@ -51,7 +53,43 @@ const NFTs = ({
                         updateNFTs={updateNFTs}
                     />
                 </div>
-            </div>
+            </div> */}
+
+            <Card sx={{ maxWidth: 345 }} className="card-container">
+                <CardActionArea>
+                    <CardMedia
+                        component="img"
+                        height="140"
+                        image={image}
+                        className="card-image"
+                        alt="green iguana"
+                    />
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="div" className="nft-description">
+                            NFT #{ID}
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+            </Card>
+            <Button variant="contained" className="mynft-button" name={ID} onClick={() => openForm(ID)} >
+                Transfer
+            </Button>
+            <Button
+                variant="contained"
+                className="mynft-button"
+                name={ID}
+                onClick={() => sellForm(ID)}
+            >
+                Sell
+            </Button>
+            <DialogueContainer
+                getdata={getdata}
+                data={getdata}
+                ID={ID}
+                sellForm={sellForm}
+                openForm={openForm}
+                updateNFTs={updateNFTs}
+            />
         </BlockUI>
     )
 }

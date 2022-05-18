@@ -9,17 +9,27 @@ import * as dashboardActions from '../../../modules/dashboard/redux/actions';
 import { uauth } from '../../../config';
 import { showNotification } from '../../../utils/Notifications';
 import { noop } from '../../../utils';
+import { toast } from 'react-toastify';
 
 class AppHeaderContainer extends Component {
 
+  state = {
+    login : '',
+  }
+
   handleLogin = async (wallet) => {
+
     const { account, setAccount } = this.props;
+    this.setState({ login : wallet});
+
     if (wallet === 'unstoppable') {
       if (account && Object.keys(account) && Object.keys(account).length > 0) {
         uauth
           .logout()
           .then(() => setAccount(undefined))
           .catch(error => showNotification(error.message, 'error', 3000))
+
+          this.setState({ login : ''});
       } else {
         await uauth
           .loginWithPopup()
@@ -27,7 +37,23 @@ class AppHeaderContainer extends Component {
           .catch(error => showNotification(error.message, 'error', 3000))
       }
     } else if (wallet === 'metamask') {
-      await window.ethereum.send('eth_requestAccounts');
+      await window.ethereum.enable();
+      const { ethereum } = window;
+
+      if (!ethereum) {
+        toast.warning("Please first install metamask");
+        return;
+      }
+
+      if (account && Object.keys(account) && Object.keys(account).length > 0) {
+        setAccount(undefined);
+        this.setState({ login : ''});
+      } else {
+        setAccount({
+          sub: ethereum.selectedAddress,
+          wallet_address: ethereum.selectedAddress,
+        });
+      }
     }
   }
 
@@ -38,12 +64,14 @@ class AppHeaderContainer extends Component {
   }
 
   render() {
-    const { account } = this.props;
+    const { account, setAccount } = this.props;
     return (
       <AppHeader
         handleLogin={this.handleLogin}
         account={account}
+        setAccount={setAccount}
         onMenuItemClick={this.onMenuItemClick}
+        login={this.state.login}
       />
     )
   }
@@ -68,6 +96,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   setAccount: account => dispatch(landingActions.setAccount(account)),
+  setCurrentAccount: account => dispatch(landingActions.updateAccount(account)),
   setSelectedMenuItem: menuItem => dispatch(dashboardActions.setSelectedMenuItem(menuItem)),
 });
 
