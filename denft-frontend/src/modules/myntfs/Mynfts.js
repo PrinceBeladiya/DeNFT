@@ -57,10 +57,6 @@ const Mynfts = (props) => {
 
   return (
     <div className='header-container'>
-      <div className='header'>
-        <h1 className='header-mynft'>My NFTs</h1>
-        <hr />
-      </div>
       <div className='main-container-mynft'>
         {
           getdata.NFTList.map(token => (

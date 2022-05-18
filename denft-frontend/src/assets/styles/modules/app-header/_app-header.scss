@@ -23,6 +23,11 @@
         align-items: center;
         height: 100%;
         cursor: pointer;
+        .image {
+          height : 40px;
+          width : 40px;
+          margin-right: 10px;
+        }
       }
       .MuiFormControl-root {
         margin-left: 20px;
@@ -61,32 +66,25 @@
         font-weight: bold;
       } 
     }
-  }
-
-  .menu-items {
-    display : flex;
-    cursor: pointer;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .menu-item {
-    margin-left: 20px;
-    font-size: 18px;
-    font-weight: 600;
-    padding: 10px 20px;
-    width: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    &.active {
-      border-radius: 20px;
-      background-color: lightslategrey;
+    .menu-items {
+      display : flex;
+      cursor: pointer;
+      justify-content: center;
+      align-items: center;
     }
-  }
-
-  .image {
-    height : 40px;
-    width : 40px;
-    margin-right: 10px;
+  
+    .menu-item {
+      margin-left: 20px;
+      font-size: 18px;
+      font-weight: 600;
+      padding: 10px 20px;
+      width: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &.active {
+        border-radius: 20px;
+        background-color: lightslategrey;
+      }
+    }
   }

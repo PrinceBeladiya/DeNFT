@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import MainTemplateContainer from '../../shared/templates/MainTemplate/MainTemplateContainer';
 import { DeNFTContract } from '../../utils/etherIndex';
 import Mint from './Mint';
-import { NFTStorage } from 'nft.storage';
+import { NFTStorage } from 'nft.storage/dist/bundle.esm.min.js';
 import { API } from '../../API';
 
 const MintContainer = () => {
