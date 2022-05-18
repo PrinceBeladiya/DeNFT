@@ -47,24 +47,66 @@
 //   }
 
 .NFT-buttons {
-  margin: 5px;
+  margin: 10px;
+  max-height: 375px;
+  max-width: 275px;
 
   .card-container {
     margin: 5px;
-    width: 100%;
-    max-width: 275px;
-    max-height: 370px;
+    min-width: 265px;
+    width: calc(100% - 5px);
+    min-height: 375px;
+    border-radius: 8px;
 
-    .nft-description {
-      text-align: center;
-      font-size: large;
-      font-weight: bold;
-    }
-    .card-image {
+    .card-child-container {
+      height: 100%;
+      max-height: 375px;
+      max-width: 275px;
+
+      .description-container {
+        padding: 10px;
+        padding-top: 0px;
+
+        .nft-site {
+          font-size: small;
+          font-weight: bold;
+          height: 20px;
+          color: gray;
+          margin-top: 10px;
+        }
+
+        .nft-description {
+          font-size: medium;
+          font-weight: bold;
+          margin-bottom: 10px;
+          margin-top: 10px;
+        }
+      }
+      .card-image {
+        width: 100%;
+        height: 100%;
+        max-height: 258px;
+        max-width: 258px;
+        min-height: 258px;
+        margin: 5px;
+        border-radius: 5px;
+      }
     }
   }
+  .all-buttons {
+    display: flex;
+    flex-wrap: wrap;
 
-  .mynft-button {
-    margin: 10px;
+    .mynft-button {
+      margin-left: 5px;
+      margin-top: 10px;
+      width: calc(50% - 5px);
+    }
+
+    .fractional-button {
+      width: 100%;
+      margin-left: 5px;
+      margin-top: 10px;
+    }
   }
 }

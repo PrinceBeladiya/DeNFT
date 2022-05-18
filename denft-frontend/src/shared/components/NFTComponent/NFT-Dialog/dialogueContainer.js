@@ -1,18 +1,23 @@
 import { ethers } from 'ethers';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import Dialogue from './dialogue';
+import TransferDialogue from './transferDialog';
+import SellDialogue from './sellDialog';
+import FractionalDialogue from './fractionalDialog';
 import { DeNFTContract } from '../../../../utils/etherIndex';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import { updateLoading, updateTransferableToken } from '../../../../modules/myntfs/redux/actions';
 import { openForm, OpenSellForm, titleOfForm, labelOfForm, inputText } from '../../../../modules/landing/redux/actions';
+import { openDialog } from '../../../../modules/dashboard/redux/actions';
 
 const DialogueContainer = ({
     getdata,
     data,
+    dialog,
     updateReceipient,
     updateDialogue,
+    updateToken,
     updateSellOpen,
     updateLoader,
     updateNFTs
@@ -28,20 +33,16 @@ const DialogueContainer = ({
         setPrice(e.target.value);
     }
 
-    const closeForm = () => {
-        updateDialogue(false);
-        updateSellOpen(false);
-    }
-
     const transferNFT = async (e) => {
         updateDialogue(false);
         updateLoader(true);
-        
+
         try {
-            const provider = new ethers.providers.Web3Provider(window.ethereum)
-            let signer1 = provider.getSigner();
-            
-            await DeNFTContract.connect(signer1).transfer(ethers.utils.getAddress(data.receipientAddress), getdata.transferableToken);
+            const { ethereum } = window;
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+            console.log("contract = ", DeNFTContract);
+            await DeNFTContract.functions._transfer(ethereum.selectedAddress, ethers.utils.getAddress(data.receipientAddress), getdata.transferableToken);
 
             let transfereTokenOwner = await DeNFTContract.functions.ownerOf(getdata.transferableToken);
 
@@ -59,29 +60,74 @@ const DialogueContainer = ({
             });
 
             updateNFTs(tokenIDs);
+            updateToken(undefined);
 
         } catch (error) {
             updateLoader(false);
             toast.warning(error.message, { autoClose: 2000 });
+            updateToken(undefined);
             console.log("error - ", error);
         }
     };
+
+    const handleName = (e) => {
+        
+    }
+    const handleSymbol = (e) => {
+
+    }
+    const handleSupply = (e) => {
+
+    }
+    const handleListPrice = (e) => {
+
+    }
 
     const sellNFT = () => {
 
     }
 
+    const FractionalNFT = () => {
+
+    }
+
     return (
         <div>
-            <Dialogue
-                getdata={getdata}
-                data={data}
-                handleAddress={handleAddress}
-                closeForm={closeForm}
-                transferNFT={transferNFT}
-                handlePrice={handlePrice}
-                sellNFT={sellNFT}
-            />
+            {
+                dialog.currentDialogNames[0] === "TRANSFER_DIALOGUE" ?
+                    <TransferDialogue
+                        data={data}
+                        handleAddress={handleAddress}
+                        transferNFT={transferNFT}
+                        updateToken={updateToken}
+                        ID={getdata.transferableToken}
+                    />
+                    :
+                    dialog.currentDialogNames[0] === "SELL_DIALOGUE" ?
+                        <SellDialogue
+                            data={data}
+                            handleAddress={handleAddress}
+                            handlePrice={handlePrice}
+                            updateToken={updateToken}
+                            sellNFT={sellNFT}
+                            ID={getdata.transferableToken}
+                        />
+                        :
+                        <FractionalDialogue
+                            data={data}
+                            handleAddress={handleAddress}
+                            FractionalNFT={FractionalNFT}
+                            handlePrice={handlePrice}
+                            updateToken={updateToken}
+                            ID={getdata.transferableToken}
+                            handleName={handleName}
+                            handleSymbol={handleSymbol}
+                            handleSupply={handleSupply}
+                            handleListPrice={handleListPrice}
+                        />
+
+            }
+
         </div>
     )
 }
@@ -122,6 +168,7 @@ DialogueContainer.defaultProps = {
 const mapStateToProps = state => ({
     getdata: state.mynft,
     data: state.landing,
+    dialog: state.dashboard,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -132,6 +179,7 @@ const mapDispatchToProps = dispatch => ({
     updateReceipient: address => dispatch(inputText(address)),
     updateTitle: title => dispatch(titleOfForm(title)),
     updateTextLabel: label => dispatch(labelOfForm(label)),
+    openDialog: name => dispatch(openDialog(name)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DialogueContainer);

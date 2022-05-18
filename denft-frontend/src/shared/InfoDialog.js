@@ -10,7 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 // import InfoDialogCointainer from './InfoDialogCointainer';
 import { INFO_DIALOG } from './DialogNames';
-import { closeDialog } from '../modules/dashboard/redux/actions';
+import * as actions from '../modules/dashboard/redux/actions';
 import { noop } from '../utils';
 
 const CreatePoolDialog = props => (
@@ -44,12 +44,12 @@ CreatePoolDialog.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  currentDialogNames: state.landing.currentDialogNames,
+  currentDialogNames: state.dashboard.currentDialogNames,
 });
 
 const mapDispatchToProps = dispatch => ({
   submit: formName => dispatch(submit(formName)),
-  closeDialog: dialogName => dispatch(closeDialog(dialogName)),
+  closeDialog: dialogName => dispatch(actions.closeDialog(dialogName)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreatePoolDialog);

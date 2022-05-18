@@ -3,11 +3,15 @@ import NFTs from './NFT';
 import PropTypes from 'prop-types';
 import { updateTransferableToken } from '../../../modules/myntfs/redux/actions';
 import { titleOfForm, labelOfForm, openForm } from '../../../modules/landing/redux/actions';
+import { DeNFTContract } from '../../../utils/etherIndex';
+import { useEffect, useState } from 'react';
+import { openDialog } from '../../../modules/dashboard/redux/actions';
 
 const NFTContainer = ({
     NFTID,
     data,
     getdata,
+    openDialog,
     updateDialogue,
     updateTitle,
     updateTextLabel,
@@ -15,18 +19,30 @@ const NFTContainer = ({
     updateNFTs
 }) => {
 
+    useEffect(() => {
+        const imageURIs = async () => {
+            const img = await DeNFTContract.functions.tokenURI(NFTID);
+            setImage(img[0]);
+        }
+
+        imageURIs();
+    }, []);
+
+    const [image, setImage] = useState();
+
     const sellForm = (ID = 0) => {
         updateToken(ID);
-        updateTitle('Sell NFT #' + ID);
-        updateTextLabel('Price of NFT(ETHER)');
-        updateDialogue(true);
+        openDialog("SELL_DIALOGUE");
     }
 
     const openForm = (ID = 0) => {
         updateToken(ID);
-        updateTitle('Transfer NFT #' + ID);
-        updateTextLabel('Receipient Address');
-        updateDialogue(true);
+        openDialog("TRANSFER_DIALOGUE");
+    }
+
+    const fractionalForm = (ID = 0) => {
+        updateToken(ID);
+        openDialog("FRACTIONAL_DIALOGUE");
     }
 
     return (
@@ -37,7 +53,9 @@ const NFTContainer = ({
                 ID={NFTID}
                 sellForm={sellForm}
                 openForm={openForm}
+                fractionalForm={fractionalForm}
                 updateNFTs={updateNFTs}
+                image={image}
             />
         </>
     )
@@ -69,12 +87,13 @@ NFTContainer.defaultProps = {
         sellOpen: false,
         textLabel: '',
         title: '',
-        account:''
+        account: ''
     }
 };
 
 const mapStateToProps = state => ({
     data: state.mynft,
+    dialog : state.dashboard,
     getdata: state.landing,
 });
 
@@ -83,6 +102,7 @@ const mapDispatchToProps = dispatch => ({
     updateTitle: title => dispatch(titleOfForm(title)),
     updateTextLabel: label => dispatch(labelOfForm(label)),
     updateDialogue: State => dispatch(openForm(State)),
+    openDialog: name => dispatch(openDialog(name)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NFTContainer);

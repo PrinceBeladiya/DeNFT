@@ -71,11 +71,13 @@ const MintContainer = () => {
                     image: imageFile
                 });
 
-                console.log('NFT data stored!')
-                console.log("storage - ", metadata);
+                console.log('NFT data stored!');
+                console.log("storage - ", metadata.data.image.pathname);
 
-                setFileURI(metadata.url);
-                return metadata.url;
+                const url = metadata.data.image.pathname.split('/');
+                const passingURI = 'https://' + url[2] + '.ipfs.dweb.link/' + url[3];
+                setFileURI(passingURI);
+                return passingURI;
             } catch (error) {
                 console.log("Error -> ", error);
                 return 0;
