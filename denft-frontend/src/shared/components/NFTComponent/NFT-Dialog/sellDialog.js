@@ -53,7 +53,7 @@ const CreatePoolDialog = props => (
         props.closeDialog(SELL_DIALOGUE);
         props.updateToken(undefined);
       }}>Cancel</Button>
-      <Button onClick={props.SellNFT}>Sell</Button>
+      <Button onClick={props.sellNFT}>Sell</Button>
     </DialogActions>
   </Dialog>
 );

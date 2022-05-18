@@ -5,6 +5,7 @@ import Landing from './scenes/landing/Landing';
 import Dialogs from './dialogs';
 
 import history from './history';
+import MarketPlace from './modules/marketPlace/MarketplaceContainer';
 import MintContainer from './modules/mint/MintContainer';
 import MynftsContainer from './modules/myntfs/MynftsContainer';
 import BuyCrypto from './scenes/buy-crypto/BuyCrypto';
@@ -16,6 +17,9 @@ const Routes = () => (
     <Fragment>
       <Switch>
         <Route exact path="/" component={Landing} />
+      </Switch>
+      <Switch>
+        <Route exact path="/marketplace" component={MarketPlace} />
       </Switch>
       <Switch>
         <Route exact path="/mint" component={MintContainer} />

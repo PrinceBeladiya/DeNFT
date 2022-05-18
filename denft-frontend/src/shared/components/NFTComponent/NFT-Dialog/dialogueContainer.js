@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import TransferDialogue from './transferDialog';
 import SellDialogue from './sellDialog';
 import FractionalDialogue from './fractionalDialog';
-import { DeNFTContract } from '../../../../utils/etherIndex';
+import { DeNFTContract, MarketPlaceContract, web3Signer } from '../../../../utils/etherIndex';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import { updateLoading, updateTransferableToken } from '../../../../modules/myntfs/redux/actions';
 import { openForm, OpenSellForm, titleOfForm, labelOfForm, inputText } from '../../../../modules/landing/redux/actions';
 import { openDialog } from '../../../../modules/dashboard/redux/actions';
+import { parseEther } from 'ethers/lib/utils';
 
 const DialogueContainer = ({
     getdata,
@@ -39,39 +40,31 @@ const DialogueContainer = ({
 
         try {
             const { ethereum } = window;
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-            console.log("contract = ", DeNFTContract);
-            await DeNFTContract.functions._transfer(ethereum.selectedAddress, ethers.utils.getAddress(data.receipientAddress), getdata.transferableToken);
+            console.log("Signer - ", web3Signer);
+            await DeNFTContract.connect(web3Signer).transfer(data.receipientAddress, getdata.transferableToken);
 
-            let transfereTokenOwner = await DeNFTContract.functions.ownerOf(getdata.transferableToken);
+            updateLoader(false);
+            toast.success("Your NFT is successfully transfered", { autoClose: 2000 });
 
-            if (data.receipientAddress === transfereTokenOwner[0]) {
-                updateLoader(false);
-                toast.success("Your NFT is successfully transfered", { autoClose: 2000 });
-            } else {
-                updateLoader(false);
-                toast.warning("Your NFT is not successfully transfered", { autoClose: 2000 });
-            }
+            const tokens = await DeNFTContract.functions.totalTokens();
+            const tokensOfOwner = await DeNFTContract.functions.tokensOfOwnerBySize(ethereum.selectedAddress, 0, tokens);
 
-            const tokensOfOwner = await DeNFTContract.functions.allTokens(getdata.account);
             const tokenIDs = tokensOfOwner[0].map(token => {
                 return Number(token);
             });
 
             updateNFTs(tokenIDs);
-            updateToken(undefined);
 
         } catch (error) {
             updateLoader(false);
-            toast.warning(error.message, { autoClose: 2000 });
-            updateToken(undefined);
+            toast.warning("Something went wrong", { autoClose: 2000 });
             console.log("error - ", error);
         }
     };
 
     const handleName = (e) => {
-        
+
     }
     const handleSymbol = (e) => {
 
@@ -83,8 +76,24 @@ const DialogueContainer = ({
 
     }
 
-    const sellNFT = () => {
+    const sellNFT = async () => {
+        const { transferableToken } = getdata;
+        const { ethereum } = window;
 
+        updateLoader(true);
+        try {
+            // console.log("Called");
+            // console.log("Price - ", String(ethers.utils.parseEther(price)));
+            console.log("contract address - ", DeNFTContract.address);
+            console.log("ethereum address - ", ethereum.selectedAddress);
+            console.log("Signer - ", web3Signer);
+            await DeNFTContract.connect(web3Signer).approve(MarketPlaceContract.address, transferableToken);
+            await MarketPlaceContract.connect(web3Signer).createAskOrder(DeNFTContract.address, transferableToken, String(ethers.utils.parseEther(price)))
+            updateLoader(false);
+        } catch (error) {
+            console.log("Error -> ", error);
+            updateLoader(false);
+        }
     }
 
     const FractionalNFT = () => {

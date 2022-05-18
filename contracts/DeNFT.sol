@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "hardhat/console.sol";
 
 contract DeNFT is ERC721Enumerable, Ownable {
     using Counters for Counters.Counter;
@@ -92,5 +93,12 @@ contract DeNFT is ERC721Enumerable, Ownable {
         }
 
         return (values, cursor + length);
+    }
+
+    function transfer(address to, uint tokenID) public payable {
+        console.log('msg.sender=======', msg.sender);
+        console.log('to=======', to);
+        console.log('tokenId=======', tokenID);
+        _transfer(msg.sender, to, tokenID);
     }
 }

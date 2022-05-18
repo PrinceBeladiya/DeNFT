@@ -19,7 +19,6 @@ const CreatePoolDialog = props => (
     open={props.currentDialogNames.includes(TRANSFER_DIALOGUE)}
     onClose={() => {
       props.closeDialog(TRANSFER_DIALOGUE);
-      props.updateToken(undefined);
     }}
     className="custom-dialog custom-content-style"
   >

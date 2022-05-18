@@ -40,11 +40,8 @@ const Mynfts = (props) => {
 
       const tokens = await DeNFTContract.functions.totalTokens();
       
-      console.log("Total tokens => ", tokens);
-      
       const tokensOfOwner = await DeNFTContract.functions.tokensOfOwnerBySize(accounts[0], 0, tokens );
 
-      console.log("tokens -> ", tokensOfOwner);
       const tokenIDs = tokensOfOwner[0].map(token => {
         return Number(token);
       });

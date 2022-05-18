@@ -9,6 +9,10 @@ import MetamaskIcon from '../../../assets/icons/metamask.svg';
 
 const menuItems = [
   {
+    menuTitle: "MarketPlace",
+    path: "/marketplace"
+  },
+  {
     menuTitle: "Mint",
     path: "/mint"
   },

@@ -21,7 +21,7 @@ contract MarketPlace is ReentrancyGuard {
     }
 
     address public admin;
-    address public immutable WETH;
+    // address public immutable WETH;
 
     EnumerableSet.AddressSet private _collectionAddressSet;
 
@@ -40,8 +40,8 @@ contract MarketPlace is ReentrancyGuard {
         address creatorAddress;
     }
 
-    constructor(address _WETHAddress) {
-        WETH = _WETHAddress;
+    constructor() {
+    //     WETH = _WETHAddress;
         admin = msg.sender;
     }
 
@@ -51,7 +51,7 @@ contract MarketPlace is ReentrancyGuard {
     }
 
     function buyTokenUsingETH(address _collection, uint256 _tokenId) external payable nonReentrant {
-        IWETH(WETH).deposit{value: msg.value}();
+        // IWETH(WETH).deposit{value: msg.value}();
         _buyToken(_collection, _tokenId, msg.value);
     }
 
@@ -72,7 +72,8 @@ contract MarketPlace is ReentrancyGuard {
         delete _askDetails[_collection][_tokenId];
         _askTokenIds[_collection].remove(_tokenId);
 
-        IERC20(WETH).safeTransfer(askOrder.seller, _price);
+        // IERC20(WETH).safeTransfer(askOrder.seller, _price);
+        require(payable(askOrder.seller).send(_price), "transfer failed");
         IERC721(_collection).safeTransferFrom(address(this), address(msg.sender), _tokenId);
     }
 

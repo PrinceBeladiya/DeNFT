@@ -5,7 +5,11 @@ async function main() {
   const Token = await ethers.getContractFactory('DeNFT');
   const token = await Token.deploy();
 
+  const MarketPlace = await ethers.getContractFactory('MarketPlace');
+  const marketplace = await MarketPlace.deploy();
+
   console.log("Token address ==> ", token.address);
+  console.log("MarketPlace address ==> ", marketplace.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
