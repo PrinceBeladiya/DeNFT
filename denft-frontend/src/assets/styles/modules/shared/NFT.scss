@@ -1,51 +1,3 @@
-// .wrapper-mynft {
-//     width: 300px;
-//     height: 500px;
-//     background: white;
-//     margin-top: 15px;
-//     margin-left: 10px;
-//     border-radius: 10px 10px 10px 10px;
-//     box-shadow: 0;
-//     transform: scale(0.95);
-//     transition: box-shadow 0.5s, transform 0.5s;
-//     &:hover {
-//       transform: scale(1);
-//       box-shadow: 5px 20px 30px rgba(0, 0, 0, 0.2);
-//     }
-
-//     .container-mynft {
-//       width: 100%;
-//       height: 100%;
-
-//       .top-mynft {
-//         height: 80%;
-//         width: 100%;
-//         background: url("../../../images//thumb-1920-961795.jpg") no-repeat center center;
-//         -webkit-background-size: 100%;
-//         -moz-background-size: 100%;
-//         -o-background-size: 100%;
-//         background-size: 100%;
-//       }
-//       .bottom-mynft {
-//         width: 100%;
-//         height: 20%;
-//         transition: transform 0.5s;
-//         &.clicked {
-//           transform: translateX(-50%);
-//         }
-//         .details-mynft {
-//           text-align: center;
-//           padding: 20px;
-//           background-color: #e7e4e4;
-
-//           h3 {
-//             color : black;
-//           }
-//         }
-//       }
-//     }
-//   }
-
 .NFT-buttons {
   margin: 10px;
   max-height: 375px;
@@ -83,13 +35,12 @@
         }
       }
       .card-image {
-        width: 100%;
-        height: 100%;
         max-height: 258px;
         max-width: 258px;
         min-height: 258px;
         margin: 5px;
         border-radius: 5px;
+        object-fit: scale-down;
       }
     }
   }
@@ -101,12 +52,19 @@
       margin-left: 5px;
       margin-top: 10px;
       width: calc(50% - 5px);
+      &.sell-button {
+        background-color: #a37070;
+      }
+      &.transfer-button {
+        background-color: #6b6bd3;;
+      }
     }
-
+    
     .fractional-button {
       width: 100%;
       margin-left: 5px;
       margin-top: 10px;
+      background-color: #006e9e;
     }
   }
 }

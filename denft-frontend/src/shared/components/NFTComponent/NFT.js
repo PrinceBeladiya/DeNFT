@@ -46,14 +46,14 @@ const NFTs = ({
                 <div className='all-buttons'>
                     <Button
                         variant="contained"
-                        className="mynft-button"
+                        className="mynft-button transfer-button"
                         name={ID}
                         onClick={() => openForm(ID)} >
                         Transfer
                     </Button>
                     <Button
                         variant="contained"
-                        className="mynft-button"
+                        className="mynft-button sell-button"
                         name={ID}
                         onClick={() => sellForm(ID)}
                     >
@@ -65,7 +65,7 @@ const NFTs = ({
                         name={ID}
                         onClick={() => fractionalForm(ID)}
                     >
-                        Fractional
+                        Make Fractional
                     </Button>
                 </div>
                 <DialogueContainer
