@@ -5,6 +5,7 @@ import { reducer as formReducer } from 'redux-form';
 import dashboardReducer from '../modules/dashboard/redux/reducer';
 import landingReducer from '../modules/landing/redux/reducer';
 import mynftReducer from '../modules/myntfs/redux/reducer';
+import homeReducer from '../modules/marketPlace/redux/reducer';
 
 const appReducer = combineReducers({
   form: formReducer,
@@ -12,6 +13,7 @@ const appReducer = combineReducers({
   dashboard: dashboardReducer,
   landing: landingReducer,
   mynft: mynftReducer,
+  home: homeReducer,
 });
 
 const rootReducer = (state, action) => {

@@ -87,6 +87,8 @@ const DialogueContainer = ({
             console.log("contract address - ", DeNFTContract.address);
             console.log("ethereum address - ", ethereum.selectedAddress);
             console.log("Signer - ", web3Signer);
+
+            // await MarketPlaceContract.connect(web3Signer).addCollection(DeNFTContract.address, ethereum.selectedAddress)
             await DeNFTContract.connect(web3Signer).approve(MarketPlaceContract.address, transferableToken);
             await MarketPlaceContract.connect(web3Signer).createAskOrder(DeNFTContract.address, transferableToken, String(ethers.utils.parseEther(price)))
             updateLoader(false);

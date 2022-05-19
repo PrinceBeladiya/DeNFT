@@ -1,4 +1,4 @@
-export const UPDATE_NFT_LISt = "UPDATE_NFT_LISt";
+export const UPDATE_NFT_LIST = "UPDATE_NFT_LIST";
 export const LOADING = "LOADING";
 export const TRANSFERABLETOKEN = "TRANSFERABLETOKEN";
 export const UPDATE_SELL_OPEN = "UPDATE_SELL_OPEN";

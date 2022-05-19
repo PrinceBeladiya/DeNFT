@@ -10,6 +10,7 @@ import { uauth } from '../../../config';
 import { showNotification } from '../../../utils/Notifications';
 import { noop } from '../../../utils';
 import { toast } from 'react-toastify';
+import { setMainMenu } from '../../../modules/dashboard/redux/actions';
 
 class AppHeaderContainer extends Component {
 
@@ -58,6 +59,7 @@ class AppHeaderContainer extends Component {
   }
 
   onMenuItemClick = (selectedMenuItem) => {
+    this.props.updateMainMenu(selectedMenuItem.menuTitle);
     const { history, setSelectedMenuItem } = this.props;
     history.push(selectedMenuItem && selectedMenuItem.path);
     setSelectedMenuItem(selectedMenuItem);
@@ -71,7 +73,6 @@ class AppHeaderContainer extends Component {
         account={account}
         setAccount={setAccount}
         onMenuItemClick={this.onMenuItemClick}
-        login={this.state.login}
       />
     )
   }
@@ -98,6 +99,7 @@ const mapDispatchToProps = dispatch => ({
   setAccount: account => dispatch(landingActions.setAccount(account)),
   setCurrentAccount: account => dispatch(landingActions.updateAccount(account)),
   setSelectedMenuItem: menuItem => dispatch(dashboardActions.setSelectedMenuItem(menuItem)),
+  updateMainMenu: selectedMenu => dispatch(setMainMenu(selectedMenu)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AppHeaderContainer));
