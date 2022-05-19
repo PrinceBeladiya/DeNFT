@@ -12,8 +12,6 @@ contract FractionalERC20Vault is ERC20 {
 
   uint public reservePrice;
 
-  mapping(address => uint) public ownerToFractionsForLend;
-
   constructor(
     address _owner,
     address _nftCollection,
@@ -36,8 +34,7 @@ contract FractionalERC20Vault is ERC20 {
 
   // ----------------------> Lend & borrow <-----------------------------
 
-  
-
+  // coming soon
 
   // -------------------> withdraw NFT if user accumulated 100% of the total supply <-----------------------
 

@@ -1,17 +1,14 @@
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "./FractionalERC20Vault.sol";
-import "../DeNFT.sol";
 
-contract FractionalERC721Factory is ERC721 {
-
-  uint public vaultCount = 1;
+contract FractionalERC721Factory {
+  uint public vaultCount = 0;
 
   mapping(uint => address) public vaultToVaultContract;
 
-  constructor() ERC721("FractionalNFT", "FNFT") {}
+  constructor() {}
 
   function mint(
     address _nftCollection,
@@ -30,8 +27,7 @@ contract FractionalERC721Factory is ERC721 {
 
     vaultToVaultContract[vaultCount] = address(fractionalERC20Vault);
     vaultCount++;
-    return vaultCount - 1;
+    return vaultCount;
   }
-
 
 }
