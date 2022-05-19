@@ -14,3 +14,8 @@ export const setSelectedMenuItem = menuItem => ({
     type: actionTypes.SET_SELECTED_MENU_ITEM,
     payload: menuItem,
 });
+
+export const setMainMenu = menu => ({
+    type: actionTypes.MENU_NAME,
+    payload: menu,
+});

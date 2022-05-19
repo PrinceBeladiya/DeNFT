@@ -1,7 +1,7 @@
 import * as actionTypes from './actionTypes';
 
 export const updateNFT = (data) => ({
-    type : actionTypes.UPDATE_NFT_LISt,
+    type : actionTypes.UPDATE_NFT_LIST,
     payload : data,
 });
 

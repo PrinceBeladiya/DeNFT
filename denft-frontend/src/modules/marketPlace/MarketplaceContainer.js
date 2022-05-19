@@ -36,7 +36,7 @@ const MarketplaceContainer = () => {
                         ))
                     }
                 </div>
-                <div>
+                <div className="main-marketplace-container">
                 {
                     menuItems.map(menuItem => (
                         selectMenuItem === menuItem.key && menuItem.component

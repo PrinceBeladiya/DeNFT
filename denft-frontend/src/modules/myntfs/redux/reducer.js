@@ -9,7 +9,7 @@ const INITIAL_STATE = {
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case actionTypes.UPDATE_NFT_LISt:
+        case actionTypes.UPDATE_NFT_LIST:
             return {
                 ...state,
                 NFTList: action.payload,

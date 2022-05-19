@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import Button from '@material-ui/core/Button';
@@ -26,7 +26,7 @@ const menuItems = [
   }
 ];
 
-const AppHeader = ({ account, setAccount, handleLogin, history, onMenuItemClick, login }) => {
+const AppHeader = ({ account, handleLogin, history, onMenuItemClick }) => {
 
   const user = () => {
     let string = account.sub;
@@ -46,7 +46,7 @@ const AppHeader = ({ account, setAccount, handleLogin, history, onMenuItemClick,
     if (userAccount1.length > 1)
       return userAccount1 + '...' + userAccount2;
   };
-  
+
   return (
     <div className="app-header-container" id="app-header">
       <div className="app-name-wrapper">
@@ -68,23 +68,22 @@ const AppHeader = ({ account, setAccount, handleLogin, history, onMenuItemClick,
       </div>
       <div className="wallet-connection">
         <div className="wallet-address">
-          { 
+          {
             account && account.sub ? user() : ''
           }
         </div>
         {
           account && Object.keys(account).length > 0 ?
-            (login !== 'unstoppable' || login !== 'metamask') ?
-              login === 'metamask' ?
-                <Button
-                  basic
-                  onClick={(event) => handleLogin('metamask')}
-                  className="authorize-btn"
-                >
-                  <img src={MetamaskIcon} className="ud-icon" alt="udicon" />
-                  <div>{account && Object.keys(account).length > 0 ? 'Disconnect' : 'Connect'}</div>
-                </Button>
-                :
+            (account.sub === account.wallet_address && account.sub.length > 0) ?
+              <Button
+                basic
+                onClick={(event) => handleLogin('metamask')}
+                className="authorize-btn"
+              >
+                <img src={MetamaskIcon} className="ud-icon" alt="udicon" />
+                <div>{account && Object.keys(account).length > 0 ? 'Disconnect' : 'Connect'}</div>
+              </Button>
+              : (account.sub !== account.wallet_address && account.sub.length > 0) ?
                 <Button
                   basic
                   onClick={(event) => handleLogin('unstoppable')}
@@ -93,8 +92,25 @@ const AppHeader = ({ account, setAccount, handleLogin, history, onMenuItemClick,
                   <img src={UDIcon} className="ud-icon" alt="udicon" />
                   <div>{account && Object.keys(account).length > 0 ? 'Disconnect' : 'Connect with Unstoppable'}</div>
                 </Button>
-              :
-              ''
+                :
+                <>
+                  <Button
+                    basic
+                    onClick={(event) => handleLogin('unstoppable')}
+                    className="authorize-btn"
+                  >
+                    <img src={UDIcon} className="ud-icon" alt="udicon" />
+                    <div>{account && Object.keys(account).length > 0 ? 'Disconnect' : 'Connect with Unstoppable'}</div>
+                  </Button>
+                  <Button
+                    basic
+                    onClick={(event) => handleLogin('metamask')}
+                    className="authorize-btn"
+                  >
+                    <img src={MetamaskIcon} className="ud-icon" alt="udicon" />
+                    <div>{account && Object.keys(account).length > 0 ? 'Disconnect' : 'Connect'}</div>
+                  </Button>
+                </>
             :
             <>
               <Button

@@ -1,28 +1,55 @@
 import { connect } from 'react-redux';
 import NFTs from './NFT';
 import PropTypes from 'prop-types';
-import { updateTransferableToken } from '../../../modules/myntfs/redux/actions';
+import { updateNFT, updateTransferableToken } from '../../../modules/myntfs/redux/actions';
 import { titleOfForm, labelOfForm, openForm } from '../../../modules/landing/redux/actions';
-import { DeNFTContract } from '../../../utils/etherIndex';
+import { DeNFTContract, MarketPlaceContract, web3Signer } from '../../../utils/etherIndex';
 import { useEffect, useState } from 'react';
-import { openDialog } from '../../../modules/dashboard/redux/actions';
+import { openDialog, setMainMenu } from '../../../modules/dashboard/redux/actions';
+import { ethers } from 'ethers';
 
 const NFTContainer = ({
     NFTID,
     data,
+    dashboard,
+    updateMainMenu,
+    index,
     getdata,
     openDialog,
-    updateDialogue,
-    updateTitle,
-    updateTextLabel,
+    NFTSellable,
     updateToken,
-    updateNFTs
+    updateNFTs,
+    getSellableNFTs,
+    tokens,
+    owners,
+    price
 }) => {
 
     useEffect(() => {
         const imageURIs = async () => {
-            const img = await DeNFTContract.functions.tokenURI(NFTID);
-            setImage(img[0]);
+            // console.log("url - ", window.location.href.split('/'));
+            if (dashboard.menu === "MarketPlace") {
+                const img = await DeNFTContract.functions.tokenURI(NFTSellable[index]);
+                setImage(img[0]);
+            } else if (dashboard.menu === "My NFTs") {
+                const img = await DeNFTContract.functions.tokenURI(NFTID);
+                setImage(img[0]);
+            } else {
+                const url = window.location.href.split('/');
+                const page = url[url.length - 1];
+                let img;
+
+                switch (page) {
+                    case "marketplace": updateMainMenu("MarketPlace");
+                        img = await DeNFTContract.functions.tokenURI(NFTSellable[index]);
+                        setImage(img[0]);
+                        break;
+                    case "my-nfts": updateMainMenu("My NFTs");
+                        img = await DeNFTContract.functions.tokenURI(NFTID);
+                        setImage(img[0]);
+                        break;
+                }
+            }
         }
 
         imageURIs();
@@ -45,17 +72,48 @@ const NFTContainer = ({
         openDialog("FRACTIONAL_DIALOGUE");
     }
 
+    const cancelSellableNFT = async (ID = 0) => {
+        try {
+            await MarketPlaceContract.connect(web3Signer).cancelAskOrder(DeNFTContract.address, ID);
+
+            getSellableNFTs();
+        } catch (error) {
+            console.log("Error -> ", error);
+        }
+    }
+
+    const buySellableNFT = async (ID = 0, price) => {
+        const { ethereum } = window;
+
+        try {
+            console.log("ID -- ", ID)
+            console.log("price -- ", price)
+            await MarketPlaceContract.connect(web3Signer).buyTokenUsingETH(DeNFTContract.address, ID, { value: ethers.utils.parseEther(price) });
+
+            getSellableNFTs();
+        } catch (error) {
+            console.log("Error -> ", error);
+        }
+    }
+
     return (
         <>
             <NFTs
+                dashboard={dashboard}
                 getdata={data}
                 data={getdata}
                 ID={NFTID}
+                index={index}
                 sellForm={sellForm}
                 openForm={openForm}
                 fractionalForm={fractionalForm}
                 updateNFTs={updateNFTs}
                 image={image}
+                NFTSellable={tokens}
+                NFTSellableOwners={owners}
+                NFTSellablePrice={price}
+                cancelSellableNFT={cancelSellableNFT}
+                buySellableNFT={buySellableNFT}
             />
         </>
     )
@@ -93,8 +151,11 @@ NFTContainer.defaultProps = {
 
 const mapStateToProps = state => ({
     data: state.mynft,
-    dialog : state.dashboard,
+    dashboard: state.dashboard,
     getdata: state.landing,
+    tokens: state.home.SellableNFTs,
+    owners: state.home.SellableNFTOwners,
+    price: state.home.SellableNFTPrice,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -103,6 +164,8 @@ const mapDispatchToProps = dispatch => ({
     updateTextLabel: label => dispatch(labelOfForm(label)),
     updateDialogue: State => dispatch(openForm(State)),
     openDialog: name => dispatch(openDialog(name)),
+    updateMainMenu: selectedMenu => dispatch(setMainMenu(selectedMenu)),
+    updateNFTs: NFTList => dispatch(updateNFT(NFTList)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NFTContainer);

@@ -3,6 +3,7 @@ import * as actionTypes from './actionTypes';
 const INITIAL_STATE = {
   currentDialogNames: [],
   selectedMenuItem: {},
+  menu: '',
 };
 
 
@@ -28,6 +29,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         selectedMenuItem: action.payload,
+      };
+    case actionTypes.MENU_NAME:
+      return {
+        ...state,
+        menu: action.payload,
       };
     default:
       return state;

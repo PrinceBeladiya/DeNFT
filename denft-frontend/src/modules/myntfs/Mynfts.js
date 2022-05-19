@@ -13,6 +13,7 @@ const Mynfts = (props) => {
   } = props;
 
   useEffect(() => {
+    
     const { ethereum } = window;
 
     if (!ethereum) {
@@ -40,7 +41,7 @@ const Mynfts = (props) => {
 
       const tokens = await DeNFTContract.functions.totalTokens();
       
-      const tokensOfOwner = await DeNFTContract.functions.tokensOfOwnerBySize(accounts[0], 0, tokens );
+      const tokensOfOwner = await DeNFTContract.functions.tokensOfOwnerBySize(accounts[0], 0, tokens);
 
       const tokenIDs = tokensOfOwner[0].map(token => {
         return Number(token);
