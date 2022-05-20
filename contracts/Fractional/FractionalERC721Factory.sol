@@ -29,13 +29,6 @@ contract FractionalERC721Factory {
             _totalSupply,
             _listPrice
         );
-        console.log("address ---- ", address(fractionalERC20VaultAddress));
-        console.log("_nftCollection ---- ", _nftCollection);
-        console.log("_id ---- ", _id);
-        console.log("_name ---- ", _name);
-        console.log("_symbol ---- ", _symbol);
-        console.log("_totalSupply ---- ", _totalSupply);
-        console.log("_listPrice ---- ", _listPrice);
 
         IERC721(_nftCollection).transferFrom(
             msg.sender,

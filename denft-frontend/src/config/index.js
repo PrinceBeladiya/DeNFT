@@ -7,3 +7,5 @@ export const uauth = new UAuth({
   scope: 'openid email wallet',
   redirectUri: "http://localhost:3000/",
 });
+
+export const NATIVE_ADDRESS = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
