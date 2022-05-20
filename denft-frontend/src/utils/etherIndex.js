@@ -3,14 +3,11 @@ import { ethers } from 'ethers';
 import NFT from '../contracts/contracts/DeNFT.sol/DeNFT.json';
 import MarketPlace from '../contracts/contracts/MarketPlace.sol/MarketPlace.json';
 import FractionalERC721Factory from '../contracts/contracts/Fractional/FractionalERC721Factory.sol/FractionalERC721Factory.json';
-<<<<<<< HEAD
 import USDC from '../contracts/contracts/mock/USDC.sol/USDC.json';
 import LendBorrow from '../contracts/contracts/LendBorrow/LendBorrow.sol/LendBorrow.json';
-=======
 import { MUMBAI } from '../config/networks/Mumbai';
 import { RINKEBY } from '../config/networks/Rinkeby';
 import { METIS_STARDUST } from '../config/networks/MetisStardust';
->>>>>>> 12986afb61b5c4f7b42bf4ad1309f3a48862b8a9
 
 export const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545/");
 export const signer = provider.getSigner();
