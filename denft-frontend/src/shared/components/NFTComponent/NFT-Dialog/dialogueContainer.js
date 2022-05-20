@@ -130,19 +130,10 @@ const DialogueContainer = ({
             const { transferableToken } = getdata;
 
             try {
-                console.log("Address -> ", FractionalERC721FactoryContract.address);
-                console.log("transferableToken -> ", Number(transferableToken));
-                console.log("fractionalName -> ", String(fractionalName));
-                console.log("fractionalSymbol -> ", String(fractionalSymbol));
-                console.log("fractionalTotalSupply -> ", String(ethers.utils.parseEther(fractionalTotalSupply)));
-                console.log("fractionalInitialPrice -> ", String(ethers.utils.parseEther(fractionalInitialPrice)));
-
-                await DeNFTContract.connect(web3Signer).approve(FractionalERC721FactoryContract.address, transferableToken);
-                await FractionalERC721FactoryContract.connect(web3Signer).mint(DeNFTContract.address, transferableToken, String(fractionalName), String(fractionalSymbol), String(ethers.utils.parseEther(fractionalTotalSupply)), String(ethers.utils.parseEther(fractionalInitialPrice)));
-
-                const vaultContractAddress = await FractionalERC721FactoryContract.connect(web3Signer).vaultToVaultContract((await FractionalERC721FactoryContract.connect(web3Signer).vaultCount()) - 1);
-                console.log("Vault contract address - ", vaultContractAddress);
-
+                const approve = await DeNFTContract.connect(web3Signer).approve(FractionalERC721FactoryContract.address, transferableToken);
+                await approve.wait();
+                const mintFractional = await FractionalERC721FactoryContract.connect(web3Signer).mint(DeNFTContract.address, transferableToken, String(fractionalName), String(fractionalSymbol), String(ethers.utils.parseEther(fractionalTotalSupply)), String(ethers.utils.parseEther(fractionalInitialPrice)));
+                await mintFractional.wait();
                 updateLoader(false);
                 showNotification("Fractional successfully", 'success', 3000 );
             } catch (error) {

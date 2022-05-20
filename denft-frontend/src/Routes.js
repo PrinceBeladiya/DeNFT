@@ -16,7 +16,7 @@ const Routes = () => (
   >
     <Fragment>
       <Switch>
-        <Route exact path="/" component={Landing} />
+        <Route exact path="/" component={MarketPlace} />
       </Switch>
       <Switch>
         <Route exact path="/marketplace" component={MarketPlace} />

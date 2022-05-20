@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import Dropzone from 'react-dropzone'
 import BlockUI from 'react-block-ui';
 import GoogleLoader from '../../shared/components/GoogleLoader';
+import { showNotification } from '../../utils/Notifications';
 
 const Mint = ({
   history,
@@ -25,9 +26,6 @@ const Mint = ({
   }, [loading]);
 
   const onImageChange = (file) => {
-
-    console.log("file - ", file);
-    console.log("length - ", file.length);
     if (file.length > 0) {
       setImage(file[0]);
 
@@ -36,7 +34,7 @@ const Mint = ({
       })));
 
     } else {
-      toast.warning("Please select file", { autoClose: 2000 });
+      showNotification("Please select file", "warning", 3000);
       return;
     }
 

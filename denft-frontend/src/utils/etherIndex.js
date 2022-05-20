@@ -10,9 +10,9 @@ export const signer = provider.getSigner();
 export const Web3Provider = new ethers.providers.Web3Provider(window.ethereum)
 export const web3Signer = Web3Provider.getSigner();
 
-export const DeNFTDeployedAddress = "0xc351628EB244ec633d5f21fBD6621e1a683B1181";
-export const MarketPlaceDeployedAddress = "0xFD471836031dc5108809D173A067e8486B9047A3";
-export const FractionalERC721FactoryDeployedAddress = "0xcbEAF3BDe82155F56486Fb5a1072cb8baAf547cc";
+export const DeNFTDeployedAddress = "0xb7278A61aa25c888815aFC32Ad3cC52fF24fE575";
+export const MarketPlaceDeployedAddress = "0xCD8a1C3ba11CF5ECfa6267617243239504a98d90";
+export const FractionalERC721FactoryDeployedAddress = "0x82e01223d51Eb87e16A03E24687EDF0F294da6f1";
 
 export const DeNFTContract = new ethers.Contract(DeNFTDeployedAddress, NFT.abi, signer);
 export const MarketPlaceContract = new ethers.Contract(MarketPlaceDeployedAddress, MarketPlace.abi, signer);

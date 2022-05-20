@@ -3,13 +3,12 @@ import NFTs from './NFT';
 import PropTypes from 'prop-types';
 import { updateNFT, updateTransferableToken } from '../../../modules/myntfs/redux/actions';
 import { titleOfForm, labelOfForm, openForm } from '../../../modules/landing/redux/actions';
-import { DeNFTContract, FractionalERC721FactoryContract, MarketPlaceContract, signer, web3Signer } from '../../../utils/etherIndex';
+import { DeNFTContract, MarketPlaceContract, web3Signer } from '../../../utils/etherIndex';
 import { useEffect, useState } from 'react';
 import { openDialog, setMainMenu } from '../../../modules/dashboard/redux/actions';
 import { ethers } from 'ethers';
 import { noop } from '../../../utils';
 import { showNotification } from '../../../utils/Notifications';
-import FractionalERC20Vault from '../../../contracts/contracts/Fractional/FractionalERC20Vault.sol/FractionalERC20Vault.json';
 
 const NFTContainer = ({
     NFTID,
@@ -39,7 +38,6 @@ const NFTContainer = ({
 
     useEffect(() => {
         const imageURIs = async () => {
-            // console.log("url - ", window.location.href.split('/'));
             if (dashboard.menu === "MarketPlace") {
                 const img = await DeNFTContract.functions.tokenURI(NFTSellable[index]);
                 setImage(img[0]);

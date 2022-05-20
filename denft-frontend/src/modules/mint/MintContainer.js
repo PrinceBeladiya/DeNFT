@@ -29,7 +29,6 @@ const MintContainer = () => {
                 return;
             }
             
-            // await window.ethereum.enable();
             const provider = new ethers.providers.Web3Provider(window.ethereum)
             let signer1 = provider.getSigner();
             
@@ -70,8 +69,8 @@ const MintContainer = () => {
             try {
                 const imageFile = new File([image], 'nft.png', { type: 'image/png' })
                 const metadata = await client.store({
-                    name: 'NFT',
-                    description: 'Just try to funge it. You can\'t do it.',
+                    name: 'DeNFT',
+                    description: 'Art Collection',
                     image: imageFile
                 });
 

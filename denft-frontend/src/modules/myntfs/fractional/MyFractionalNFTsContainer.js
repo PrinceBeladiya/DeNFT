@@ -55,11 +55,6 @@ const MyFractionalNFTsContainer = ({
         j++;
       }
     }
-
-    console.log("Total NFTs - ", originalNFTs);
-    console.log("Total fractionalBalance - ", fractionalBalance);
-    console.log("Total NFTOwners - ", NFTOwners);
-    console.log("Total supplies - ", NFTTotalSupply);
     updateList(originalNFTs);
     updateBalanceList(fractionalBalance);
     updateOwnerList(NFTOwners);

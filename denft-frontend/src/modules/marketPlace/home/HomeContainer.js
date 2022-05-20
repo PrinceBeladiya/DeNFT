@@ -7,19 +7,13 @@ import { DeNFTContract, MarketPlaceContract, web3Signer } from '../../../utils/e
 const HomeContainer = ({ data, updateSellableNFTTokens, updateSellableNFTTokensOwners, updateSellableNFTTokensPrice }) => {
 
   useEffect ( () => {
-    // const { ethereum } = window;
     getSellableNFTs();
-    // await MarketPlaceContract.connect(web3Signer).addCollection(MarketPlaceContract.address, ethereum.selectedAddress);
   }, []);
 
   const getSellableNFTs = async () => {
     try {
-      // console.log("CAlled");
       const tokens = await DeNFTContract.functions.totalTokens();
-      // console.log("sellableTokens ----- ", tokens);
       const sellableTokens = await MarketPlaceContract.connect(web3Signer).viewAsksByCollection(DeNFTContract.address, 0, tokens);
-      // console.log("sellableTokens ----- ", tokens);
-      // console.log("sellableTokens ----- ", sellableTokens);
 
       let NFTSellable = [];
       let NFTSellableOwners = [];
@@ -34,10 +28,6 @@ const HomeContainer = ({ data, updateSellableNFTTokens, updateSellableNFTTokensO
       updateSellableNFTTokens(NFTSellable);
       updateSellableNFTTokensOwners(NFTSellableOwners);
       updateSellableNFTTokensPrice(NFTSellablePrice);
-      // console.log("sellableTokens -> ", sellableTokens);
-      // console.log("NFTSellable 2 -> ", NFTSellable);
-      // console.log("NFTSellableOwners 3 -> ", NFTSellableOwners);
-      // console.log("NFTSellablePrice 4 -> ", NFTSellablePrice);
     } catch (error) {
       console.log("Error -> ", error);
     }

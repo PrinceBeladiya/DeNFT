@@ -66,7 +66,7 @@ contract LendBorrow is ReentrancyGuard, Ownable {
         uint256 _tokenId,
         uint256 _price
     ) internal {
-        require(_collections[_collection].status == Status.Open, "Collection is not for lending");
+        // require(_collections[_collection].status == Status.Open, "Collection is not for lending");
         require(_askTokenIds[_collection].contains(_tokenId), "Token is not for available for borrow");
 
         CollateralAsk memory askOrder = _askDetails[_collection][_tokenId];
@@ -151,7 +151,7 @@ contract LendBorrow is ReentrancyGuard, Ownable {
         uint256 _tokenId,
         uint256 _newPrice
     ) external nonReentrant {
-        require(_collections[_collection].status == Status.Open, "Collection is not for listing");
+        // require(_collections[_collection].status == Status.Open, "Collection is not for listing");
         require(_tokenIdsOfSellerForCollection[msg.sender][_collection].contains(_tokenId), "Token is not listed");
 
         _askDetails[_collection][_tokenId].price = _newPrice;
