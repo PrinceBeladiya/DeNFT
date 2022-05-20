@@ -96,9 +96,6 @@ contract DeNFT is ERC721Enumerable, Ownable {
     }
 
     function transfer(address to, uint tokenID) public payable {
-        console.log('msg.sender=======', msg.sender);
-        console.log('to=======', to);
-        console.log('tokenId=======', tokenID);
         _transfer(msg.sender, to, tokenID);
     }
 }

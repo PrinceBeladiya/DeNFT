@@ -22,15 +22,13 @@ const NFTs = ({
     index,
     cancelSellableNFT,
     buySellableNFT,
+    getOwnerTokens,
 }) => {
 
     return (
         <div className="main-wrapper">
-            {/* {console.log("index -> ", index)}
-            {console.log("id -> ", ID)}
-            {console.log("id array from redux -> ", NFTSellable)} */}
             <BlockUI
-                blocking={getdata.transferableToken === ID}
+                // blocking={getdata.transferableToken === ID}
                 className="NFT-container"
                 loader={<GoogleLoader height={20} width={20} />}
             >
@@ -130,7 +128,7 @@ const NFTs = ({
                                             variant="contained"
                                             className="fractional-button"
                                             name={NFTSellable[index]}
-                                            onClick={() => cancelSellableNFT(NFTSellable[index],) }
+                                            onClick={() => cancelSellableNFT(NFTSellable[index]) }
                                         >
                                             CANCEL
                                         </Button>
@@ -157,6 +155,7 @@ const NFTs = ({
                     sellForm={sellForm}
                     openForm={openForm}
                     updateNFTs={updateNFTs}
+                    getOwnerTokens={getOwnerTokens}
                 />
             </BlockUI>
         </div >

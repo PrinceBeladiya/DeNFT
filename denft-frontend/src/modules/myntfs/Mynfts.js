@@ -32,25 +32,27 @@ const Mynfts = (props) => {
       }
     })
 
-    const getOwnerTokens = async () => {
-      const accounts = await ethereum.request({
-        method: "eth_requestAccounts",
-      });
-
-      updateAccount(accounts[0]);
-
-      const tokens = await DeNFTContract.functions.totalTokens();
-      
-      const tokensOfOwner = await DeNFTContract.functions.tokensOfOwnerBySize(accounts[0], 0, tokens);
-
-      const tokenIDs = tokensOfOwner[0].map(token => {
-        return Number(token);
-      });
-
-      updateNFTs(tokenIDs);
-    }
+    
     getOwnerTokens();
   }, []);
+
+  const getOwnerTokens = async () => {
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+
+    updateAccount(accounts[0]);
+
+    const tokens = await DeNFTContract.functions.totalTokens();
+    
+    const tokensOfOwner = await DeNFTContract.functions.tokensOfOwnerBySize(accounts[0], 0, tokens);
+
+    const tokenIDs = tokensOfOwner[0].map(token => {
+      return Number(token);
+    });
+
+    updateNFTs(tokenIDs);
+  }
 
 
   return (
@@ -61,6 +63,7 @@ const Mynfts = (props) => {
             <NFTContainer
               updateNFTs={updateNFTs}
               NFTID={token}
+              getOwnerTokens={getOwnerTokens}
             />
           ))
         }

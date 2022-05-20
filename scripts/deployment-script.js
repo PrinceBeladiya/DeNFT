@@ -2,13 +2,13 @@ async function main() {
   const [accounts] = await ethers.getSigners();
   console.log("deployed contract with account - ", await accounts.getAddress());
 
-  const Token = await ethers.getContractFactory('DeNFT');
-  const token = await Token.deploy();
+  const DeNFT = await ethers.getContractFactory('DeNFT');
+  const deNFT = await DeNFT.deploy();
 
   const MarketPlace = await ethers.getContractFactory('MarketPlace');
   const marketplace = await MarketPlace.deploy();
 
-  console.log("Token address ==> ", token.address);
+  console.log("DeNFT address ==> ", deNFT.address);
   console.log("MarketPlace address ==> ", marketplace.address);
 }
 

@@ -11,9 +11,10 @@ const MintContainer = () => {
 
     const [CurrentTokenID, setCurrentTokenID] = useState(0);
     const [loading, setLoading] = useState(false);
-    const [image, setImage] = useState();
+    const [image, setImage] = useState('');
     const [files, setFiles] = useState([]);
     const [fileURI, setFileURI] = useState();
+    const [lastMintedNFT, setLastMintedNFT] = useState({ tokenId: '', ipfsURI: '' });
 
     const NFT_STORAGE_TOKEN = API;
     const client = new NFTStorage({ token: NFT_STORAGE_TOKEN });
@@ -27,25 +28,21 @@ const MintContainer = () => {
                 toast.warning("Please first install metamask");
                 return;
             }
-
             
             // await window.ethereum.enable();
             const provider = new ethers.providers.Web3Provider(window.ethereum)
             let signer1 = provider.getSigner();
             
-            console.log("ethereum - ", ethereum.selectedAddress);
-            
-            const uri = await imageUpload()
+            const uri = await imageUpload();
             if (uri !== 0) {
-                await DeNFTContract.connect(signer1).functions.mintDeNFT(uri, { value: ethers.utils.parseEther("0.1") });
-                
+                const mintDeNFT = await DeNFTContract.connect(signer1).functions.mintDeNFT(uri, { value: ethers.utils.parseEther("0.1") });
+                await mintDeNFT.wait();
                 const accounts = await ethereum.request({
                     method: "eth_requestAccounts",
                 });
                 
-
                 let mintTokenOwner = await DeNFTContract.functions.ownerOf(CurrentTokenID);
-
+                
                 if (toString(mintTokenOwner[0]) === toString(accounts[0])) {
                     setLoading(false);
                     toast.success("NFT with token id " + CurrentTokenID + " is minted for you", { autoClose: 2000 });
@@ -55,10 +52,17 @@ const MintContainer = () => {
                 }
             }
             setLoading(false);
+            setImage('');
+            setFiles([]);
+            setLastMintedNFT({ ...lastMintedNFT, ipfsURI: uri, tokenId: CurrentTokenID });
         } catch (error) {
             setLoading(false);
             console.log("error => ", error.message);
         }
+    }
+
+    const onClearClick = () => {
+        setLastMintedNFT({});
     }
 
     const imageUpload = async () => {
@@ -100,6 +104,9 @@ const MintContainer = () => {
                 setImage={setImage}
                 files={files}
                 setFiles={setFiles}
+                fileURI={fileURI}
+                onClearClick={onClearClick}
+                lastMintedNFT={lastMintedNFT}
             />
         </MainTemplateContainer>
     )

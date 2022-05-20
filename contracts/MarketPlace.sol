@@ -60,7 +60,7 @@ contract MarketPlace is ReentrancyGuard {
         uint256 _tokenId,
         uint256 _price
     ) internal {
-        require(_collections[_collection].status == Status.Open, "Collection is not for trading");
+        // require(_collections[_collection].status == Status.Open, "Collection is not for trading");
         require(_askTokenIds[_collection].contains(_tokenId), "Token is not for sale");
 
         Ask memory askOrder = _askDetails[_collection][_tokenId];

@@ -7,6 +7,8 @@ import { DeNFTContract, MarketPlaceContract, web3Signer } from '../../../utils/e
 import { useEffect, useState } from 'react';
 import { openDialog, setMainMenu } from '../../../modules/dashboard/redux/actions';
 import { ethers } from 'ethers';
+import { noop } from '../../../utils';
+import { showNotification } from '../../../utils/Notifications';
 
 const NFTContainer = ({
     NFTID,
@@ -22,9 +24,9 @@ const NFTContainer = ({
     getSellableNFTs,
     tokens,
     owners,
-    price
+    price,
+    getOwnerTokens,
 }) => {
-
     useEffect(() => {
         const imageURIs = async () => {
             // console.log("url - ", window.location.href.split('/'));
@@ -74,8 +76,8 @@ const NFTContainer = ({
 
     const cancelSellableNFT = async (ID = 0) => {
         try {
-            await MarketPlaceContract.connect(web3Signer).cancelAskOrder(DeNFTContract.address, ID);
-
+            const cancelAskOrder = await MarketPlaceContract.connect(web3Signer).cancelAskOrder(DeNFTContract.address, ID);
+            await cancelAskOrder.wait();
             getSellableNFTs();
         } catch (error) {
             console.log("Error -> ", error);
@@ -83,14 +85,11 @@ const NFTContainer = ({
     }
 
     const buySellableNFT = async (ID = 0, price) => {
-        const { ethereum } = window;
-
         try {
-            console.log("ID -- ", ID)
-            console.log("price -- ", price)
-            await MarketPlaceContract.connect(web3Signer).buyTokenUsingETH(DeNFTContract.address, ID, { value: ethers.utils.parseEther(price) });
-
+            const buyTokenTx =  await MarketPlaceContract.connect(web3Signer).buyTokenUsingETH(DeNFTContract.address, ID, { value: ethers.utils.parseEther(price) });
+            await buyTokenTx.wait();
             getSellableNFTs();
+            showNotification("Order excecuted successfully", "success", 3000);
         } catch (error) {
             console.log("Error -> ", error);
         }
@@ -114,6 +113,7 @@ const NFTContainer = ({
                 NFTSellablePrice={price}
                 cancelSellableNFT={cancelSellableNFT}
                 buySellableNFT={buySellableNFT}
+                getOwnerTokens={getOwnerTokens}
             />
         </>
     )
@@ -128,6 +128,7 @@ NFTContainer.propTypes = {
     updateTitle: PropTypes.func,
     updateTextLabel: PropTypes.func,
     updateToken: PropTypes.func,
+    getOwnerTokens: PropTypes.func,
 };
 
 NFTContainer.defaultProps = {
@@ -146,7 +147,8 @@ NFTContainer.defaultProps = {
         textLabel: '',
         title: '',
         account: ''
-    }
+    },
+    getOwnerTokens: noop,
 };
 
 const mapStateToProps = state => ({

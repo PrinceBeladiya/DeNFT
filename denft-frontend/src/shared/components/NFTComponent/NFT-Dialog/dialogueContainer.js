@@ -9,8 +9,10 @@ import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import { updateLoading, updateTransferableToken } from '../../../../modules/myntfs/redux/actions';
 import { openForm, OpenSellForm, titleOfForm, labelOfForm, inputText } from '../../../../modules/landing/redux/actions';
-import { openDialog } from '../../../../modules/dashboard/redux/actions';
-import { parseEther } from 'ethers/lib/utils';
+import { closeDialog, openDialog } from '../../../../modules/dashboard/redux/actions';
+import { noop } from '../../../../utils';
+import { SELL_DIALOGUE } from './DialogNames';
+import { showNotification } from '../../../../utils/Notifications';
 
 const DialogueContainer = ({
     getdata,
@@ -21,7 +23,9 @@ const DialogueContainer = ({
     updateToken,
     updateSellOpen,
     updateLoader,
-    updateNFTs
+    updateNFTs,
+    closeDialog,
+    getOwnerTokens,
 }) => {
 
     const [price, setPrice] = useState(0);
@@ -39,26 +43,15 @@ const DialogueContainer = ({
         updateLoader(true);
 
         try {
-            const { ethereum } = window;
+            const transfterTx = await DeNFTContract.connect(web3Signer).transfer(data.receipientAddress, getdata.transferableToken);
+            await transfterTx.wait();
 
-            console.log("Signer - ", web3Signer);
-            await DeNFTContract.connect(web3Signer).transfer(data.receipientAddress, getdata.transferableToken);
-
+            getOwnerTokens();
             updateLoader(false);
-            toast.success("Your NFT is successfully transfered", { autoClose: 2000 });
-
-            const tokens = await DeNFTContract.functions.totalTokens();
-            const tokensOfOwner = await DeNFTContract.functions.tokensOfOwnerBySize(ethereum.selectedAddress, 0, tokens);
-
-            const tokenIDs = tokensOfOwner[0].map(token => {
-                return Number(token);
-            });
-
-            updateNFTs(tokenIDs);
-
+            showNotification("Your NFT is successfully transfered", "success", 3000);
         } catch (error) {
             updateLoader(false);
-            toast.warning("Something went wrong", { autoClose: 2000 });
+            showNotification("Something went wrong", "error", 3000);
             console.log("error - ", error);
         }
     };
@@ -82,16 +75,17 @@ const DialogueContainer = ({
 
         updateLoader(true);
         try {
-            // console.log("Called");
-            // console.log("Price - ", String(ethers.utils.parseEther(price)));
-            console.log("contract address - ", DeNFTContract.address);
-            console.log("ethereum address - ", ethereum.selectedAddress);
-            console.log("Signer - ", web3Signer);
-
-            // await MarketPlaceContract.connect(web3Signer).addCollection(DeNFTContract.address, ethereum.selectedAddress)
-            await DeNFTContract.connect(web3Signer).approve(MarketPlaceContract.address, transferableToken);
-            await MarketPlaceContract.connect(web3Signer).createAskOrder(DeNFTContract.address, transferableToken, String(ethers.utils.parseEther(price)))
+            const isApprovedForAll = await DeNFTContract.connect(web3Signer).isApprovedForAll(ethereum.selectedAddress, MarketPlaceContract.address);
+            if(!isApprovedForAll) {
+                const setApprovalForAll = await DeNFTContract.connect(web3Signer).setApprovalForAll(MarketPlaceContract.address, true);
+                await setApprovalForAll.wait();
+            }
+            const askOrder = await MarketPlaceContract.connect(web3Signer).createAskOrder(DeNFTContract.address, transferableToken, String(ethers.utils.parseEther(price)))
+            await askOrder.wait();
+            closeDialog(SELL_DIALOGUE);
             updateLoader(false);
+            getOwnerTokens();
+            showNotification("successfully order placed", "success", 3000);
         } catch (error) {
             console.log("Error -> ", error);
             updateLoader(false);
@@ -156,6 +150,7 @@ DialogueContainer.propTypes = {
     updateTextLabel: PropTypes.func,
     updateToken: PropTypes.func,
     updateReceipient: PropTypes.func,
+    closeDialog: PropTypes.func,
 };
 
 DialogueContainer.defaultProps = {
@@ -173,7 +168,8 @@ DialogueContainer.defaultProps = {
         sellOpen: false,
         textLabel: '',
         title: ''
-    }
+    },
+    closeDialog: noop
 };
 
 const mapStateToProps = state => ({
@@ -191,6 +187,7 @@ const mapDispatchToProps = dispatch => ({
     updateTitle: title => dispatch(titleOfForm(title)),
     updateTextLabel: label => dispatch(labelOfForm(label)),
     openDialog: name => dispatch(openDialog(name)),
+    closeDialog: name => dispatch(closeDialog(name)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DialogueContainer);
