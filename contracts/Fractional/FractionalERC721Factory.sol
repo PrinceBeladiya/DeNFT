@@ -1,33 +1,50 @@
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "./FractionalERC20Vault.sol";
+import "hardhat/console.sol";
 
 contract FractionalERC721Factory {
-  uint public vaultCount = 0;
+    uint256 public vaultCount = 0;
 
-  mapping(uint => address) public vaultToVaultContract;
+    mapping(uint256 => address) public vaultToVaultContract;
 
-  constructor() {}
+    constructor() {}
 
-  function mint(
-    address _nftCollection,
-    uint _id,
-    string memory _name,
-    string memory _symbol,
-    uint _totalSupply,
-    uint _listPrice
-  )
-    public
-    returns (uint _vaultCount)
-  {
-    FractionalERC20Vault fractionalERC20Vault = new FractionalERC20Vault(msg.sender, _nftCollection, _id, _name, _symbol, _totalSupply, _listPrice);
+    function mint(
+        address _nftCollection,
+        uint256 _id,
+        string memory _name,
+        string memory _symbol,
+        uint256 _totalSupply,
+        uint256 _listPrice
+    ) public returns (uint256 _vaultCount) {
 
-    IERC721(_nftCollection).transferFrom(msg.sender, address(fractionalERC20Vault), _id);
+        FractionalERC20Vault fractionalERC20VaultAddress = new FractionalERC20Vault(
+            msg.sender,
+            _nftCollection,
+            _id,
+            _name,
+            _symbol,
+            _totalSupply,
+            _listPrice
+        );
+        console.log("address ---- ", address(fractionalERC20VaultAddress));
+        console.log("_nftCollection ---- ", _nftCollection);
+        console.log("_id ---- ", _id);
+        console.log("_name ---- ", _name);
+        console.log("_symbol ---- ", _symbol);
+        console.log("_totalSupply ---- ", _totalSupply);
+        console.log("_listPrice ---- ", _listPrice);
 
-    vaultToVaultContract[vaultCount] = address(fractionalERC20Vault);
-    vaultCount++;
-    return vaultCount;
-  }
+        IERC721(_nftCollection).transferFrom(
+            msg.sender,
+            address(fractionalERC20VaultAddress),
+            _id
+        );
 
+        vaultToVaultContract[vaultCount] = address(fractionalERC20VaultAddress);
+        vaultCount++;
+        return vaultCount;
+    }
 }

@@ -10,6 +10,7 @@ async function main() {
 
   console.log("DeNFT address ==> ", deNFT.address);
   console.log("MarketPlace address ==> ", marketplace.address);
+  console.log("FractionalERC721Factory address ==> ", fractionFactory.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

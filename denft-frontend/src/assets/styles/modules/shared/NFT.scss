@@ -1,6 +1,6 @@
 .NFT-container {
   margin: 10px;
-  max-height: 375px;
+  max-height: 600px;
   max-width: 275px;
 
   .card-container {
@@ -27,6 +27,17 @@
           margin-top: 10px;
         }
 
+        .fractional-nft-details {
+          display: flex;
+          justify-content: space-between;
+          font-size: small;
+          font-weight: bold;
+
+          &.fractional-first-description {
+            margin-top: 10px;
+          }
+        }
+
         .nft-details {
           display: flex;
           justify-content: space-between;
@@ -37,6 +48,11 @@
             font-size: medium;
             font-weight: bolder;
             line-height: 1.5;
+          }
+
+          .totalSupply {
+            font-size: medium;
+            font-weight: bolder;
           }
         }
 
@@ -53,7 +69,6 @@
         min-height: 258px;
         margin: 5px;
         border-radius: 5px;
-        object-fit: scale-down;
       }
     }
   }
@@ -69,10 +84,10 @@
         background-color: #a37070;
       }
       &.transfer-button {
-        background-color: #6b6bd3;;
+        background-color: #6b6bd3;
       }
     }
-    
+
     .fractional-button {
       width: 100%;
       margin-left: 5px;

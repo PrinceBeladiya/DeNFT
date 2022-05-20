@@ -48,6 +48,7 @@ const MynftsContainer = (props) => {
                     selectedMenuItem === menuItems[0].key && (
                         <Mynfts
                             getdata={props.data}
+                            menu={menuItems[0].title}
                             data={props.getdata}
                             updateNFTs={props.updateList}
                             updateAccount={props.updateAccountAddress}
@@ -56,7 +57,9 @@ const MynftsContainer = (props) => {
                 }
                 {
                     selectedMenuItem === menuItems[1].key && (
-                        <MyFractionalNFTs />
+                        <MyFractionalNFTs
+                            menu={menuItems[1].title}
+                        />
                     )
                 }
             </div>
@@ -71,14 +74,14 @@ MynftsContainer.propTypes = {
 };
 
 MynftsContainer.defaultProps = {
-    getdata : {
-        NFTList : [],
-        account : '',
-        loading : false,
-        receipientAddress : '',
-        textlabel : '',
-        title : '',
-        transferableToken : ''
+    getdata: {
+        NFTList: [],
+        account: '',
+        loading: false,
+        receipientAddress: '',
+        textlabel: '',
+        title: '',
+        transferableToken: ''
     }
 };
 

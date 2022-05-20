@@ -28,7 +28,6 @@ const CreatePoolDialog = props => (
         <IconButton
           onClick={() => {
             props.closeDialog(TRANSFER_DIALOGUE);
-            props.updateToken(undefined);
           }}
         >
           <CloseIcon />
@@ -52,7 +51,9 @@ const CreatePoolDialog = props => (
         props.closeDialog(TRANSFER_DIALOGUE);
         props.updateToken(undefined);
       }}>Cancel</Button>
-      <Button onClick={props.transferNFT}>Transfer</Button>
+      <Button onClick={ () => {
+        props.transferNFT(props.ID);
+         }}>Transfer</Button>
     </DialogActions>
   </Dialog>
 );

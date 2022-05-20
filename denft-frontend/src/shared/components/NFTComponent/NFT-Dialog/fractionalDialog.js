@@ -41,6 +41,7 @@ const CreatePoolDialog = props => (
         autoFocus
         margin="dense"
         id="name"
+        required
         label="Token Name"
         type="text"
         className='fractional-textfield'
@@ -50,6 +51,7 @@ const CreatePoolDialog = props => (
       <TextField
         margin="dense"
         id="symbol"
+        required
         label="Symbol"
         type="text"
         className='fractional-textfield'
@@ -59,6 +61,7 @@ const CreatePoolDialog = props => (
       <TextField
         margin="dense"
         id="totalSupply"
+        required
         label="Total Supply"
         type="number"
         fullWidth
@@ -69,6 +72,7 @@ const CreatePoolDialog = props => (
         autoFocus
         margin="dense"
         id="price"
+        required
         label="List Price"
         type="number"
         fullWidth

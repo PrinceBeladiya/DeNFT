@@ -3,12 +3,13 @@ import NFTs from './NFT';
 import PropTypes from 'prop-types';
 import { updateNFT, updateTransferableToken } from '../../../modules/myntfs/redux/actions';
 import { titleOfForm, labelOfForm, openForm } from '../../../modules/landing/redux/actions';
-import { DeNFTContract, MarketPlaceContract, web3Signer } from '../../../utils/etherIndex';
+import { DeNFTContract, FractionalERC721FactoryContract, MarketPlaceContract, signer, web3Signer } from '../../../utils/etherIndex';
 import { useEffect, useState } from 'react';
 import { openDialog, setMainMenu } from '../../../modules/dashboard/redux/actions';
 import { ethers } from 'ethers';
 import { noop } from '../../../utils';
 import { showNotification } from '../../../utils/Notifications';
+import FractionalERC20Vault from '../../../contracts/contracts/Fractional/FractionalERC20Vault.sol/FractionalERC20Vault.json';
 
 const NFTContainer = ({
     NFTID,
@@ -18,7 +19,7 @@ const NFTContainer = ({
     index,
     getdata,
     openDialog,
-    NFTSellable,
+    NFTSellable = [],
     updateToken,
     updateNFTs,
     getSellableNFTs,
@@ -26,7 +27,16 @@ const NFTContainer = ({
     owners,
     price,
     getOwnerTokens,
+    menu,
+    FractionalNFTBalance,
+    FractionalNFTOwner,
+    vaultID,
+    loader,
+    ID,
+    updateID,
+    totalSupply
 }) => {
+
     useEffect(() => {
         const imageURIs = async () => {
             // console.log("url - ", window.location.href.split('/'));
@@ -50,11 +60,14 @@ const NFTContainer = ({
                         img = await DeNFTContract.functions.tokenURI(NFTID);
                         setImage(img[0]);
                         break;
+                    default:
                 }
             }
         }
 
+
         imageURIs();
+
     }, []);
 
     const [image, setImage] = useState();
@@ -74,6 +87,11 @@ const NFTContainer = ({
         openDialog("FRACTIONAL_DIALOGUE");
     }
 
+    const sendFractional = async (ID = 0) => {
+        updateToken(ID);
+        openDialog("SEND_FRACTIONAL_DIALOGUE");
+    }
+
     const cancelSellableNFT = async (ID = 0) => {
         try {
             const cancelAskOrder = await MarketPlaceContract.connect(web3Signer).cancelAskOrder(DeNFTContract.address, ID);
@@ -86,7 +104,7 @@ const NFTContainer = ({
 
     const buySellableNFT = async (ID = 0, price) => {
         try {
-            const buyTokenTx =  await MarketPlaceContract.connect(web3Signer).buyTokenUsingETH(DeNFTContract.address, ID, { value: ethers.utils.parseEther(price) });
+            const buyTokenTx = await MarketPlaceContract.connect(web3Signer).buyTokenUsingETH(DeNFTContract.address, ID, { value: ethers.utils.parseEther(price) });
             await buyTokenTx.wait();
             getSellableNFTs();
             showNotification("Order excecuted successfully", "success", 3000);
@@ -114,6 +132,14 @@ const NFTContainer = ({
                 cancelSellableNFT={cancelSellableNFT}
                 buySellableNFT={buySellableNFT}
                 getOwnerTokens={getOwnerTokens}
+                menu={menu}
+                FractionalNFTBalance={FractionalNFTBalance}
+                FractionalNFTOwner={FractionalNFTOwner}
+                sendFractional={sendFractional}
+                vaultID={vaultID}
+                loader={loader}
+                transactionalID={ID}
+                totalSupply={totalSupply}
             />
         </>
     )
@@ -153,6 +179,8 @@ NFTContainer.defaultProps = {
 
 const mapStateToProps = state => ({
     data: state.mynft,
+    loader: state.mynft.loading,
+    ID: state.mynft.id,
     dashboard: state.dashboard,
     getdata: state.landing,
     tokens: state.home.SellableNFTs,

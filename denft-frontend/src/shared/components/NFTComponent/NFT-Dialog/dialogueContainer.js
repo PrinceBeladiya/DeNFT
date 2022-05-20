@@ -3,16 +3,20 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import TransferDialogue from './transferDialog';
 import SellDialogue from './sellDialog';
+import SendFractionalDialog from './SendFractionalDialog';
 import FractionalDialogue from './fractionalDialog';
-import { DeNFTContract, MarketPlaceContract, web3Signer } from '../../../../utils/etherIndex';
+import { DeNFTContract, FractionalERC721FactoryContract, MarketPlaceContract, signer, web3Signer } from '../../../../utils/etherIndex';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
-import { updateLoading, updateTransferableToken } from '../../../../modules/myntfs/redux/actions';
+import { updateLoading, updateTransactionID, updateTransferableToken } from '../../../../modules/myntfs/redux/actions';
 import { openForm, OpenSellForm, titleOfForm, labelOfForm, inputText } from '../../../../modules/landing/redux/actions';
 import { closeDialog, openDialog } from '../../../../modules/dashboard/redux/actions';
 import { noop } from '../../../../utils';
 import { SELL_DIALOGUE } from './DialogNames';
 import { showNotification } from '../../../../utils/Notifications';
+import FractionalERC20Vault from '../../../../contracts/contracts/Fractional/FractionalERC20Vault.sol/FractionalERC20Vault.json';
+import { submit } from 'redux-form';
+import { TRANSFER_DIALOGUE } from './DialogNames';
 
 const DialogueContainer = ({
     getdata,
@@ -21,14 +25,22 @@ const DialogueContainer = ({
     updateReceipient,
     updateDialogue,
     updateToken,
-    updateSellOpen,
     updateLoader,
     updateNFTs,
     closeDialog,
     getOwnerTokens,
+    vaultID,
+    index,
+    currentDialogNames,
+    submit,
+    updateID
 }) => {
 
     const [price, setPrice] = useState(0);
+    const [fractionalName, setFractionalName] = useState('');
+    const [fractionalSymbol, setFractionalSymbol] = useState('');
+    const [fractionalTotalSupply, setFractionalTotalSupply] = useState(0);
+    const [fractionalInitialPrice, setFractionalInitialPrice] = useState('');
 
     const handleAddress = (e) => {
         updateReceipient(e.target.value);
@@ -38,8 +50,9 @@ const DialogueContainer = ({
         setPrice(e.target.value);
     }
 
-    const transferNFT = async (e) => {
-        updateDialogue(false);
+    const transferNFT = async (ID) => {
+        const { ethereum } = window;
+        updateID(ID);
         updateLoader(true);
 
         try {
@@ -48,7 +61,19 @@ const DialogueContainer = ({
 
             getOwnerTokens();
             updateLoader(false);
+            closeDialog(TRANSFER_DIALOGUE);
+            
             showNotification("Your NFT is successfully transfered", "success", 3000);
+
+            const tokens = await DeNFTContract.functions.totalTokens();
+            const tokensOfOwner = await DeNFTContract.functions.tokensOfOwnerBySize(ethereum.selectedAddress, 0, tokens);
+
+            const tokenIDs = tokensOfOwner[0].map(token => {
+                return Number(token);
+            });
+
+            updateNFTs(tokenIDs);
+
         } catch (error) {
             updateLoader(false);
             showNotification("Something went wrong", "error", 3000);
@@ -57,19 +82,24 @@ const DialogueContainer = ({
     };
 
     const handleName = (e) => {
-
+        setFractionalName(e.target.value);
     }
+
     const handleSymbol = (e) => {
-
+        setFractionalSymbol(e.target.value);
     }
+
     const handleSupply = (e) => {
-
+        setFractionalTotalSupply(e.target.value);
     }
-    const handleListPrice = (e) => {
 
+    const handleListPrice = (e) => {
+        setFractionalInitialPrice(e.target.value);
     }
 
     const sellNFT = async () => {
+        updateLoader(true);
+
         const { transferableToken } = getdata;
         const { ethereum } = window;
 
@@ -89,11 +119,60 @@ const DialogueContainer = ({
         } catch (error) {
             console.log("Error -> ", error);
             updateLoader(false);
+            showNotification("Transaction unsuccessfull", "error", 3000);
         }
     }
 
-    const FractionalNFT = () => {
+    const FractionalNFT = async (e) => {
+        updateLoader(true);
 
+        if (fractionalName.length > 0 && fractionalSymbol.length > 0 && fractionalTotalSupply.length > 0 && fractionalInitialPrice.length > 0) {
+            const { transferableToken } = getdata;
+
+            try {
+                console.log("Address -> ", FractionalERC721FactoryContract.address);
+                console.log("transferableToken -> ", Number(transferableToken));
+                console.log("fractionalName -> ", String(fractionalName));
+                console.log("fractionalSymbol -> ", String(fractionalSymbol));
+                console.log("fractionalTotalSupply -> ", String(ethers.utils.parseEther(fractionalTotalSupply)));
+                console.log("fractionalInitialPrice -> ", String(ethers.utils.parseEther(fractionalInitialPrice)));
+
+                await DeNFTContract.connect(web3Signer).approve(FractionalERC721FactoryContract.address, transferableToken);
+                await FractionalERC721FactoryContract.connect(web3Signer).mint(DeNFTContract.address, transferableToken, String(fractionalName), String(fractionalSymbol), String(ethers.utils.parseEther(fractionalTotalSupply)), String(ethers.utils.parseEther(fractionalInitialPrice)));
+
+                const vaultContractAddress = await FractionalERC721FactoryContract.connect(web3Signer).vaultToVaultContract((await FractionalERC721FactoryContract.connect(web3Signer).vaultCount()) - 1);
+                console.log("Vault contract address - ", vaultContractAddress);
+
+                updateLoader(false);
+                showNotification("Fractional successfully", 'success', 3000 );
+            } catch (error) {
+                console.log("Error -> ", error);
+                updateLoader(false);
+                showNotification("Fractional unsuccessfull", "error", 3000);
+            }
+        } else {
+            showNotification("Please enter all details correctly", "error", 3000);
+        }
+    }
+
+    const sendFractional = async (ID) => {
+        updateLoader(true);
+
+        try {
+
+            const vaultContractAddress = await FractionalERC721FactoryContract.connect(web3Signer).vaultToVaultContract(ID);
+            const vaultContract = new ethers.Contract(vaultContractAddress, FractionalERC20Vault.abi, signer);
+
+            const transfer = await vaultContract.connect(web3Signer).transfer(data.receipientAddress, String(ethers.utils.parseEther(price)));
+            await transfer.wait();
+
+            updateLoader(false);
+            showNotification("Your NFT Fractional is successfully transfered", 'success', 3000);
+        } catch (error) {
+            updateLoader(false);
+            showNotification("Transaction Failed", 'error', 3000);
+            console.log("error - ", error);
+        }
     }
 
     return (
@@ -118,18 +197,34 @@ const DialogueContainer = ({
                             ID={getdata.transferableToken}
                         />
                         :
-                        <FractionalDialogue
-                            data={data}
-                            handleAddress={handleAddress}
-                            FractionalNFT={FractionalNFT}
-                            handlePrice={handlePrice}
-                            updateToken={updateToken}
-                            ID={getdata.transferableToken}
-                            handleName={handleName}
-                            handleSymbol={handleSymbol}
-                            handleSupply={handleSupply}
-                            handleListPrice={handleListPrice}
-                        />
+                        dialog.currentDialogNames[0] === "FRACTIONAL_DIALOGUE" ?
+                            <FractionalDialogue
+                                data={data}
+                                handleAddress={handleAddress}
+                                FractionalNFT={FractionalNFT}
+                                handlePrice={handlePrice}
+                                updateToken={updateToken}
+                                ID={getdata.transferableToken}
+                                handleName={handleName}
+                                handleSymbol={handleSymbol}
+                                handleSupply={handleSupply}
+                                handleListPrice={handleListPrice}
+                            />
+                            :
+                            dialog.currentDialogNames[0] === "SEND_FRACTIONAL_DIALOGUE" ?
+                                <SendFractionalDialog
+                                    ID={getdata.transferableToken}
+                                    updateToken={updateToken}
+                                    handleAddress={handleAddress}
+                                    handlePrice={handlePrice}
+                                    sendFractional={sendFractional}
+                                    vaultID={vaultID}
+                                    index={index}
+                                    closeDialog={closeDialog}
+                                    currentDialogNames={currentDialogNames}
+                                    submit={submit}
+                                />
+                                : ''
 
             }
 
@@ -176,6 +271,7 @@ const mapStateToProps = state => ({
     getdata: state.mynft,
     data: state.landing,
     dialog: state.dashboard,
+    currentDialogNames: state.dashboard.currentDialogNames,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -187,7 +283,9 @@ const mapDispatchToProps = dispatch => ({
     updateTitle: title => dispatch(titleOfForm(title)),
     updateTextLabel: label => dispatch(labelOfForm(label)),
     openDialog: name => dispatch(openDialog(name)),
-    closeDialog: name => dispatch(closeDialog(name)),
+    closeDialog: dialogName => dispatch(closeDialog(dialogName)),
+    submit: formName => dispatch(submit(formName)),
+    updateID: id => dispatch(updateTransactionID(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DialogueContainer);

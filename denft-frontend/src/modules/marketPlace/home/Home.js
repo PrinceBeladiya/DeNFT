@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import NFTContainer from '../../../shared/components/NFTComponent/NFTContainer';
-import { DeNFTContract, MarketPlaceContract, web3Signer } from '../../../utils/etherIndex';
 
 const Home = ({ data, getSellableNFTs }) => {
 
