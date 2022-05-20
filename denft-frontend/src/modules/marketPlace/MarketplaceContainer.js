@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MainTemplateContainer from '../../shared/templates/MainTemplate/MainTemplateContainer';
 import HomeContainer from './home/HomeContainer';
 import BorrowContainer from './borrow/BorrowContainer';

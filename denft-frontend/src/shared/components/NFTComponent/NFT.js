@@ -210,7 +210,6 @@ const NFTs = ({
                         >
                           Lend
                         </Button>
-
                       </>
                       :
                       dashboard.menu === "MarketPlace" && NFTSellableOwners.length > 0 ?
