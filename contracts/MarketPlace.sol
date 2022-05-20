@@ -4,7 +4,6 @@ pragma solidity ^0.8.0;
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import {EnumerableSet} from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
-import {IWETH} from "./interfaces/IWETH.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
@@ -21,7 +20,6 @@ contract MarketPlace is ReentrancyGuard {
     }
 
     address public admin;
-    // address public immutable WETH;
 
     EnumerableSet.AddressSet private _collectionAddressSet;
 
@@ -41,7 +39,6 @@ contract MarketPlace is ReentrancyGuard {
     }
 
     constructor() {
-    //     WETH = _WETHAddress;
         admin = msg.sender;
     }
 
@@ -51,7 +48,6 @@ contract MarketPlace is ReentrancyGuard {
     }
 
     function buyTokenUsingETH(address _collection, uint256 _tokenId) external payable nonReentrant {
-        // IWETH(WETH).deposit{value: msg.value}();
         _buyToken(_collection, _tokenId, msg.value);
     }
 
@@ -72,7 +68,6 @@ contract MarketPlace is ReentrancyGuard {
         delete _askDetails[_collection][_tokenId];
         _askTokenIds[_collection].remove(_tokenId);
 
-        // IERC20(WETH).safeTransfer(askOrder.seller, _price);
         require(payable(askOrder.seller).send(_price), "transfer failed");
         IERC721(_collection).safeTransferFrom(address(this), address(msg.sender), _tokenId);
     }

@@ -20,13 +20,6 @@ contract FractionalERC20Vault is ERC20 {
         uint256 _supply,
         uint256 _listPrice
     ) ERC20(_name, _symbol) {
-        // console.log("address ---- ", address(fractionalERC20Vault));
-        // console.log("_nftCollection ---- ", _nftCollection);
-        // console.log("_id ---- ", _id);
-        // console.log("_name ---- ", _name);
-        // console.log("_symbol ---- ", _symbol);
-        // console.log("_totalSupply ---- ", _totalSupply);
-        // console.log("_listPrice ---- ", _listPrice);
 
         owner = _owner;
         nftCollection = _nftCollection;
