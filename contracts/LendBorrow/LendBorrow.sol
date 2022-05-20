@@ -35,6 +35,7 @@ contract LendBorrow is ReentrancyGuard, Ownable {
         uint256 price ; // in wei
         uint256 repayInterestAmount;
         uint256 timeInDays;
+        uint256 tokenId;
     }
 
     struct Loan {
@@ -97,16 +98,14 @@ contract LendBorrow is ReentrancyGuard, Ownable {
         address _collection,
         uint256 _tokenId
     ) external payable {
-
         Loan storage loanDetails = _activeLoanDetails[_collection][_tokenId];
         require(loanDetails.isActive, "already borrowed");
-        require(msg.value == loanDetails.collateralPrice, "incorrect repay amount");
 
         IERC721(_collection).safeTransferFrom(msg.sender, loanDetails.lender, _tokenId);
 
         uint256 remainingCollateral = loanDetails.collateralPrice - loanDetails.repayInterestAmount;
-        require(IERC20(usdc).transferFrom(address(this), loanDetails.lender, loanDetails.repayInterestAmount));
-        require(IERC20(usdc).transferFrom(address(this), msg.sender, remainingCollateral));
+        require(IERC20(usdc).transfer(loanDetails.lender, loanDetails.repayInterestAmount));
+        require(IERC20(usdc).transfer(msg.sender, remainingCollateral));
 
         _tokenIdsOfBorrowerForCollection[msg.sender][_collection].remove(_tokenId);
         delete _activeLoanDetails[_collection][_tokenId];
@@ -131,6 +130,7 @@ contract LendBorrow is ReentrancyGuard, Ownable {
             seller: msg.sender,
             price: _askPrice,
             repayInterestAmount: _repayInterestAmount,
+            tokenId: _tokenId,
             timeInDays: (_timeInDays * 60 * 60)
         });
         _askTokenIds[_collection].add(_tokenId);
@@ -210,6 +210,60 @@ contract LendBorrow is ReentrancyGuard, Ownable {
         return (tokenIds, askInfo, cursor + length);
     }
 
+function viewAsksByCollectionAndTokenIdsOfBorrower(address collection, uint256[] calldata tokenIds)
+        external
+        view
+        returns (bool[] memory statuses, Loan[] memory askInfo)
+    {
+        uint256 length = tokenIds.length;
+
+        statuses = new bool[](length);
+        askInfo = new Loan[](length);
+
+        for (uint256 i = 0; i < length; i++) {
+            if (_activeLoanTokenIds[collection].contains(tokenIds[i])) {
+                statuses[i] = true;
+            } else {
+                statuses[i] = false;
+            }
+
+            askInfo[i] = _activeLoanDetails[collection][tokenIds[i]];
+        }
+
+        return (statuses, askInfo);
+    }
+
+    function viewAsksByCollectionOfBorrower(
+        address collection,
+        uint256 cursor,
+        uint256 size
+    )
+        external
+        view
+        returns (
+        uint256[] memory tokenIds,
+        Loan[] memory askInfo,
+        uint256
+        )
+    {
+        uint256 length = size;
+
+        if (length > _activeLoanTokenIds[collection].length() - cursor) {
+            length = _activeLoanTokenIds[collection].length() - cursor;
+        }
+
+        tokenIds = new uint256[](length);
+        askInfo = new Loan[](length);
+
+        for (uint256 i = 0; i < length; i++) {
+            tokenIds[i] = _activeLoanTokenIds[collection].at(cursor + i);
+            askInfo[i] = _activeLoanDetails[collection][tokenIds[i]];
+        }
+
+        return (tokenIds, askInfo, cursor + length);
+    }
+
+
     function viewAsksByCollectionAndSeller(
         address collection,
         address seller,
@@ -240,6 +294,8 @@ contract LendBorrow is ReentrancyGuard, Ownable {
 
         return (tokenIds, askInfo, cursor + length);
     }
+
+    
 
     function addCollection(
         address _collection,

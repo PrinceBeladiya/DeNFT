@@ -9,9 +9,17 @@
     }
   }
 
+  .lend-nft-content {
+    .lend-nft-dialog-actions {
+      display: flex;
+      justify-content: end;
+      margin-top: 10px;
+    }
+  }
+
   .content-container {
     .fractional-textfield {
-      width : calc(50% - 10px);
+      width: calc(50% - 10px);
       margin-right: 10px;
     }
   }

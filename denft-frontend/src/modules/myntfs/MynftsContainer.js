@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { updateNFT } from './redux/actions';
 import { updateAccount } from '../landing/redux/actions';
 import PropTypes from 'prop-types';
+import RepayContainer from './repay/RepayContainer';
 
 const menuItems = [
     {
@@ -16,6 +17,10 @@ const menuItems = [
         title: 'My Fractional NFTs',
         key: 'my-fractional-nfts',
     },
+    {
+        title: 'Repay',
+        key: 'repay',
+    }
 ]
 
 const MynftsContainer = (props) => {
@@ -59,6 +64,13 @@ const MynftsContainer = (props) => {
                     selectedMenuItem === menuItems[1].key && (
                         <MyFractionalNFTs
                             menu={menuItems[1].title}
+                        />
+                    )
+                }
+                {
+                    selectedMenuItem === menuItems[2].key && (
+                        <RepayContainer
+                            menu={menuItems[2].title}
                         />
                     )
                 }

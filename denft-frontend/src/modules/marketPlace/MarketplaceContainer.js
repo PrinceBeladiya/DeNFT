@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import MainTemplateContainer from '../../shared/templates/MainTemplate/MainTemplateContainer';
 import HomeContainer from './home/HomeContainer';
+import BorrowContainer from './borrow/BorrowContainer';
 
 const MarketplaceContainer = () => {
     
@@ -9,6 +10,11 @@ const MarketplaceContainer = () => {
             title: 'Home',
             key: 'home',
             component : <HomeContainer/>
+        },
+        {
+            title: 'Borrow',
+            key: 'borrow',
+            component : <BorrowContainer/>
         },
     ]
     const [selectMenuItem, setSelectMenuItem] = useState(menuItems[0].key);

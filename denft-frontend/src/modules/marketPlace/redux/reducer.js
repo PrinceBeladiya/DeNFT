@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   SellableNFTs : [],
   SellableNFTOwners: [],
   SellableNFTPrice: [],
+  menu : '',
 };
 
 
@@ -23,6 +24,11 @@ export default (state = INITIAL_STATE, action) => { // eslint-disable-line
       return {
         ...state,
         SellableNFTPrice: action.payload,
+      };
+    case actionTypes.MENU:
+      return {
+        ...state,
+        menu: action.payload,
       };
     default:
       return state;
