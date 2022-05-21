@@ -16,7 +16,8 @@ DeNFT Network is a prime solution for NFTs. We are providing multiple solutions 
 
 - <b> [Polygon Mumbai Testnet](https://polygon.technology/ "Polygon Mumbai Testnet") </b> <br/>
 - <b> [Metis Stardust Testnet](https://www.metis.io/ "Metis Stardust Testnet") </b><br />
-- <b> [Boba Rinkeby Testnet](https://boba.network/ "Boba Rinkeby Testnet") </b><br /><br/>
+- <b> [Boba Rinkeby Testnet](https://boba.network/ "Boba Rinkeby Testnet") </b><br />
+- <b> [Meter Testnet](https://meter.io/ "Meter Testnet") </b><br /><br/>
 ## File Storage
 
 <b> ** [IPFS/Filecoin](https://ipfs.io/ "IPFS/Filecoin") ** </b> : We have used NFT.Storage for content upload of NFTs which is using IPFS and Filecoin for content addressing.<br /><br />
@@ -28,8 +29,6 @@ DeNFT Network is a prime solution for NFTs. We are providing multiple solutions 
 # Live at
 
 [https://denft.netlify.app/](https://denft.netlify.app/ "DeNFT Network")
-
-# Demo Video
 
 # Future Work
 
@@ -44,11 +43,11 @@ DeNFT Network is a prime solution for NFTs. We are providing multiple solutions 
 
 ## Mumbai Polygon
 
-- `DeNFT.sol`: 0x096296D845C644C1F0E28Faa5857E8Da44F2939B
-- `MarketPlace.sol`: 0x9cd45437BA040EDB1aaF4e62b310D7ea3826d327
-- `LendBorrow.sol`: 0x4aad9541F2bF4F12dd80637172A56E1129493cAA
-- `FractionalERC721Factory.sol`: 0xD2FCA4248d9997311ccA5Ab87c99C6e207300fD1
-- `USDC.sol`: 0x85467601037cD20084c6b5a2fBACA190e118f5cD
+- `DeNFT.sol`: 0x06E13336da2DDe074762b9192c411e3d5790c610
+- `MarketPlace.sol`: 0x8443E9b88736273dE08D57555254AFe3dC9EC962
+- `LendBorrow.sol`: 0xB0f77d2113c612A69CbB0E0B10762A3B09F32Eb6
+- `FractionalERC721Factory.sol`: 0x836beBbC9a94Cabd57478DF22498863737c43a15
+- `USDC.sol`: 0x9cD67aea8505773baD2A418A643AA1652c3a5703
 
 ## Metis Stardust
 
