@@ -1,15 +1,52 @@
-# Basic Sample Hardhat Project
+# DeNFT Network
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+DeNFT Network is a prime solution for NFTs. We are providing multiple solutions listed below.
 
-Try running some of the following tasks:
+- DeNFT NFTs Collection
+- Buy and Sell NFTs Marketplace
+- Lending and Borrowing NFTs
+- Fractionalize your NFTs with ERC20
+- Buy Crypto from fiat currency
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+# Tech Stack
+
+## Netowrks
+
+<b> ** [Polygon](https://polygon.technology/ "Polygon") ** </b> : We have used Polygon Mumbai Testnet for deploying smart contracts.<br /><br />
+<b> ** [Metis](https://www.metis.io/ "Metis") ** </b> : We have used Metis Stardust Testnet for deploying smart contracts.<br /><br />
+
+## File Storage
+
+<b> ** [IPFS/Filecoin](https://ipfs.io/ "IPFS/Filecoin") ** </b> : We have used NFT.Storage for content upload of NFTs which is using IPFS and Filecoin for content addressing.<br /><br />
+
+## Buy Crypto 
+
+<b> ** [Transak](https://transak.com/ "Transak") ** </b> : We have integrated Transak to buy crypto using fiat currency. Transak accepts payments by credit card, debit card or bank transfer.<br /><br />
+
+# Live at
+
+[https://denft.netlify.app/](https://denft.netlify.app/ "DeNFT Network")
+
+# Demo Video
+
+[https://youtu.be/wAIkP6VaoGU](https://youtu.be/wAIkP6VaoGU "DeNFT Network Demo")
+
+# Deployed Addresses
+
+## Mumbai Polygon
+
+- `DeNFT.sol`:
+- `MarketPlace.sol`:
+- `LendBorrow.sol`:
+- `FractionalERC721Factory.sol`:
+- `USDC.sol`:
+
+## Metis Stardust
+
+- `DeNFT.sol`:
+- `MarketPlace.sol`:
+- `LendBorrow.sol`:
+- `FractionalERC721Factory.sol`:
+- `USDC.sol`:
+
+

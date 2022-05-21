@@ -53,6 +53,7 @@ class AppHeaderContainer extends Component {
         setAccount({
           sub: ethereum.selectedAddress,
           wallet_address: ethereum.selectedAddress,
+          metamask: true,
         });
       }
     }

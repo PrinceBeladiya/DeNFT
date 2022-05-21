@@ -33,6 +33,10 @@ const AppHeader = ({ account, handleLogin, history, onMenuItemClick }) => {
     let length = string.length;
     let userAccount1 = '', userAccount2 = '';
 
+    if (Object.keys(account).length > 0 && !account.metamask) {
+      return account.sub;
+    }
+
     if (string !== undefined) {
       for (let i = 0; i < length; i++) {
         if (i < 5) {
@@ -68,6 +72,7 @@ const AppHeader = ({ account, handleLogin, history, onMenuItemClick }) => {
       </div>
       <div className="wallet-connection">
         <div className="wallet-address">
+          {console.log("type of account======", Object.keys(account).length > 0 && typeof account.sub)}
           {
             account && account.sub ? user() : ''
           }
