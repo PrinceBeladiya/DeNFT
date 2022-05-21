@@ -263,7 +263,7 @@ const NFTs = ({
                       variant="contained"
                       className="fractional-button"
                       name={ID}
-                      onClick={() => buyBorrowalNFT(ID, Number(lendTokenDetails.price))} >
+                      onClick={() => buyBorrowalNFT(ID, ethers.utils.formatEther(String(lendTokenDetails.price)))} >
                       BORROW
                     </Button>
                   :

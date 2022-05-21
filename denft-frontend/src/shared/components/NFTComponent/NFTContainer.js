@@ -133,10 +133,10 @@ const NFTContainer = ({
 
   const buyBorrowalNFT = async (ID = 0, price) => {
     try {
-      const appproval = await USDCContract.connect(web3Signer).approve(LendBorrowContract.address, price);
+      const appproval = await USDCContract.connect(web3Signer).approve(LendBorrowContract.address, ethers.utils.parseEther(price));
       await appproval.wait();
 
-      const borrowingNFT = await LendBorrowContract.connect(web3Signer).acceptAsk(DeNFTContract.address, ID, price);
+      const borrowingNFT = await LendBorrowContract.connect(web3Signer).acceptAsk(DeNFTContract.address, ID, ethers.utils.parseEther(price));
       await borrowingNFT.wait();
       
       getBorrowedTokens();
