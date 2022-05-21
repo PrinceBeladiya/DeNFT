@@ -27,7 +27,7 @@ const LendDialog = ({
     >
       <DialogTitle className="dialog-title">
         <div className='heading-button'>
-          Sell NFT#{ID}
+          Lend NFT#{ID}
           <IconButton
             onClick={() => {
               closeDialog(LEND_DIALOGUE);

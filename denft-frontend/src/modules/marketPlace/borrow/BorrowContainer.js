@@ -17,26 +17,27 @@ const BorrowContainer = ({
   useEffect(() => {
     // changeMenu("Borrow");
     
-    const getBorrowedTokens = async () => {
-      const TotalTokens = await DeNFTContract.connect(web3Signer).totalTokens();
-
-      const ViewAskByCollection = await LendBorrowContract.connect(web3Signer).viewAsksByCollection(DeNFTContract.address, 0, TotalTokens);
     
-      const ViewAsksByCollectionAndTokenIds = await LendBorrowContract.connect(web3Signer).viewAsksByCollectionAndTokenIds(DeNFTContract.address, ViewAskByCollection[0]);
-
-      setLendTokens(ViewAskByCollection.tokenIds);
-      setTokenDetails(ViewAsksByCollectionAndTokenIds.askInfo);
-    }
-
     getBorrowedTokens();
-
+    
   }, []);
+  
+  const getBorrowedTokens = async () => {
+    const TotalTokens = await DeNFTContract.connect(web3Signer).totalTokens();
 
+    const ViewAskByCollection = await LendBorrowContract.connect(web3Signer).viewAsksByCollection(DeNFTContract.address, 0, TotalTokens);
+  
+    const ViewAsksByCollectionAndTokenIds = await LendBorrowContract.connect(web3Signer).viewAsksByCollectionAndTokenIds(DeNFTContract.address, ViewAskByCollection[0]);
+
+    setLendTokens(ViewAskByCollection.tokenIds);
+    setTokenDetails(ViewAsksByCollectionAndTokenIds.askInfo);
+  }
 
   return (
     <Borrow
       lendTokens={lendTokens}
       tokenDetails={tokenDetails}
+      getBorrowedTokens={getBorrowedTokens}
     />
   )
 }

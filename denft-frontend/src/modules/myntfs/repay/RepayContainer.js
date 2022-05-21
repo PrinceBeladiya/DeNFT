@@ -30,10 +30,10 @@ function RepayContainer() {
 
   return (
     <>
-      {console.log("replayable -> ", replayableTokens)}
       <Repay
         replayableTokens={replayableTokens}
         replayableTokensDetails={replayableTokensDetails}
+        getBorrowalNfts={getBorrowalNfts}
       />
     </>
   )

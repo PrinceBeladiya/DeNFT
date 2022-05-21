@@ -9,40 +9,28 @@ import { MUMBAI } from '../config/networks/Mumbai';
 import { RINKEBY } from '../config/networks/Rinkeby';
 import { METIS_STARDUST } from '../config/networks/MetisStardust';
 
-export const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545/");
-export const signer = provider.getSigner();
-
-export const Web3Provider = new ethers.providers.Web3Provider(window.ethereum)
-export const web3Signer = Web3Provider.getSigner();
-
-export const DeNFTDeployedAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-export const MarketPlaceDeployedAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
-export const FractionalERC721FactoryDeployedAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
-export const USDCDeployedAddress = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9";
-export const LendBorrowDeployedAddress = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
-
-export const DeNFTContract = new ethers.Contract(DeNFTDeployedAddress, NFT.abi, signer);
-export const MarketPlaceContract = new ethers.Contract(MarketPlaceDeployedAddress, MarketPlace.abi, signer);
-export const FractionalERC721FactoryContract = new ethers.Contract(FractionalERC721FactoryDeployedAddress, FractionalERC721Factory.abi, signer);
-export const USDCContract = new ethers.Contract(USDCDeployedAddress, USDC.abi, signer);
-export const LendBorrowContract = new ethers.Contract(LendBorrowDeployedAddress, LendBorrow.abi, signer);
+const getCurrentChainId = () => {
+  return Number(window && window.ethereum && window.ethereum.chainId)
+};
 
 export const Addresses = {
   [MUMBAI.chainId]: {
-    deNFT: "0x096296D845C644C1F0E28Faa5857E8Da44F2939B",
-    MarketPlace: "0x9cd45437BA040EDB1aaF4e62b310D7ea3826d327",
-    fractionalERC721Factory: "0xD2FCA4248d9997311ccA5Ab87c99C6e207300fD1",
-    usdc: "0x85467601037cD20084c6b5a2fBACA190e118f5cD",
-    lendBorrow: "0x4aad9541F2bF4F12dd80637172A56E1129493cAA",
-    decimal: 18,
-    symbol: "MATIC",
-  },
-  [RINKEBY.chainId]: {
     deNFT: "0x06E13336da2DDe074762b9192c411e3d5790c610",
     MarketPlace: "0x8443E9b88736273dE08D57555254AFe3dC9EC962",
     fractionalERC721Factory: "0x836beBbC9a94Cabd57478DF22498863737c43a15",
     usdc: "0x9cD67aea8505773baD2A418A643AA1652c3a5703",
     lendBorrow: "0xB0f77d2113c612A69CbB0E0B10762A3B09F32Eb6",
+    rpcUrl: "https://polygon-mumbai.g.alchemy.com/v2/-B53i36HC0dwchxm586SE-0uuH3OKD7w",
+    decimal: 18,
+    symbol: "MATIC",
+  },
+  [RINKEBY.chainId]: {
+    deNFT: "0x096296D845C644C1F0E28Faa5857E8Da44F2939B",
+    MarketPlace: "0x9cd45437BA040EDB1aaF4e62b310D7ea3826d327",
+    fractionalERC721Factory: "0xD2FCA4248d9997311ccA5Ab87c99C6e207300fD1",
+    usdc: "0x85467601037cD20084c6b5a2fBACA190e118f5cD",
+    lendBorrow: "0x4aad9541F2bF4F12dd80637172A56E1129493cAA",
+    rpcUrl: "https://rinkeby.infura.io/v3/1bb06d6c96b94a678f902858aa99025b",
     decimal: 18,
     symbol: "ETH",
   },
@@ -55,4 +43,31 @@ export const Addresses = {
     decimal: 18,
     symbol: "METIS",
   },
-} 
+}
+
+export const contractInitialization = () => {
+  if (!Addresses[getCurrentChainId()]) {
+    return Addresses[MUMBAI.chainId];
+  };
+  return Addresses[getCurrentChainId()];
+}
+
+// export const provider = new ethers.providers.JsonRpcProvider(contractInitialization().rpcUrl);
+export const provider = new ethers.providers.Web3Provider(window.ethereum)
+export const signer = provider.getSigner();
+
+export const Web3Provider = new ethers.providers.Web3Provider(window.ethereum)
+export const web3Signer = Web3Provider.getSigner();
+
+export const DeNFTDeployedAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+export const MarketPlaceDeployedAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+export const FractionalERC721FactoryDeployedAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
+export const USDCDeployedAddress = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9";
+export const LendBorrowDeployedAddress = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
+
+
+export const DeNFTContract = new ethers.Contract(contractInitialization().deNFT, NFT.abi, signer);
+export const MarketPlaceContract = new ethers.Contract(contractInitialization().MarketPlace, MarketPlace.abi, signer);
+export const FractionalERC721FactoryContract = new ethers.Contract(contractInitialization().fractionalERC721Factory, FractionalERC721Factory.abi, signer);
+export const USDCContract = new ethers.Contract(contractInitialization().usdc, USDC.abi, signer);
+export const LendBorrowContract = new ethers.Contract(contractInitialization().lendBorrow, LendBorrow.abi, signer);

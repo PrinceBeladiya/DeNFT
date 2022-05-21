@@ -11,34 +11,23 @@ import { noop } from '../../../utils';
 import { showNotification } from '../../../utils/Notifications';
 
 const NFTContainer = ({
-  NFTID,
-  data,
-  dashboard,
-  updateMainMenu,
-  index,
-  getdata,
-  openDialog,
+  NFTID, getBorrowalNfts,
+  data, dashboard, updateMainMenu,
+  index, getdata, openDialog,
   NFTSellable = [],
-  updateToken,
-  updateNFTs,
-  getSellableNFTs,
-  tokens,
-  owners,
-  price,
-  getOwnerTokens,
-  menu,
-  FractionalNFTBalance,
-  FractionalNFTOwner,
-  vaultID,
-  loader,
-  ID,
-  updateID,
+  updateToken, updateNFTs,
+  getSellableNFTs, tokens,
+  owners, price, getOwnerTokens,
+  menu, FractionalNFTBalance,
+  FractionalNFTOwner, vaultID,
+  loader, ID, updateID,
   totalSupply,
   tokenDetails,
   lendTokenDetails,
   isBorrow,
   replayableTokensDetails,
-  isRepay,
+  isRepay, getBorrowedTokens,
+  getFractionalOwnerTokens,
 }) => {
 
   useEffect(() => {
@@ -136,12 +125,11 @@ const NFTContainer = ({
     try {
       const lendCancel = await LendBorrowContract.connect(web3Signer).cancelAskOrder(DeNFTContract.address, ID);
       await lendCancel.wait();
-
+      getBorrowedTokens();
       showNotification("lend cancelled successfully", "success", 3000);
     } catch (error) {
       console.log("Error -> ", error);
-      showNotification("Cancelation process not confirmed", "error", 30000)
-        ;
+      showNotification("Cancelation process not confirmed", "error", 30000);
     }
   }
 
@@ -152,7 +140,8 @@ const NFTContainer = ({
 
       const borrowingNFT = await LendBorrowContract.connect(web3Signer).acceptAsk(DeNFTContract.address, ID, price);
       await borrowingNFT.wait();
-
+      
+      getBorrowedTokens();
       showNotification("NFT is borrowed successfully", "success", 3000);
     } catch (error) {
       console.log("Error -> ", error);
@@ -168,6 +157,7 @@ const NFTContainer = ({
       const repay = await LendBorrowContract.connect(web3Signer).repayLoan(DeNFTContract.address, ID);
       await repay.wait();
 
+      getBorrowalNfts();
       showNotification("NFT Repay successfully", "success", 3000);
     } catch (error) {
       console.log("Error -> ", error);
@@ -211,6 +201,7 @@ const NFTContainer = ({
         replayableTokensDetails={replayableTokensDetails}
         isRepay={isRepay}
         repayborrowalNFT={repayborrowalNFT}
+        getFractionalOwnerTokens={getFractionalOwnerTokens}
       />
     </>
   )

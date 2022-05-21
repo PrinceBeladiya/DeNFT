@@ -13,6 +13,9 @@ import { FRACTIONAL_DIALOGUE } from './DialogNames';
 import { closeDialog } from '../../../../modules/dashboard/redux/actions';
 import { noop } from '../../../../utils';
 import { Button, DialogActions, TextField } from '@mui/material';
+import { contractInitialization } from '../../../../utils/etherIndex';
+import BlockUi from 'react-block-ui';
+import GoogleLoader from '../../GoogleLoader';
 
 const CreatePoolDialog = props => (
   <Dialog
@@ -37,48 +40,55 @@ const CreatePoolDialog = props => (
       </div>
     </DialogTitle>
     <DialogContent className='content-container'>
-      <TextField
-        autoFocus
-        margin="dense"
-        id="name"
-        required
-        label="Token Name"
-        type="text"
-        className='fractional-textfield'
-        variant="standard"
-        onChange={props.handleName}
-      />
-      <TextField
-        margin="dense"
-        id="symbol"
-        required
-        label="Symbol"
-        type="text"
-        className='fractional-textfield'
-        variant="standard"
-        onChange={props.handleSymbol}
-      />
-      <TextField
-        margin="dense"
-        id="totalSupply"
-        required
-        label="Total Supply"
-        type="number"
-        fullWidth
-        variant="standard"
-        onChange={props.handleSupply}
-      />
-      <TextField
-        autoFocus
-        margin="dense"
-        id="price"
-        required
-        label="List Price"
-        type="number"
-        fullWidth
-        variant="standard"
-        onChange={props.handleListPrice}
-      />
+      <BlockUi
+        tag="div"
+        blocking={props.loading}
+        className="full-height"
+        loader={<GoogleLoader height={25} width={30} />}
+      >
+        <TextField
+          autoFocus
+          margin="dense"
+          id="name"
+          required
+          label="Token Name"
+          type="text"
+          className='fractional-textfield'
+          variant="standard"
+          onChange={props.handleName}
+        />
+        <TextField
+          margin="dense"
+          id="symbol"
+          required
+          label="Symbol"
+          type="text"
+          className='fractional-textfield'
+          variant="standard"
+          onChange={props.handleSymbol}
+        />
+        <TextField
+          margin="dense"
+          id="totalSupply"
+          required
+          label="Total Supply"
+          type="number"
+          fullWidth
+          variant="standard"
+          onChange={props.handleSupply}
+        />
+        <TextField
+          autoFocus
+          margin="dense"
+          id="price"
+          required
+          label={`List Price (${contractInitialization().symbol})`}
+          type="number"
+          fullWidth
+          variant="standard"
+          onChange={props.handleListPrice}
+        />
+      </BlockUi>
     </DialogContent>
     <DialogActions>
       <Button onClick={() => {

@@ -74,6 +74,7 @@ const MyFractionalNFTsContainer = ({
       menu={menu}
       vaultID={vaultID}
       totalSupply={totalSup}
+      getFractionalOwnerTokens={getOwnerTokens}
     />
   )
 }

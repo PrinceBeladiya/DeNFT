@@ -13,6 +13,8 @@ import { TRANSFER_DIALOGUE } from './DialogNames';
 import { closeDialog } from '../../../../modules/dashboard/redux/actions';
 import { noop } from '../../../../utils';
 import { Button, DialogActions, TextField } from '@mui/material';
+import BlockUI from 'react-block-ui';
+import GoogleLoader from '../../GoogleLoader';
 
 const CreatePoolDialog = props => (
   <Dialog
@@ -35,16 +37,23 @@ const CreatePoolDialog = props => (
       </div>
     </DialogTitle>
     <DialogContent>
-      <TextField
-        autoFocus
-        margin="dense"
-        id="address"
-        label="Receipient Address"
-        type="text"
-        fullWidth
-        variant="standard"
-        onChange={props.handleAddress}
-      />
+      <BlockUI
+        tag="div"
+        blocking={props.loading}
+        className="full-height"
+        loader={<GoogleLoader height={25} width={30} />}
+      >
+        <TextField
+          autoFocus
+          margin="dense"
+          id="address"
+          label="Receipient Address"
+          type="text"
+          fullWidth
+          variant="standard"
+          onChange={props.handleAddress}
+        />
+      </BlockUI>
     </DialogContent>
     <DialogActions>
       <Button onClick={() => {

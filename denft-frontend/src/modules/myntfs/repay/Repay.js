@@ -4,11 +4,11 @@ import NFTContainer from '../../../shared/components/NFTComponent/NFTContainer';
 const Repay = ({
     replayableTokens,
     replayableTokensDetails,
+    getBorrowalNfts,
 }) => {
     return (
         <div className='repay-header-container'>
             <div className='repay-main-container-mynft'>
-                {console.log("replayable - ", replayableTokensDetails)}
                 {
                     replayableTokensDetails.map((token, index) => (
                         <NFTContainer
@@ -16,6 +16,7 @@ const Repay = ({
                             replayableTokensDetails={replayableTokensDetails}
                             isRepay={true}
                             index={index}
+                            getBorrowalNfts={getBorrowalNfts}
                         />
                     ))
                 }

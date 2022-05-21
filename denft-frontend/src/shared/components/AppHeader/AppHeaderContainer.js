@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import { setMainMenu } from '../../../modules/dashboard/redux/actions';
 import { MUMBAI } from '../../../config/networks/Mumbai';
 import { RINKEBY } from '../../../config/networks/Rinkeby';
+import { METIS_STARDUST } from '../../../config/networks/MetisStardust';
 
 const ListOfMenuItems = [
   {
@@ -24,6 +25,11 @@ const ListOfMenuItems = [
     title: 'Rinkeby',
     network: RINKEBY,
     value: RINKEBY.chainId,
+  },
+  {
+    title: 'Metis Stardust',
+    network: METIS_STARDUST,
+    value: METIS_STARDUST.chainId,
   },
 ]
 
@@ -87,7 +93,7 @@ class AppHeaderContainer extends Component {
   
         const currentChainID = Number(window.ethereum.chainId);
   
-        if (currentChainID === 4 || currentChainID === 80001) {
+        if (currentChainID === 4 || currentChainID === 80001 || currentChainID === 588) {
           ListOfMenuItems.map(menuItem => {
             if (menuItem.value === currentChainID) {
               updateNetworkDetails({
@@ -118,15 +124,20 @@ class AppHeaderContainer extends Component {
       showNotification("Please select appropriate network in wallet first", "error", 3000);
     }
 
-    if (e.target.value === 4) {
+    if (e.target.value === RINKEBY.chainId) {
       updateNetworkDetails({
         title: ListOfMenuItems[1].title,
         network: ListOfMenuItems[1].network,
       });
-    } else if (e.target.value === 4) {
+    } else if (e.target.value === MUMBAI.chainId) {
       updateNetworkDetails({
         title: ListOfMenuItems[0].title,
         network: ListOfMenuItems[0].network,
+      });
+    } else if (e.target.value === METIS_STARDUST.chainId) {
+      updateNetworkDetails({
+        title: ListOfMenuItems[2].title,
+        network: ListOfMenuItems[2].network,
       });
     }
   }

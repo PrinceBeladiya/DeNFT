@@ -11,7 +11,7 @@ import { updateLoading, updateTransactionID, updateTransferableToken } from '../
 import { openForm, OpenSellForm, titleOfForm, labelOfForm, inputText } from '../../../../modules/landing/redux/actions';
 import { closeDialog, openDialog } from '../../../../modules/dashboard/redux/actions';
 import { noop } from '../../../../utils';
-import { LEND_DIALOGUE, SELL_DIALOGUE } from './DialogNames';
+import { FRACTIONAL_DIALOGUE, LEND_DIALOGUE, SELL_DIALOGUE, SEND_FRACTIONAL_DIALOGUE } from './DialogNames';
 import { showNotification } from '../../../../utils/Notifications';
 import FractionalERC20Vault from '../../../../contracts/contracts/Fractional/FractionalERC20Vault.sol/FractionalERC20Vault.json';
 import { submit } from 'redux-form';
@@ -33,7 +33,7 @@ const DialogueContainer = ({
   index,
   currentDialogNames,
   submit,
-  updateID
+  updateID, getFractionalOwnerTokens
 }) => {
 
   const [price, setPrice] = useState(0);
@@ -142,14 +142,23 @@ const DialogueContainer = ({
     updateLoader(true);
 
     if (fractionalName.length > 0 && fractionalSymbol.length > 0 && fractionalTotalSupply.length > 0 && fractionalInitialPrice.length > 0) {
-      const { transferableToken } = getdata;
-
       try {
+        const { transferableToken } = getdata;
         const approve = await DeNFTContract.connect(web3Signer).approve(FractionalERC721FactoryContract.address, transferableToken);
         await approve.wait();
         const mintFractional = await FractionalERC721FactoryContract.connect(web3Signer).mint(DeNFTContract.address, transferableToken, String(fractionalName), String(fractionalSymbol), String(ethers.utils.parseEther(fractionalTotalSupply)), String(ethers.utils.parseEther(fractionalInitialPrice)));
         await mintFractional.wait();
+
+        const tokens = await DeNFTContract.functions.totalTokens();
+        const tokensOfOwner = await DeNFTContract.functions.tokensOfOwnerBySize(window.ethereum.selectedAddress, 0, tokens);
+    
+        const tokenIDs = tokensOfOwner[0].map(token => {
+          return Number(token);
+        });
+
+        updateNFTs(tokenIDs);
         updateLoader(false);
+        closeDialog(FRACTIONAL_DIALOGUE);
         showNotification("Fractional successfully", 'success', 3000);
       } catch (error) {
         console.log("Error -> ", error);
@@ -173,6 +182,8 @@ const DialogueContainer = ({
       const transfer = await vaultContract.connect(web3Signer).transfer(data.receipientAddress, String(ethers.utils.parseEther(price)));
       await transfer.wait();
 
+      getFractionalOwnerTokens();
+      closeDialog(SEND_FRACTIONAL_DIALOGUE);
       updateLoader(false);
       showNotification("Your NFT Fractional is successfully transfered", 'success', 3000);
     } catch (error) {
@@ -186,20 +197,33 @@ const DialogueContainer = ({
     updateLoader(true);
 
     try {
-      const approvalFromDeNFT = await DeNFTContract.connect(web3Signer).approve(LendBorrowContract.address, ID);
-      await approvalFromDeNFT.wait();
 
-      const createLend = await LendBorrowContract.connect(web3Signer).createLoanAskOrder(DeNFTContract.address, ID, Number(collatralPrice), Number(intrestAmount), Number(time))
+      const isApprovedForAll = await DeNFTContract.connect(web3Signer).isApprovedForAll(window.ethereum.selectedAddress, LendBorrowContract.address);
+      if (!isApprovedForAll) {
+        const setApprovalForAll = await DeNFTContract.connect(web3Signer).setApprovalForAll(LendBorrowContract.address, true);
+        await setApprovalForAll.wait();
+      }
+
+      const createLend = await LendBorrowContract.connect(web3Signer).createLoanAskOrder(DeNFTContract.address, ID, ethers.utils.parseEther(String(collatralPrice)), ethers.utils.parseEther(String(intrestAmount)), Number(time))
       await createLend.wait();
 
       updateLoader(false);
       closeDialog(LEND_DIALOGUE);
       showNotification("Transaction Confirmed", "success", 3000);
+  
+      const tokens = await DeNFTContract.functions.totalTokens();
+      const tokensOfOwner = await DeNFTContract.functions.tokensOfOwnerBySize(window.ethereum.selectedAddress, 0, tokens);
+  
+      const tokenIDs = tokensOfOwner[0].map(token => {
+        return Number(token);
+      });
+  
+      updateNFTs(tokenIDs);
+
     } catch (Error) {
       showNotification("Transaction Failes", "error", 3000);
       console.log("Error -> ", Error);
       updateLoader(false);
-      closeDialog(LEND_DIALOGUE);
     }
   }
 
@@ -213,6 +237,7 @@ const DialogueContainer = ({
             transferNFT={transferNFT}
             updateToken={updateToken}
             ID={getdata.transferableToken}
+            loading={getdata.loading}
           />
           :
           dialog.currentDialogNames[0] === "SELL_DIALOGUE" ?
@@ -223,6 +248,7 @@ const DialogueContainer = ({
               updateToken={updateToken}
               sellNFT={sellNFT}
               ID={getdata.transferableToken}
+              loading={getdata.loading}
             />
             :
             dialog.currentDialogNames[0] === "FRACTIONAL_DIALOGUE" ?
@@ -237,6 +263,7 @@ const DialogueContainer = ({
                 handleSymbol={handleSymbol}
                 handleSupply={handleSupply}
                 handleListPrice={handleListPrice}
+                loading={getdata.loading}
               />
               :
               dialog.currentDialogNames[0] === "SEND_FRACTIONAL_DIALOGUE" ?
@@ -251,6 +278,7 @@ const DialogueContainer = ({
                   closeDialog={closeDialog}
                   currentDialogNames={currentDialogNames}
                   submit={submit}
+                  loading={getdata.loading}
                 />
                 : dialog.currentDialogNames[0] === "LEND_DIALOGUE" ?
                 <LendDialog 

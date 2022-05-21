@@ -7,6 +7,7 @@ import { updateNFT } from './redux/actions';
 import { updateAccount } from '../landing/redux/actions';
 import PropTypes from 'prop-types';
 import RepayContainer from './repay/RepayContainer';
+import { withRouter } from 'react-router';
 
 const menuItems = [
     {
@@ -34,20 +35,30 @@ const MynftsContainer = (props) => {
     return (
         <MainTemplateContainer>
             <div className="my-nfts-container">
-
-                <div className="menu-items">
-                    {
-                        menuItems.map(menuItem => (
-                            <div
-                                className={`menu-item ${menuItem.key === selectedMenuItem && "active"}`}
-                                key={menuItem.key}
-                                role="presentation"
-                                onClick={() => onMenuClick(menuItem.key)}
-                            >
-                                {menuItem.title}
-                            </div>
-                        ))
-                    }
+                <div className="menu-items-wrapper">
+                    <div className="menu-items">
+                        {
+                            menuItems.map(menuItem => (
+                                <div
+                                    className={`menu-item ${menuItem.key === selectedMenuItem && "active"}`}
+                                    key={menuItem.key}
+                                    role="presentation"
+                                    onClick={() => onMenuClick(menuItem.key)}
+                                >
+                                    {menuItem.title}
+                                </div>
+                            ))
+                        }
+                    </div>
+                    <div className="buy-crypto-wrapper">
+                        <div
+                            className="buy-crypto-link"
+                            role="presentation"
+                            onClick={() => props.history.push("/buy-crypto")}
+                        >
+                            Don't have enough crypto? click here!
+                        </div>
+                    </div>
                 </div>
                 {
                     selectedMenuItem === menuItems[0].key && (
@@ -80,6 +91,7 @@ const MynftsContainer = (props) => {
 }
 
 MynftsContainer.propTypes = {
+    history: PropTypes.instanceOf(Object).isRequired,
     getdata: PropTypes.object,
     updateNFTs: PropTypes.func,
     updateAccount: PropTypes.func
@@ -107,4 +119,4 @@ const mapDispatchToProps = dispatch => ({
     updateAccountAddress: account => dispatch(updateAccount(account)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(MynftsContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(MynftsContainer));

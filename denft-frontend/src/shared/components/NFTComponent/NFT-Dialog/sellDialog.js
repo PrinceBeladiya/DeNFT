@@ -14,6 +14,7 @@ import { noop } from '../../../../utils';
 import { Button, TextField } from '@mui/material';
 import BlockUI from 'react-block-ui';
 import GoogleLoader from '../../GoogleLoader';
+import { contractInitialization } from '../../../../utils/etherIndex';
 
 const SellDialog = props => (
   <Dialog
@@ -49,7 +50,7 @@ const SellDialog = props => (
               autoFocus
               margin="dense"
               id="address"
-              label="Amount of NFT (Ether)"
+              label={`Amount of NFT (${contractInitialization().symbol})`}
               type="text"
               fullWidth
               variant="standard"

@@ -43,15 +43,19 @@ const Mynfts = (props) => {
 
     updateAccount(accounts[0]);
 
-    const tokens = await DeNFTContract.functions.totalTokens();
+    try {
+      const tokens = await DeNFTContract.functions.totalTokens();
+      const tokensOfOwner = await DeNFTContract.functions.tokensOfOwnerBySize(window.ethereum.selectedAddress, 0, tokens);
+  
+      const tokenIDs = tokensOfOwner[0].map(token => {
+        return Number(token);
+      });
+  
+      updateNFTs(tokenIDs);
+    } catch(error) {
+      console.log('error======', error);
+    }
     
-    const tokensOfOwner = await DeNFTContract.functions.tokensOfOwnerBySize(accounts[0], 0, tokens);
-
-    const tokenIDs = tokensOfOwner[0].map(token => {
-      return Number(token);
-    });
-
-    updateNFTs(tokenIDs);
   }
 
 

@@ -2,7 +2,8 @@
 
 export const METIS_STARDUST = {
   name: "Metis Stardus",
+  rpcUrl: "https://stardust.metis.io/?owner=588",
   // image: metisIcon,
-  chainId: 4,
+  chainId: 588,
   currency: "METIS",
 };

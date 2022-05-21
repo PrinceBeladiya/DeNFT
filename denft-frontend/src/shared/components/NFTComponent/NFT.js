@@ -5,10 +5,11 @@ import GoogleLoader from '../GoogleLoader';
 import DialogueContainer from './NFT-Dialog/dialogueContainer';
 import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@material-ui/core';
 import { ethers } from 'ethers';
+import { contractInitialization } from '../../../utils/etherIndex';
 
 const NFTs = ({
   getdata,
-  data,
+  data, getFractionalOwnerTokens,
   dashboard,
   NFTSellable = [],
   NFTSellableOwners = [],
@@ -81,7 +82,6 @@ const NFTs = ({
                       }
                     </Typography>
                 }
-                {console.log("Repay -> ", isRepay)}
                 {
                   !isRepay ?
                     (menu.length > 0 && menu === "My Fractional NFTs") ?
@@ -154,12 +154,15 @@ const NFTs = ({
                           <div className="price-label">NFT PRICE</div>
                           {
                             NFTSellablePrice.length > 0 ?
-                              <div className="price">{ethers.utils.formatEther(String(NFTSellablePrice[index]))} ETH<br /></div>
+                              <div className="price">{ethers.utils.formatEther(String(NFTSellablePrice[index]))} {contractInitialization().symbol}<br /></div>
                               : ''
                           }
                         </Typography>
                         : ''
-                      : ''
+                      : <Typography gutterBottom variant="h5" component="div" className="nft-details">
+                      <div className="price-label">NFT PRICE</div>
+                      <div className="price">{ethers.utils.formatEther(String(lendTokenDetails.price))} USDC<br /></div>
+                    </Typography>
                 }
               </CardContent>
             </CardActionArea>
@@ -281,6 +284,7 @@ const NFTs = ({
           getOwnerTokens={getOwnerTokens}
           vaultID={vaultID}
           index={index}
+          getFractionalOwnerTokens={getFractionalOwnerTokens}
         />
       </BlockUI>
     </div >

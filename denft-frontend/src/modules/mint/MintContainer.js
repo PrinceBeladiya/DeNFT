@@ -34,7 +34,7 @@ const MintContainer = () => {
             
             const uri = await imageUpload();
             if (uri !== 0) {
-                const mintDeNFT = await DeNFTContract.connect(signer1).functions.mintDeNFT(uri, { value: ethers.utils.parseEther("0.1") });
+                const mintDeNFT = await DeNFTContract.connect(signer1).functions.mintDeNFT(uri);
                 await mintDeNFT.wait();
                 const accounts = await ethereum.request({
                     method: "eth_requestAccounts",

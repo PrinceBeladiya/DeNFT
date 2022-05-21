@@ -4,6 +4,7 @@ import NFTContainer from '../../../shared/components/NFTComponent/NFTContainer';
 const Borrow = ({
   lendTokens = [],
   tokenDetails = [],
+  getBorrowedTokens,
 }) => {
   return (
     <div className='borrow-header-container'>
@@ -14,6 +15,7 @@ const Borrow = ({
               NFTID={Number(token.tokenId)}
               lendTokenDetails={token}
               isBorrow
+              getBorrowedTokens={getBorrowedTokens}
             />
           ))
         }

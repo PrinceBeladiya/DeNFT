@@ -3,12 +3,13 @@ import Home from './Home';
 import { updateMenu, updateSellableNFTOwners, updateSellableNFTPrice, updateSellableNFTs } from '../redux/actions';
 import { connect } from 'react-redux';
 import { DeNFTContract, MarketPlaceContract, web3Signer } from '../../../utils/etherIndex';
+import { setMainMenu } from '../../dashboard/redux/actions';
 
-const HomeContainer = ({ data, changeMenu, updateSellableNFTTokens, updateSellableNFTTokensOwners, updateSellableNFTTokensPrice }) => {
+const HomeContainer = ({ data, changeMenu, updateSellableNFTTokens, updateSellableNFTTokensOwners, updateSellableNFTTokensPrice, setMainMenu }) => {
 
   useEffect ( () => {
     changeMenu("Home");
-    
+    setMainMenu("MarketPlace");
     getSellableNFTs();
   }, []);
 
@@ -52,6 +53,7 @@ const mapDispatchToProps = dispatch => ({
   updateSellableNFTTokensOwners: token => dispatch(updateSellableNFTOwners(token)),
   updateSellableNFTTokensPrice: token => dispatch(updateSellableNFTPrice(token)),
   changeMenu: data => dispatch(updateMenu(data)),
+  setMainMenu: selectedMenu => dispatch(setMainMenu(selectedMenu)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer);

@@ -73,7 +73,6 @@ const AppHeader = ({ account, handleLogin, history, onMenuItemClick, ListOfMenuI
       </div>
       <div className="wallet-connection">
         <div className="wallet-address">
-          {console.log("type of account======", Object.keys(account).length > 0 && typeof account.sub)}
           {
             account && account.sub ? user() : ''
           }

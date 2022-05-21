@@ -54,8 +54,8 @@ const Mint = ({
               <div className="nft-title">DeNFT #{CurrentTokenID}</div>
               <div className="nft-description"></div>
               <div className="price-wrapper">
-                <div className="price-label">Price</div>
-                <div className="price-value">0.1 ETH</div>
+                <div className="price-label"></div>
+                <div className="price-value"></div>
               </div>
               <div className="mint-btn-wrapper">
                 <Button
