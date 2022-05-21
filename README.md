@@ -66,3 +66,10 @@ DeNFT Network is a prime solution for NFTs. We are providing multiple solutions 
 - `FractionalERC721Factory.sol`: 0xaC28ff29342f0Da8a31eC36dE966a59788beECdD
 - `USDC.sol`: 0x62B7583165A401D18Aa78a2d9446208eCF1527C3
 
+## Meter Testnet
+
+- `DeNFT.sol`: 0x37041e6370c151Ff2BC15B4234Dd52732249eF79
+- `MarketPlace.sol`: 0xbd63179EE02Bd57D5CFe21275605F4ccEE30EC8a
+- `LendBorrow.sol`: 0xa493C6118D09466288b3c0706Fb3d1f26b6FE43B
+- `FractionalERC721Factory.sol`: 0x9523b48Cc2AC4b5e4659d2314abe98B6A0C3FD36
+- `USDC.sol`: 0xe9f85D839bE3c05DdAb4F2Be3397F1Ce10292E66

@@ -45,6 +45,13 @@ module.exports = {
         mnemonic: secrets.Mnemonic
       }
     },
+    metertestnet: {
+      url: 'https://rpctest.meter.io',
+      chainId: 83,
+      accounts: {
+        mnemonic: secrets.Mnemonic
+      }
+    },
   },
 
   paths: {

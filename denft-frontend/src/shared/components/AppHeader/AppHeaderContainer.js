@@ -15,6 +15,7 @@ import { MUMBAI } from '../../../config/networks/Mumbai';
 import { RINKEBY } from '../../../config/networks/Rinkeby';
 import { METIS_STARDUST } from '../../../config/networks/MetisStardust';
 import { BOBA_RINKEBY } from '../../../config/networks/BobaRinkeby';
+import { METER_TESTNET } from '../../../config/networks/MeterTestnet';
 
 const ListOfMenuItems = [
   {
@@ -31,6 +32,11 @@ const ListOfMenuItems = [
     title: 'Boba Rinkeby',
     network: BOBA_RINKEBY,
     value: BOBA_RINKEBY.chainId,
+  },
+  {
+    title: 'Meter Testnet',
+    network: METER_TESTNET,
+    value: METER_TESTNET.chainId,
   },
   {
     title: 'Rinkeby',
@@ -99,7 +105,9 @@ class AppHeaderContainer extends Component {
   
         const currentChainID = Number(window.ethereum.chainId);
   
-        if (currentChainID === RINKEBY.chainId || currentChainID === MUMBAI.chainId || currentChainID === METIS_STARDUST.chainId || currentChainID === BOBA_RINKEBY.chainId) {
+        if (currentChainID === RINKEBY.chainId || currentChainID === MUMBAI.chainId ||
+          currentChainID === METIS_STARDUST.chainId || currentChainID === BOBA_RINKEBY.chainId ||
+          currentChainID === METER_TESTNET.chainId) {
           ListOfMenuItems.map(menuItem => {
             if (menuItem.value === currentChainID) {
               updateNetworkDetails({
@@ -132,8 +140,8 @@ class AppHeaderContainer extends Component {
 
     if (e.target.value === RINKEBY.chainId) {
       updateNetworkDetails({
-        title: ListOfMenuItems[3].title,
-        network: ListOfMenuItems[3].network,
+        title: ListOfMenuItems[4].title,
+        network: ListOfMenuItems[4].network,
       });
     } else if (e.target.value === MUMBAI.chainId) {
       updateNetworkDetails({
@@ -149,6 +157,11 @@ class AppHeaderContainer extends Component {
       updateNetworkDetails({
         title: ListOfMenuItems[2].title,
         network: ListOfMenuItems[2].network,
+      });
+    } else if (e.target.value === METER_TESTNET.chainId) {
+      updateNetworkDetails({
+        title: ListOfMenuItems[3].title,
+        network: ListOfMenuItems[3].network,
       });
     }
   }

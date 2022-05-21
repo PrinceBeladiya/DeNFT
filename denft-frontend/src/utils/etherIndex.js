@@ -9,6 +9,7 @@ import { MUMBAI } from '../config/networks/Mumbai';
 import { RINKEBY } from '../config/networks/Rinkeby';
 import { METIS_STARDUST } from '../config/networks/MetisStardust';
 import { BOBA_RINKEBY } from '../config/networks/BobaRinkeby';
+import { METER_TESTNET } from '../config/networks/MeterTestnet';
 
 const getCurrentChainId = () => {
   return Number(window && window.ethereum && window.ethereum.chainId)
@@ -42,6 +43,15 @@ export const Addresses = {
     lendBorrow: "0x79319110b54a281267e8f68a1c8dc3107af01373",
     decimal: 18,
     symbol: "BETH",
+  },
+  [METER_TESTNET.chainId]: {
+    deNFT: "0x37041e6370c151Ff2BC15B4234Dd52732249eF79",
+    MarketPlace: "0xbd63179EE02Bd57D5CFe21275605F4ccEE30EC8a",
+    fractionalERC721Factory: "0x9523b48Cc2AC4b5e4659d2314abe98B6A0C3FD36",
+    usdc: "0xe9f85D839bE3c05DdAb4F2Be3397F1Ce10292E66",
+    lendBorrow: "0xa493C6118D09466288b3c0706Fb3d1f26b6FE43B",
+    decimal: 18,
+    symbol: "MTR",
   },
   [RINKEBY.chainId]: {
     deNFT: "0x096296D845C644C1F0E28Faa5857E8Da44F2939B",
