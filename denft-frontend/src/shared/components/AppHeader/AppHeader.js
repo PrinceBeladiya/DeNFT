@@ -6,6 +6,7 @@ import { noop } from "../../../utils";
 import appIcon from '../../../assets/images/denft.png';
 import UDIcon from '../../../assets/icons/UDIcon.png';
 import MetamaskIcon from '../../../assets/icons/metamask.svg';
+import { FormControl, MenuItem, Select } from '@material-ui/core';
 
 const menuItems = [
   {
@@ -26,7 +27,7 @@ const menuItems = [
   }
 ];
 
-const AppHeader = ({ account, handleLogin, history, onMenuItemClick }) => {
+const AppHeader = ({ account, handleLogin, history, onMenuItemClick, ListOfMenuItems, handleMenuChange, network }) => {
 
   const user = () => {
     let string = account.sub;
@@ -80,23 +81,70 @@ const AppHeader = ({ account, handleLogin, history, onMenuItemClick }) => {
         {
           account && Object.keys(account).length > 0 ?
             (account.sub === account.wallet_address && account.sub.length > 0) ?
-              <Button
-                basic
-                onClick={(event) => handleLogin('metamask')}
-                className="authorize-btn"
-              >
-                <img src={MetamaskIcon} className="ud-icon" alt="udicon" />
-                <div>{account && Object.keys(account).length > 0 ? 'Disconnect' : 'Connect'}</div>
-              </Button>
-              : (account.sub !== account.wallet_address && account.sub.length > 0) ?
+              <>
                 <Button
                   basic
-                  onClick={(event) => handleLogin('unstoppable')}
+                  onClick={(event) => handleLogin('metamask')}
                   className="authorize-btn"
                 >
-                  <img src={UDIcon} className="ud-icon" alt="udicon" />
-                  <div>{account && Object.keys(account).length > 0 ? 'Disconnect' : 'Connect with Unstoppable'}</div>
+                  <img src={MetamaskIcon} className="ud-icon" alt="udicon" />
+                  <div>{account && Object.keys(account).length > 0 ? 'Disconnect' : 'Connect'}</div>
                 </Button>
+                {
+                  account && Object.keys(account).length > 0 && Object.keys(network).length > 0 ?
+                    <FormControl size="small" className='select-in-header'>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        className="select"
+                        displayEmpty
+                        label="Age"
+                        defaultValue={ListOfMenuItems[0].value}
+                        onChange={handleMenuChange}
+                        value={network.network.chainId}
+                      >
+                        {
+                          ListOfMenuItems.map(menu => (
+                            <MenuItem value={menu.value}> { menu.title }</MenuItem>
+                      ))
+                        }
+                    </Select>
+                    </FormControl>
+
+                    : ''
+                }
+              </>
+              : (account.sub !== account.wallet_address && account.sub.length > 0) ?
+                <>
+                  <Button
+                    basic
+                    onClick={(event) => handleLogin('unstoppable')}
+                    className="authorize-btn"
+                  >
+                    <img src={UDIcon} className="ud-icon" alt="udicon" />
+                    <div>{account && Object.keys(account).length > 0 ? 'Disconnect' : 'Connect with Unstoppable'}</div>
+                  </Button>
+                  {
+                    account && Object.keys(account).length > 0 ?
+                      <FormControl size="small" className='select-in-header'>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          className="select"
+                          label="Age"
+                          onChange={handleMenuChange}
+                        >
+                          {
+                            ListOfMenuItems.map(menu => (
+
+                              <MenuItem value={menu.value}>{menu.title}</MenuItem>
+                            ))
+                          }
+                        </Select>
+                      </FormControl>
+                      : ''
+                  }
+                </>
                 :
                 <>
                   <Button
@@ -129,7 +177,7 @@ const AppHeader = ({ account, handleLogin, history, onMenuItemClick }) => {
               <Button
                 basic
                 onClick={(event) => handleLogin('metamask')}
-                className="authorize-btn"
+                className="authorize-btn metamask-icon"
               >
                 <img src={MetamaskIcon} className="ud-icon" alt="udicon" />
                 <div>{account && Object.keys(account).length > 0 ? 'Disconnect' : 'Connect'}</div>
@@ -137,7 +185,7 @@ const AppHeader = ({ account, handleLogin, history, onMenuItemClick }) => {
             </>
         }
       </div>
-    </div>
+    </div >
   );
 };
 

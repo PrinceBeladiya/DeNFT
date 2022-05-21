@@ -19,3 +19,8 @@ export const setMainMenu = menu => ({
     type: actionTypes.MENU_NAME,
     payload: menu,
 });
+
+export const setNetwork = network => ({
+    type: actionTypes.NETWORK,
+    payload: network,
+});

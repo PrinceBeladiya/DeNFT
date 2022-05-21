@@ -11,17 +11,32 @@ import { showNotification } from '../../../utils/Notifications';
 import { noop } from '../../../utils';
 import { toast } from 'react-toastify';
 import { setMainMenu } from '../../../modules/dashboard/redux/actions';
+import { MUMBAI } from '../../../config/networks/Mumbai';
+import { RINKEBY } from '../../../config/networks/Rinkeby';
+
+const ListOfMenuItems = [
+  {
+    title: 'Mumbai Polygon',
+    network: MUMBAI,
+    value: MUMBAI.chainId,
+  },
+  {
+    title: 'Rinkeby',
+    network: RINKEBY,
+    value: RINKEBY.chainId,
+  },
+]
 
 class AppHeaderContainer extends Component {
 
   state = {
-    login : '',
+    login: '',
   }
 
   handleLogin = async (wallet) => {
 
-    const { account, setAccount } = this.props;
-    this.setState({ login : wallet});
+    const { account, setAccount, updateNetworkDetails } = this.props;
+    this.setState({ login: wallet });
 
     if (wallet === 'unstoppable') {
       if (account && Object.keys(account) && Object.keys(account).length > 0) {
@@ -30,12 +45,19 @@ class AppHeaderContainer extends Component {
           .then(() => setAccount(undefined))
           .catch(error => showNotification(error.message, 'error', 3000))
 
-          this.setState({ login : ''});
+        this.setState({ login: '' });
+
+        // updateNetworkDetails({});
       } else {
         await uauth
           .loginWithPopup()
           .then(() => uauth.user().then(setUser => setAccount(setUser)))
           .catch(error => showNotification(error.message, 'error', 3000))
+
+        updateNetworkDetails({
+          title: ListOfMenuItems[0].title,
+          network: ListOfMenuItems[0].network,
+        });
       }
     } else if (wallet === 'metamask') {
       await window.ethereum.enable();
@@ -48,13 +70,35 @@ class AppHeaderContainer extends Component {
 
       if (account && Object.keys(account) && Object.keys(account).length > 0) {
         setAccount(undefined);
-        this.setState({ login : ''});
+        this.setState({ login: '' });
+
+        // updateNetworkDetails({});
       } else {
         setAccount({
           sub: ethereum.selectedAddress,
           wallet_address: ethereum.selectedAddress,
           metamask: true,
         });
+
+        updateNetworkDetails({
+          title: ListOfMenuItems[0].title,
+          network: ListOfMenuItems[0].network,
+        });
+  
+        const currentChainID = Number(window.ethereum.chainId);
+  
+        if (currentChainID === 4 || currentChainID === 80001) {
+          ListOfMenuItems.map(menuItem => {
+            if (menuItem.value === currentChainID) {
+              updateNetworkDetails({
+                title: menuItem.title,
+                network: menuItem.network
+              })
+            }
+          })
+        } else {
+          showNotification("Please selected proper network", "error", 3000);
+        }
       }
     }
   }
@@ -66,14 +110,38 @@ class AppHeaderContainer extends Component {
     setSelectedMenuItem(selectedMenuItem);
   }
 
+  handleMenuChange = (e) => {
+    const { updateNetworkDetails } = this.props;
+    const currentChainID = Number(window.ethereum.chainId);
+    
+    if(currentChainID !== e.target.value) {
+      showNotification("Please select appropriate network in wallet first", "error", 3000);
+    }
+
+    if (e.target.value === 4) {
+      updateNetworkDetails({
+        title: ListOfMenuItems[1].title,
+        network: ListOfMenuItems[1].network,
+      });
+    } else if (e.target.value === 4) {
+      updateNetworkDetails({
+        title: ListOfMenuItems[0].title,
+        network: ListOfMenuItems[0].network,
+      });
+    }
+  }
+
   render() {
-    const { account, setAccount } = this.props;
+    const { account, setAccount, network } = this.props;
     return (
       <AppHeader
         handleLogin={this.handleLogin}
         account={account}
         setAccount={setAccount}
         onMenuItemClick={this.onMenuItemClick}
+        ListOfMenuItems={ListOfMenuItems}
+        handleMenuChange={this.handleMenuChange}
+        network={network}
       />
     )
   }
@@ -84,16 +152,19 @@ AppHeaderContainer.propTypes = {
   account: PropTypes.instanceOf(Object),
   setAccount: PropTypes.func,
   setSelectedMenuItem: PropTypes.func,
+  network: PropTypes.instanceOf(Object),
 };
 
 AppHeaderContainer.defaultProps = {
   account: {},
   setAccount: noop,
   setSelectedMenuItem: noop,
+  network: {}
 };
 
 const mapStateToProps = state => ({
   account: state.landing.uAuth,
+  network: state.dashboard.network,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -101,6 +172,7 @@ const mapDispatchToProps = dispatch => ({
   setCurrentAccount: account => dispatch(landingActions.updateAccount(account)),
   setSelectedMenuItem: menuItem => dispatch(dashboardActions.setSelectedMenuItem(menuItem)),
   updateMainMenu: selectedMenu => dispatch(setMainMenu(selectedMenu)),
+  updateNetworkDetails: network => dispatch(dashboardActions.setNetwork(network)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AppHeaderContainer));

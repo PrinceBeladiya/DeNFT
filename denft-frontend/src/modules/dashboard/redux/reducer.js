@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   currentDialogNames: [],
   selectedMenuItem: {},
   menu: '',
+  network : {},
 };
 
 
@@ -34,6 +35,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         menu: action.payload,
+      };
+    case actionTypes.NETWORK:
+      return {
+        ...state,
+        network: action.payload,
       };
     default:
       return state;
