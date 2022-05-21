@@ -10,11 +10,13 @@ DeNFT Network is a prime solution for NFTs. We are providing multiple solutions 
 
 # Tech Stack
 
-## Netowrks
+## Supported Networks
 
-<b> ** [Polygon](https://polygon.technology/ "Polygon") ** </b> : We have used Polygon Mumbai Testnet for deploying smart contracts.<br /><br />
-<b> ** [Metis](https://www.metis.io/ "Metis") ** </b> : We have used Metis Stardust Testnet for deploying smart contracts.<br /><br />
+### We supports below listed networks, you can connect with appropriate network with your wallet
 
+- <b> [Polygon Mumbai Testnet](https://polygon.technology/ "Polygon Mumbai Testnet") </b> <br/>
+- <b> [Metis Stardust Testnet](https://www.metis.io/ "Metis Stardust Testnet") </b><br />
+- <b> [Boba Rinkeby Testnet](https://boba.network/ "Boba Rinkeby Testnet") </b><br /><br/>
 ## File Storage
 
 <b> ** [IPFS/Filecoin](https://ipfs.io/ "IPFS/Filecoin") ** </b> : We have used NFT.Storage for content upload of NFTs which is using IPFS and Filecoin for content addressing.<br /><br />
