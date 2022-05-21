@@ -69,7 +69,7 @@ const DialogueContainer = ({
       showNotification("Your NFT is successfully transfered", "success", 3000);
 
       const tokens = await DeNFTContract.functions.totalTokens();
-      const tokensOfOwner = await DeNFTContract.functions.tokensOfOwnerBySize(ethereum.selectedAddress, 0, tokens);
+      const tokensOfOwner = await DeNFTContract.functions.tokensOfOwnerBySize(ethereum.selectedAddress, 0, Number(tokens));
 
       const tokenIDs = tokensOfOwner[0].map(token => {
         return Number(token);
@@ -212,7 +212,7 @@ const DialogueContainer = ({
       showNotification("Transaction Confirmed", "success", 3000);
   
       const tokens = await DeNFTContract.functions.totalTokens();
-      const tokensOfOwner = await DeNFTContract.functions.tokensOfOwnerBySize(window.ethereum.selectedAddress, 0, tokens);
+      const tokensOfOwner = await DeNFTContract.functions.tokensOfOwnerBySize(window.ethereum.selectedAddress, 0, Number(tokens));
   
       const tokenIDs = tokensOfOwner[0].map(token => {
         return Number(token);

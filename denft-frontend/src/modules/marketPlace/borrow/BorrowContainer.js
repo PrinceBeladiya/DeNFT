@@ -25,7 +25,7 @@ const BorrowContainer = ({
   const getBorrowedTokens = async () => {
     const TotalTokens = await DeNFTContract.connect(web3Signer).totalTokens();
 
-    const ViewAskByCollection = await LendBorrowContract.connect(web3Signer).viewAsksByCollection(DeNFTContract.address, 0, TotalTokens);
+    const ViewAskByCollection = await LendBorrowContract.connect(web3Signer).viewAsksByCollection(DeNFTContract.address, 0, Number(TotalTokens));
   
     const ViewAsksByCollectionAndTokenIds = await LendBorrowContract.connect(web3Signer).viewAsksByCollectionAndTokenIds(DeNFTContract.address, ViewAskByCollection[0]);
 
