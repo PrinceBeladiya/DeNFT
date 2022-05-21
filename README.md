@@ -30,6 +30,10 @@ DeNFT Network is a prime solution for NFTs. We are providing multiple solutions 
 
 [https://denft.netlify.app/](https://denft.netlify.app/ "DeNFT Network")
 
+# Demo Video
+
+[https://youtu.be/a7FTBKMYAQM](https://youtu.be/a7FTBKMYAQM "Demo Video")
+
 # Future Work
 
 - Swap ERC20 of Fractional NFTs by adding liquidity to Uniswap.
