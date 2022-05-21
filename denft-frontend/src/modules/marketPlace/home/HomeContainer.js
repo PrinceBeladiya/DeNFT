@@ -16,7 +16,7 @@ const HomeContainer = ({ data, changeMenu, updateSellableNFTTokens, updateSellab
   const getSellableNFTs = async () => {
     try {
       const tokens = await DeNFTContract.functions.totalTokens();
-      const sellableTokens = await MarketPlaceContract.connect(web3Signer).viewAsksByCollection(DeNFTContract.address, 0, tokens);
+      const sellableTokens = await MarketPlaceContract.connect(web3Signer).viewAsksByCollection(DeNFTContract.address, 0, Number(tokens));
 
       let NFTSellable = [];
       let NFTSellableOwners = [];
