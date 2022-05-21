@@ -29,7 +29,6 @@ DeNFT Network is a prime solution for NFTs. We are providing multiple solutions 
 
 # Demo Video
 
-[https://youtu.be/wAIkP6VaoGU](https://youtu.be/wAIkP6VaoGU "DeNFT Network Demo")
 
 # Deployed Addresses
 
@@ -49,4 +48,10 @@ DeNFT Network is a prime solution for NFTs. We are providing multiple solutions 
 - `FractionalERC721Factory.sol`:
 - `USDC.sol`:
 
+# Future Work
 
+- Swap ERC20 of Fractional NFTs by adding liquidity to Uniswap.
+- Lending and Borrowing for Fractional NFTs.
+- Dutch Auction & Airdrop for Fractional NFTs.
+- Better User Experience.
+- Support for other networks and wallets.
