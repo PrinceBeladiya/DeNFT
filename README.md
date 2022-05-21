@@ -34,19 +34,19 @@ DeNFT Network is a prime solution for NFTs. We are providing multiple solutions 
 
 ## Mumbai Polygon
 
-- `DeNFT.sol`:
-- `MarketPlace.sol`:
-- `LendBorrow.sol`:
-- `FractionalERC721Factory.sol`:
-- `USDC.sol`:
+- `DeNFT.sol`: 0x096296D845C644C1F0E28Faa5857E8Da44F2939B
+- `MarketPlace.sol`: 0x9cd45437BA040EDB1aaF4e62b310D7ea3826d327
+- `LendBorrow.sol`: 0x4aad9541F2bF4F12dd80637172A56E1129493cAA
+- `FractionalERC721Factory.sol`: 0xD2FCA4248d9997311ccA5Ab87c99C6e207300fD1
+- `USDC.sol`: 0x85467601037cD20084c6b5a2fBACA190e118f5cD
 
 ## Metis Stardust
 
-- `DeNFT.sol`:
-- `MarketPlace.sol`:
-- `LendBorrow.sol`:
-- `FractionalERC721Factory.sol`:
-- `USDC.sol`:
+- `DeNFT.sol`: 0xe6327338c5901bb6FfeB5c733601729683E8b6e5
+- `MarketPlace.sol`: 0xA4FFEB0fF0c487f66f502668dDbCe8e3226BD1F9
+- `LendBorrow.sol`: 0x563Ea99f57072B443f669185509d0e734367772d
+- `FractionalERC721Factory.sol`: 0x8F952AaBCd86B1fAee1e6D11509e0C07Fae5173C
+- `USDC.sol`: 0x615C1cd7729bCE1fD68f07c2B4eb2cA5aeEC1f7f
 
 # Future Work
 
