@@ -1,6 +1,6 @@
 require("@nomiclabs/hardhat-waffle");
 
-// const secrets = require("./secrets.json");
+const secrets = require("./secrets.json");
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
@@ -34,6 +34,13 @@ module.exports = {
     },
     metis: {
       url: "https://stardust.metis.io/?owner=588",
+      accounts: {
+        mnemonic: secrets.Mnemonic
+      }
+    },
+    bobarinkeby: {
+      url: 'https://rinkeby.boba.network',
+      chainId: 28,
       accounts: {
         mnemonic: secrets.Mnemonic
       }

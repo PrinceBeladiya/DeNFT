@@ -19,7 +19,7 @@ import { TRANSFER_DIALOGUE } from './DialogNames';
 import LendDialog from './LendDialog';
 
 const DialogueContainer = ({
-  getdata,
+  getdata, imageURIs,
   data,
   dialog,
   updateReceipient,
@@ -76,6 +76,7 @@ const DialogueContainer = ({
       });
 
       updateNFTs(tokenIDs);
+      imageURIs();
 
     } catch (error) {
       updateLoader(false);
@@ -130,6 +131,7 @@ const DialogueContainer = ({
       closeDialog(SELL_DIALOGUE);
       updateLoader(false);
       getOwnerTokens();
+      imageURIs();
       showNotification("successfully order placed", "success", 3000);
     } catch (error) {
       console.log("Error -> ", error);
@@ -158,6 +160,7 @@ const DialogueContainer = ({
 
         updateNFTs(tokenIDs);
         updateLoader(false);
+        imageURIs();
         closeDialog(FRACTIONAL_DIALOGUE);
         showNotification("Fractional successfully", 'success', 3000);
       } catch (error) {
@@ -185,6 +188,7 @@ const DialogueContainer = ({
       getFractionalOwnerTokens();
       closeDialog(SEND_FRACTIONAL_DIALOGUE);
       updateLoader(false);
+      imageURIs();
       showNotification("Your NFT Fractional is successfully transfered", 'success', 3000);
     } catch (error) {
       updateLoader(false);
@@ -208,6 +212,7 @@ const DialogueContainer = ({
       await createLend.wait();
 
       updateLoader(false);
+      imageURIs();
       closeDialog(LEND_DIALOGUE);
       showNotification("Transaction Confirmed", "success", 3000);
   

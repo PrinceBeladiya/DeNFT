@@ -8,7 +8,7 @@ import { ethers } from 'ethers';
 import { contractInitialization } from '../../../utils/etherIndex';
 
 const NFTs = ({
-  getdata,
+  getdata, imageURIs,
   data, getFractionalOwnerTokens,
   dashboard,
   NFTSellable = [],
@@ -285,6 +285,7 @@ const NFTs = ({
           vaultID={vaultID}
           index={index}
           getFractionalOwnerTokens={getFractionalOwnerTokens}
+          imageURIs={imageURIs}
         />
       </BlockUI>
     </div >

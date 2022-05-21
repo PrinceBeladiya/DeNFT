@@ -8,6 +8,7 @@ import LendBorrow from '../contracts/contracts/LendBorrow/LendBorrow.sol/LendBor
 import { MUMBAI } from '../config/networks/Mumbai';
 import { RINKEBY } from '../config/networks/Rinkeby';
 import { METIS_STARDUST } from '../config/networks/MetisStardust';
+import { BOBA_RINKEBY } from '../config/networks/BobaRinkeby';
 
 const getCurrentChainId = () => {
   return Number(window && window.ethereum && window.ethereum.chainId)
@@ -24,6 +25,24 @@ export const Addresses = {
     decimal: 18,
     symbol: "MATIC",
   },
+  [METIS_STARDUST.chainId]: {
+    deNFT: "0xe6327338c5901bb6FfeB5c733601729683E8b6e5",
+    MarketPlace: "0xA4FFEB0fF0c487f66f502668dDbCe8e3226BD1F9",
+    fractionalERC721Factory: "0x8F952AaBCd86B1fAee1e6D11509e0C07Fae5173C",
+    usdc: "0x615C1cd7729bCE1fD68f07c2B4eb2cA5aeEC1f7f",
+    lendBorrow: "0x563Ea99f57072B443f669185509d0e734367772d",
+    decimal: 18,
+    symbol: "METIS",
+  },
+  [BOBA_RINKEBY.chainId]: {
+    deNFT: "0x88aF30fB5C4b35ae3f038462e00cF97b306e4d6F",
+    MarketPlace: "0x9030cd0360448306cc5b02EBd3B52E87DA2673b7",
+    fractionalERC721Factory: "0xaC28ff29342f0Da8a31eC36dE966a59788beECdD",
+    usdc: "0x62B7583165A401D18Aa78a2d9446208eCF1527C3",
+    lendBorrow: "0x79319110b54a281267e8f68a1c8dc3107af01373",
+    decimal: 18,
+    symbol: "BETH",
+  },
   [RINKEBY.chainId]: {
     deNFT: "0x096296D845C644C1F0E28Faa5857E8Da44F2939B",
     MarketPlace: "0x9cd45437BA040EDB1aaF4e62b310D7ea3826d327",
@@ -33,15 +52,6 @@ export const Addresses = {
     rpcUrl: "https://rinkeby.infura.io/v3/1bb06d6c96b94a678f902858aa99025b",
     decimal: 18,
     symbol: "ETH",
-  },
-  [METIS_STARDUST.chainId]: {
-    deNFT: "0xe6327338c5901bb6FfeB5c733601729683E8b6e5",
-    MarketPlace: "0xA4FFEB0fF0c487f66f502668dDbCe8e3226BD1F9",
-    fractionalERC721Factory: "0x8F952AaBCd86B1fAee1e6D11509e0C07Fae5173C",
-    usdc: "0x615C1cd7729bCE1fD68f07c2B4eb2cA5aeEC1f7f",
-    lendBorrow: "0x563Ea99f57072B443f669185509d0e734367772d",
-    decimal: 18,
-    symbol: "METIS",
   },
 }
 

@@ -31,46 +31,44 @@ const NFTContainer = ({
 }) => {
 
   useEffect(() => {
-    const imageURIs = async () => {
-      if (!isBorrow) {
-        if (!isRepay) {
-          if (dashboard.menu === "MarketPlace") {
-            const img = await DeNFTContract.functions.tokenURI(NFTSellable[index]);
-            setImage(img[0]);
-          } else if (dashboard.menu === "My NFTs") {
-            const img = await DeNFTContract.functions.tokenURI(NFTID);
-            setImage(img[0]);
-          } else {
-            const url = window.location.href.split('/');
-            const page = url[url.length - 1];
-            let img;
+    imageURIs();
+  }, []);
 
-            switch (page) {
-              case "marketplace": updateMainMenu("MarketPlace");
-                img = await DeNFTContract.functions.tokenURI(NFTSellable[index]);
-                setImage(img[0]);
-                break;
-              case "my-nfts": updateMainMenu("My NFTs");
-                img = await DeNFTContract.functions.tokenURI(NFTID);
-                setImage(img[0]);
-                break;
-              default:
-            }
-          }
-        } else {
+  const imageURIs = async () => {
+    if (!isBorrow) {
+      if (!isRepay) {
+        if (dashboard.menu === "MarketPlace") {
+          const img = await DeNFTContract.functions.tokenURI(NFTSellable[index]);
+          setImage(img[0]);
+        } else if (dashboard.menu === "My NFTs") {
           const img = await DeNFTContract.functions.tokenURI(NFTID);
           setImage(img[0]);
+        } else {
+          const url = window.location.href.split('/');
+          const page = url[url.length - 1];
+          let img;
+
+          switch (page) {
+            case "marketplace": updateMainMenu("MarketPlace");
+              img = await DeNFTContract.functions.tokenURI(NFTSellable[index]);
+              setImage(img[0]);
+              break;
+            case "my-nfts": updateMainMenu("My NFTs");
+              img = await DeNFTContract.functions.tokenURI(NFTID);
+              setImage(img[0]);
+              break;
+            default:
+          }
         }
       } else {
         const img = await DeNFTContract.functions.tokenURI(NFTID);
         setImage(img[0]);
       }
+    } else {
+      const img = await DeNFTContract.functions.tokenURI(NFTID);
+      setImage(img[0]);
     }
-
-
-    imageURIs();
-
-  }, []);
+  }
 
   const [image, setImage] = useState();
 
@@ -202,6 +200,7 @@ const NFTContainer = ({
         isRepay={isRepay}
         repayborrowalNFT={repayborrowalNFT}
         getFractionalOwnerTokens={getFractionalOwnerTokens}
+        imageURIs={imageURIs}
       />
     </>
   )

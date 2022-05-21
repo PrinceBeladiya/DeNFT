@@ -29,6 +29,14 @@ DeNFT Network is a prime solution for NFTs. We are providing multiple solutions 
 
 # Demo Video
 
+# Future Work
+
+- Swap ERC20 of Fractional NFTs by adding liquidity to Uniswap.
+- Lending and Borrowing for Fractional NFTs.
+- Dutch Auction & Airdrop for Fractional NFTs.
+- Better User Experience.
+- Support for other networks and wallets.
+
 
 # Deployed Addresses
 
@@ -48,10 +56,11 @@ DeNFT Network is a prime solution for NFTs. We are providing multiple solutions 
 - `FractionalERC721Factory.sol`: 0x8F952AaBCd86B1fAee1e6D11509e0C07Fae5173C
 - `USDC.sol`: 0x615C1cd7729bCE1fD68f07c2B4eb2cA5aeEC1f7f
 
-# Future Work
+## Boba Rinkeby Stardust
 
-- Swap ERC20 of Fractional NFTs by adding liquidity to Uniswap.
-- Lending and Borrowing for Fractional NFTs.
-- Dutch Auction & Airdrop for Fractional NFTs.
-- Better User Experience.
-- Support for other networks and wallets.
+- `DeNFT.sol`: 0x88aF30fB5C4b35ae3f038462e00cF97b306e4d6F
+- `MarketPlace.sol`: 0x9030cd0360448306cc5b02EBd3B52E87DA2673b7
+- `LendBorrow.sol`: 0x79319110b54a281267e8f68a1c8dc3107af01373
+- `FractionalERC721Factory.sol`: 0xaC28ff29342f0Da8a31eC36dE966a59788beECdD
+- `USDC.sol`: 0x62B7583165A401D18Aa78a2d9446208eCF1527C3
+
