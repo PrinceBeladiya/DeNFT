@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import Home from './Home';
 import { updateMenu, updateSellableNFTOwners, updateSellableNFTPrice, updateSellableNFTs } from '../redux/actions';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { DeNFTContract, MarketPlaceContract, web3Signer } from '../../../utils/etherIndex';
 import { setMainMenu } from '../../dashboard/redux/actions';
 
 const HomeContainer = ({ data, changeMenu, updateSellableNFTTokens, updateSellableNFTTokensOwners, updateSellableNFTTokensPrice, setMainMenu }) => {
+
+  const dispatch = useDispatch();
 
   useEffect ( () => {
     changeMenu("Home");
@@ -28,9 +30,9 @@ const HomeContainer = ({ data, changeMenu, updateSellableNFTTokens, updateSellab
         NFTSellablePrice[i] = Number(sellableTokens.askInfo[i].price);
       }
 
-      updateSellableNFTTokens(NFTSellable);
-      updateSellableNFTTokensOwners(NFTSellableOwners);
-      updateSellableNFTTokensPrice(NFTSellablePrice);
+      dispatch(updateSellableNFTTokens(NFTSellable));
+      dispatch(updateSellableNFTTokensOwners(NFTSellableOwners));
+      dispatch(updateSellableNFTTokensPrice(NFTSellablePrice));
     } catch (error) {
       console.log("Error -> ", error);
     }

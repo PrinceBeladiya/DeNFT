@@ -1,6 +1,9 @@
 require("@nomiclabs/hardhat-waffle");
 
-const secrets = require("./secrets.json");
+const secrets = {
+  "AlchemyMumbaiAPIkey": "-B53i36HC0dwchxm586SE-0uuH3OKD7w",
+  "Mnemonic": ""
+}
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
@@ -22,32 +25,6 @@ module.exports = {
     },
     mumbai: {
       url: `https://polygon-mumbai.g.alchemy.com/v2/${secrets.AlchemyMumbaiAPIkey}`,
-      accounts: {
-        mnemonic: secrets.Mnemonic
-      }
-    },
-    rinkeby: {
-      url: `https://rinkeby.infura.io/v3/${secrets.InfuraAPI}`,
-      accounts: {
-        mnemonic: secrets.Mnemonic
-      }
-    },
-    metis: {
-      url: "https://stardust.metis.io/?owner=588",
-      accounts: {
-        mnemonic: secrets.Mnemonic
-      }
-    },
-    bobarinkeby: {
-      url: 'https://rinkeby.boba.network',
-      chainId: 28,
-      accounts: {
-        mnemonic: secrets.Mnemonic
-      }
-    },
-    metertestnet: {
-      url: 'https://rpctest.meter.io',
-      chainId: 83,
       accounts: {
         mnemonic: secrets.Mnemonic
       }

@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { FractionalERC721FactoryContract, signer, web3Signer } from '../../../utils/etherIndex';
 import { updateFractionalNFT, updateFractionalNFTBalance, updateFractionalNFTOwners } from '../redux/actions';
 import FractionalERC20Vault from '../../../contracts/contracts/Fractional/FractionalERC20Vault.sol/FractionalERC20Vault.json';
@@ -21,9 +21,11 @@ const MyFractionalNFTsContainer = ({
   const [vaultID, setVaultID] = useState('');
   const [totalSup, setTotalSup] = useState('');
 
-  const getOwnerTokens = async () => {
+  const dispatch = useDispatch();
 
+  const getOwnerTokens = async () => {
     const { ethereum } = window;
+
     let originalNFTs = [];
     let NFTs = [];
     let fractionalBalance = [];
@@ -55,9 +57,10 @@ const MyFractionalNFTsContainer = ({
         j++;
       }
     }
-    updateList(originalNFTs);
-    updateBalanceList(fractionalBalance);
-    updateOwnerList(NFTOwners);
+    dispatch(updateList(originalNFTs));
+    dispatch(updateBalanceList(fractionalBalance));
+    dispatch(updateOwnerList(NFTOwners));
+
     setVaultID(NFTs);
     setTotalSup(NFTTotalSupply);
   }

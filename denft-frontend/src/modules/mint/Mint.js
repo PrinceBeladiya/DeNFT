@@ -28,6 +28,7 @@ const Mint = ({
   const onImageChange = (file) => {
     if (file.length > 0) {
       setImage(file[0]);
+      console.log(file[0]);
 
       setFiles(file.map(file => Object.assign(file, {
         preview: URL.createObjectURL(file)

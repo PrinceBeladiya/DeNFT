@@ -7,7 +7,8 @@ const MyFractionalNFTs = ({
   FractionalNFTOwner,
   menu,
   vaultID,
-  totalSupply, getFractionalOwnerTokens
+  getFractionalOwnerTokens,
+  totalSupply,
 }) => (
   <div className="marketplace-home-container">
       {
